@@ -1,0 +1,43 @@
+@CHARSET "ISO-8859-1";
+
+
+h3{
+	text-align: center;	
+}
+
+body{
+	text-align: center;	
+}	
+	
+.addressTable {
+	border: 1px solid #666666;
+}
+.addressHeader{
+	text-align: center;
+	font-style: italic;
+}
+
+.oddRow{
+    background-color: #C0C0C0;
+}
+
+.evenRow{
+    background-color: #CCCCFF;
+}
+
+.Columns{
+	border-right: 1px solid #666666;
+    border-bottom: 1px solid #666666;
+}
+
+.editField{
+	
+}
+
+.myTablePaginator{
+	margin: 0px;
+	display: inline-table;
+}
+
+
+	
