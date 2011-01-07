@@ -1,7 +1,23 @@
-/**
- * 
- */
 package AddressBook.bean;
+
+/**
+* Program Name: CMIS440 Lab 4 Address Book Web App
+* @author Brandon R Russell
+* @Course CMIS440
+* Date: Jan 6, 2011
+* IDE: MyEclipse 9.0 M1
+* OS: Windows 7
+* Java: Java EE 5, JSF 1.2, JPA 2.0, IceFaces 1.8.1, GlassFish 2.1.1
+* Files: 
+*
+* Program Requirements: 
+*
+* Program Design: 
+*
+* Things you what me to know before I grade your work: 
+*/
+
+
 
 
 

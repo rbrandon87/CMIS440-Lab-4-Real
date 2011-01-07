@@ -3,11 +3,11 @@
   type="WEB"
   name="Russell_CMIS440_Lab4"
   id="myeclipse.1294256200327"
-  context-root="/AddressBookIce"
+  context-root="/AddressBook"
   j2ee-spec="5.0"
   archive="Russell_CMIS440_Lab4.war">
   <attributes>
-    <attribute name="webrootdir" value="WebRoot" />
+    <attribute name="webrootdir" value="/WebRoot" />
   </attributes>
 </project-module>
 

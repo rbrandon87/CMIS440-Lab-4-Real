@@ -8,6 +8,6 @@
   <managed-bean-scope>session</managed-bean-scope>
  </managed-bean>
  <navigation-rule>
-  <from-view-id>/AddressBook.iface</from-view-id>
+  <from-view-id>/AddressBook.jspx</from-view-id>
  </navigation-rule>
 </faces-config>
