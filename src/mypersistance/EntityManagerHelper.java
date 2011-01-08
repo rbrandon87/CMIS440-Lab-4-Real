@@ -17,9 +17,9 @@ public class EntityManagerHelper {
 	private static final Logger logger;
 	
 	static {
-		emf = Persistence.createEntityManagerFactory("AddressBookIcePU"); 		
+		emf = Persistence.createEntityManagerFactory("AddressBookPU"); 		
 		threadLocal = new ThreadLocal<EntityManager>();
-		logger = Logger.getLogger("AddressBookIcePU");
+		logger = Logger.getLogger("AddressBookPU");
 		logger.setLevel(Level.ALL);
 	}
 		

@@ -17,12 +17,33 @@
          <link rel="stylesheet" type="text/css" href="./AddressBookCSS.css"/>
        </head>
        <body>
-       
-
+       <div id="top">
+		<ice:panelGrid id="topPanelGrid" columns="2" >
 		<h1> Lab 4 Address Book</h1>
 		
-		<ice:panelGrid border="5" columns="2" cellspacing="10" >
-			<ice:form id="addForm" partialSubmit="true">
+		        <ice:form  id="instructionForm" >
+        <ice:commandButton value="Instructions" action="#{AddressBean.openPopup}" rendered="#{not AddressBean.popupVisible}" />
+            <ice:panelPopup draggable="true" visible="#{AddressBean.popupVisible}" style="z-index: 1000; top: 30%; left: 10%; position: absolute; width: 300px;">
+                <f:facet name="header">
+                    <ice:panelGrid width="100%" cellpadding="0" cellspacing="0" columns="2" style="text-align: center;">
+                        <ice:outputText value="Instructions"/>
+                        <ice:commandButton image="images/close.gif" action="#{AddressBean.closePopup}" title="Close this draggable popup"/>
+                    </ice:panelGrid>
+                </f:facet>
+                
+                <f:facet name="body">
+                    <ice:panelGrid width="100%" cellpadding="0" cellspacing="0">
+                            <ice:outputText value="1)"/>
+                    </ice:panelGrid>
+                </f:facet>
+                
+            </ice:panelPopup>
+        </ice:form>
+		</ice:panelGrid>
+		</div>
+		<div id="main">
+		<ice:panelGrid id="mainPanelGrid" columnClasses="addColumn,searchColumn" columns="2" cellspacing="10" >
+			<ice:form id="addForm" partialSubmit="true" >
 			<h3>Add new Record:</h3>
 			
 				<ice:panelGrid border="1" columns="2">
@@ -52,7 +73,7 @@
 					<ice:commandButton value="Clear"  partialSubmit="true" actionListener="#{AddressBean.cancel }"></ice:commandButton>				
 			</ice:form>
 			
-			<ice:form id="searchForm" partialSubmit="true" style="height: 160px; ">
+			<ice:form id="searchForm" partialSubmit="true" >
 			<h3>Search for Address by Last Name:</h3>
 			<ice:panelGrid border="1" columns="2">
 			<ice:selectInputText maxlength="30" rows="10" id="searchByLastName" width="300" value="#{AddressBean.currentSearchAddress.lastname }" valueChangeListener="#{AddressBean.getAddressesByLastName }" >
@@ -65,8 +86,8 @@
 				</ice:form>
 
 </ice:panelGrid>
-			
-			<hr />
+</div>
+				<hr />
 
 
 				<ice:form id="dataTableForm" partialSubmit="true">

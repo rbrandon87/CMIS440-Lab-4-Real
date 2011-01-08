@@ -47,7 +47,7 @@ public class AddressBean extends SortableList{
 	List<Addresses> myAddresses = new ArrayList<Addresses>();
 	List<SelectItem> lastNames;
 	Logger myLog = new Logger();
-	
+	boolean visible = false;
 	
     
 
@@ -102,6 +102,9 @@ public class AddressBean extends SortableList{
 			EntityManagerHelper.commit();
 			myLog.log("ID: " + myNewAddress.getAddressid() + " Successfully added into database");
 			myNewAddress = new Addresses();
+			myTableAddress.setEditable(false);
+			myTableAddress = new Addresses();
+			myAddresses = new AddressesDAO().findAll();
 			return "success";
 			}catch (Exception exception){
 				myLog.log(exception.getMessage());
@@ -122,7 +125,7 @@ public class AddressBean extends SortableList{
 			EntityManagerHelper.commit();
 			myLog.log("ID: " + myTableAddress.getAddressid() + " Successfully updated in database");
 			myTableAddress = new Addresses();
-		
+			
 		}catch (Exception exception){
 			myLog.log(exception.getMessage());
 		}		
@@ -130,12 +133,15 @@ public class AddressBean extends SortableList{
 	
 	public void deleteAddress(ActionEvent evt){
 		try{
-			myTableAddress.setEditable(false);		
+					
 			EntityManagerHelper.beginTransaction();
 			myAddressesDAO.delete(myTableAddress);
 			EntityManagerHelper.commit();
 			myLog.log("ID: " + myTableAddress.getAddressid() + " Successfully deleted from database");
+			myTableAddress.setEditable(false);
 			myTableAddress = new Addresses();
+			myTableAddress.setEditable(false);	
+			myAddresses = new AddressesDAO().findAll();
 		}catch (Exception exception){
 			myLog.log(exception.getMessage());
 		}		
@@ -143,9 +149,10 @@ public class AddressBean extends SortableList{
 	
 	
 	public List<Addresses> getAllAddresses(){
+
 		try{
 			if ( mySearchAddress.getLastname() == null || mySearchAddress.getLastname().equals("")){
-				myAddresses = new AddressesDAO().findAll();
+				//myAddresses = new AddressesDAO().findAll();
 			}else{
 				myAddresses =  new AddressesDAO().findByLastname(mySearchAddress.getLastname());
 			}
@@ -174,7 +181,10 @@ public class AddressBean extends SortableList{
 				}else if (myAddresses.get(i).getLastname().length() < searchWord.toString().length()){
 				
 				}else if(myAddresses.get(i).getLastname().substring(0,searchWord.toString().length()).equalsIgnoreCase(searchWord.toString())){
-					lastNames.add(new SelectItem(myAddresses.get(i).getLastname(),myAddresses.get(i).getLastname()));
+					if (!lastNames.contains(myAddresses.get(i).getLastname())){
+						lastNames.add(new SelectItem(myAddresses.get(i).getLastname(),myAddresses.get(i).getLastname()));
+					}
+					
 				}
 			}
         }catch (Exception exception){
@@ -191,6 +201,8 @@ public class AddressBean extends SortableList{
 		myNewAddress = new Addresses();
 		mySearchAddress = new Addresses();
 		myAddresses = myAddressesDAO.findAll();
+		myTableAddress.setEditable(false);
+		myTableAddress = new Addresses();
 	}
 	
 	public void cancelEdit(ActionEvent evt){
@@ -333,6 +345,19 @@ public class AddressBean extends SortableList{
     
 
 	
+    public String closePopup() {
+        visible = false;
+        return "success";
+    }
+    
+    public String openPopup() {
+        visible = true;
+        return "success";
+    }
+    
+    public boolean getPopupVisible(){
+    	return visible;
+    }
 
 	
 
