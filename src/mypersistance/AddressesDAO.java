@@ -1,4 +1,4 @@
-package mypersistance;
+package myPersistance;
 
 import java.util.List;
 import java.util.logging.Level;
@@ -12,7 +12,7 @@ import javax.persistence.Query;
  * manually added to each of these methods for data to be persisted to the JPA
  * datastore.
  * 
- * @see mypersistance.Addresses
+ * @see myPersistance.Addresses
  * @author MyEclipse Persistence Tools
  */
 

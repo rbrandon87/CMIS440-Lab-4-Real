@@ -23,17 +23,17 @@
 		
 		        <ice:form  id="instructionForm" >
         <ice:commandButton value="Instructions" action="#{AddressBean.openPopup}" rendered="#{not AddressBean.popupVisible}" />
-            <ice:panelPopup draggable="true" visible="#{AddressBean.popupVisible}" style="z-index: 1000; top: 30%; left: 10%; position: absolute; width: 300px;">
+            <ice:panelPopup draggable="true" rendered="#{AddressBean.popupVisible}" style="z-index: 1000; top: 30%; left: 10%; position: absolute; width: 300px;">
                 <f:facet name="header">
                     <ice:panelGrid width="100%" cellpadding="0" cellspacing="0" columns="2" style="text-align: center;">
                         <ice:outputText value="Instructions"/>
-                        <ice:commandButton image="images/close.gif" action="#{AddressBean.closePopup}" title="Close this draggable popup"/>
+                        <ice:commandButton image="images/close.gif" action="#{AddressBean.closePopup}" title="Close the instructions"/>
                     </ice:panelGrid>
                 </f:facet>
                 
                 <f:facet name="body">
                     <ice:panelGrid width="100%" cellpadding="0" cellspacing="0">
-                            <ice:outputText value="1)"/>
+                            <ice:outputText escape="false" value="#{AddressBean.instructions }"/>
                     </ice:panelGrid>
                 </f:facet>
                 
@@ -70,7 +70,7 @@
 					<ice:commandButton value="Add"  partialSubmit="true" action="#{AddressBean.addAddress }">
 					<f:attribute name="theAddressID" value="# "/>
 					</ice:commandButton>
-					<ice:commandButton value="Clear"  partialSubmit="true" actionListener="#{AddressBean.cancel }"></ice:commandButton>				
+					<ice:commandButton value="Clear"  partialSubmit="true" actionListener="#{AddressBean.clear }"></ice:commandButton>				
 			</ice:form>
 			
 			<ice:form id="searchForm" partialSubmit="true" >
@@ -105,7 +105,7 @@
                     	</ice:commandSortHeader>					
 						
 					</f:facet>
-					<ice:outputText value="#{myAddresses.addressid}" rendered="#{myAddresses.editable}" styleClass="editField"/>
+					<ice:outputText value="#{myAddresses.addressid}" rendered="#{myAddresses.editable}" />
     				<ice:outputText value="#{myAddresses.addressid}" rendered="#{not myAddresses.editable}"  />					
 				</ice:column>
 			
@@ -115,7 +115,7 @@
 						<ice:outputText value="First Name" />
 					</ice:commandSortHeader>
 					</f:facet>
-    				<ice:inputText value="#{AddressBean.currentTableAddress.firstname}" maxlength="30" required="true" size="10" rendered="#{myAddresses.editable}" styleClass="editField"/>
+    				<ice:inputText id="editFirstName" value="#{AddressBean.currentTableAddress.firstname}" validator="#{AddressBean.validateAllOthers}"   maxlength="30" required="true" size="10" rendered="#{myAddresses.editable}" styleClass="editField"/>
     				<ice:outputText value="#{myAddresses.firstname}" rendered="#{not myAddresses.editable}" />					
 				</ice:column>
 				<ice:column>
@@ -124,7 +124,7 @@
 						<ice:outputText value="Last Name" ></ice:outputText>
 					</ice:commandSortHeader>
 					</f:facet>
-    				<ice:inputText value="#{AddressBean.currentTableAddress.lastname}" size="10" maxlength="30" required="true" rendered="#{myAddresses.editable}" styleClass="editField"/>
+    				<ice:inputText id="editLastName" value="#{AddressBean.currentTableAddress.lastname}"  validator="#{AddressBean.validateAllOthers}"  size="10" maxlength="30" required="true" rendered="#{myAddresses.editable}" styleClass="editField"/>
     				<ice:outputText value="#{myAddresses.lastname}" rendered="#{not myAddresses.editable}" />					
 				</ice:column>
 				<ice:column>
@@ -133,7 +133,7 @@
 						<ice:outputText value="Street" ></ice:outputText>
 					</ice:commandSortHeader>
 					</f:facet>
-    				<ice:inputText value="#{AddressBean.currentTableAddress.street}" size="30"  maxlength="150" required="true" rendered="#{myAddresses.editable}" styleClass="editField"/>
+    				<ice:inputText id="editStreet" value="#{AddressBean.currentTableAddress.street}" validator="#{AddressBean.validateAllOthers}"   size="30"  maxlength="150" required="true" rendered="#{myAddresses.editable}" styleClass="editField"/>
     				<ice:outputText value="#{myAddresses.street}" rendered="#{not myAddresses.editable}" />					
 				</ice:column>
 				<ice:column>
@@ -142,7 +142,7 @@
 						<ice:outputText value="City"></ice:outputText>
 					</ice:commandSortHeader>
 					</f:facet>
-    				<ice:inputText value="#{AddressBean.currentTableAddress.city}" size="10" maxlength="30" required="true" rendered="#{myAddresses.editable}" styleClass="editField"/>
+    				<ice:inputText id="editCity" value="#{AddressBean.currentTableAddress.city}"  validator="#{AddressBean.validateAllOthers}"  size="10" maxlength="30" required="true" rendered="#{myAddresses.editable}" styleClass="editField"/>
     				<ice:outputText value="#{myAddresses.city}" rendered="#{not myAddresses.editable}" />							
 				</ice:column>
 				<ice:column>
@@ -151,7 +151,7 @@
 						<ice:outputText value="State"></ice:outputText>
 					</ice:commandSortHeader>
 					</f:facet>
-    				<ice:inputText value="#{AddressBean.currentTableAddress.state}" size="5" maxlength="2" required="true" rendered="#{myAddresses.editable}" styleClass="editField"/>
+    				<ice:inputText id="editState" value="#{AddressBean.currentTableAddress.state}"  validator="#{AddressBean.validateAllOthers}"  size="5" maxlength="2" required="true" rendered="#{myAddresses.editable}" styleClass="editField"/>
     				<ice:outputText value="#{myAddresses.state}" rendered="#{not myAddresses.editable}" />							
 				</ice:column>
 				<ice:column>
@@ -160,7 +160,7 @@
 						<ice:outputText value="Zip Code"></ice:outputText>
 					</ice:commandSortHeader>
 					</f:facet>
-    				<ice:inputText value="#{AddressBean.currentTableAddress.zip}" size="10" maxlength="5" required="true" rendered="#{myAddresses.editable}" styleClass="editField"/>
+    				<ice:inputText id="editZip" value="#{AddressBean.currentTableAddress.zip}"  validator="#{AddressBean.validateAllOthers}"  size="10" maxlength="5" required="true" rendered="#{myAddresses.editable}" styleClass="editField"/>
     				<ice:outputText value="#{myAddresses.zip}" rendered="#{not myAddresses.editable}" />						
 					
 				</ice:column>
@@ -170,7 +170,7 @@
 						<ice:outputText value="Email Address"></ice:outputText>
 					</ice:commandSortHeader>
 					</f:facet>
-    				<ice:inputText value="#{AddressBean.currentTableAddress.emailaddress}" size="10" maxlength="50" required="true" rendered="#{myAddresses.editable}" styleClass="editField"/>
+    				<ice:inputText id="editEmailAddress" value="#{AddressBean.currentTableAddress.emailaddress}"  validator="#{AddressBean.validateEmail}" size="10" maxlength="50" required="true" rendered="#{myAddresses.editable}" styleClass="editField"/>
     				<ice:outputText value="#{myAddresses.emailaddress}" rendered="#{not myAddresses.editable}" />					
 				</ice:column>
 				<ice:column>
@@ -179,7 +179,7 @@
 						<ice:outputText value="Phone Number"></ice:outputText>
 					</ice:commandSortHeader>
 					</f:facet>
-    				<ice:inputText value="#{AddressBean.currentTableAddress.phonenumber}" size="10" maxlength="30" required="true" rendered="#{myAddresses.editable}" styleClass="editField"/>
+    				<ice:inputText id="editPhoneNumber" value="#{AddressBean.currentTableAddress.phonenumber}"  validator="#{AddressBean.validatePhone}" size="10" maxlength="30" required="true" rendered="#{myAddresses.editable}" styleClass="editField"/>
     				<ice:outputText value="#{myAddresses.phonenumber}" rendered="#{not myAddresses.editable}" />							
 				</ice:column>
 				
