@@ -7,5 +7,10 @@
 	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/derby.jar"/>
 	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/derbyclient.jar"/>
 	<classpathentry kind="con" path="melibrary.com.genuitec.eclipse.icefaces.MYECLIPSE_ICEfaces_JSF12_181"/>
+	<classpathentry kind="src" path=".apt_generated">
+		<attributes>
+			<attribute name="optional" value="true"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="WebRoot/WEB-INF/classes"/>
 </classpath>

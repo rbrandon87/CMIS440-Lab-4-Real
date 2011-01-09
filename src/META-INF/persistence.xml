@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+ Program Name: CMIS440 Lab 4 Address Book Web App
+ @author Brandon R Russell
+ @Course CMIS440
+ Date: Jan 6, 2011
+
+
+ -->
+
 <persistence xmlns="http://java.sun.com/xml/ns/persistence"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://java.sun.com/xml/ns/persistence

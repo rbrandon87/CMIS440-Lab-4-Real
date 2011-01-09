@@ -1,92 +1,150 @@
 @CHARSET "ISO-8859-1";
 
+/*
+ Program Name: CMIS440 Lab 4 Address Book Web App
+ @author Brandon R Russell
+ @Course CMIS440
+ Date: Jan 6, 2011
+*/
 
+/*
+This is the CSS styling for AddressBook.jspx
+*/
+
+/*This is for the top div containing the topPanelGrid*/
 #top{	
-	width: 618px; 
+	width: 583px; 
 	margin-left: auto;
 	margin-right: auto;
 		
 }
 
+/*This is for the topPanelGrid containing the H1 header and instructions button*/
 .topPanelGrid{
+	width: 583px; 
+	margin-left: auto;
+	margin-right: auto;	
+	text-align: center;	
 	display: inline-table;
 }
 
-
-h3{
-	text-align: center;	
-}
-
-body{
-	text-align: center;	
-}	
-	
-
-.editField{
-	
-}
-
-
-
-#main{
-	width: 747px;
-	margin-left: auto;
-	margin-right: auto;	
-}
-.mainPanelGrid{
-	border: none;
-}
-
-.addColumn{
-	border: double;
-	left: 0px;
-
-}
-
-.searchColumn{
-	border: double;
-	right: 0px;
-
-}
-
-.addForm{
-	text-align: center;
-	height: 485px;
-}
-
-.searchForm{
-	text-align: center;
-	height: 485px;
-}
-
+/*This is for the form containing the instructions button*/
 .instructionForm{
 	width: 20%;
 	border: none;
 }
 
+/*This is for the H3 headers in the add form and search form*/
+h3{
+	text-align: center;	
+}
+
+/*For the body*/
+body{
+	text-align: center;	
+}	
+	
+/*This is the main, or middle, div containing the mainPanelGrid*/
+#main{
+	width: 747px;
+	margin-left: auto;
+	margin-right: auto;	
+}
+
+/*This is for the mainPanelGrid housing the add and search forms*/
+.mainPanelGrid{
+	border: none;
+}
+
+/*This is for the column containing the add form*/
+.addColumn{
+	width: 300px;
+	border: double;
+	left: 0px;
+
+}
+
+/*This is for the column containing the search form*/
+.searchColumn{
+	width: 300px;
+	border: double;
+	right: 0px;
+
+}
+
+/*This is for the add form*/
+.addForm{
+	text-align: center;
+	height: 485px;
+	width: 300px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+/*This is for the column of labels in the add form*/
+.addLabels{
+	width: 45%;
+}
+
+/*This is for the column of input fields in the add form*/
+.addFields{
+	width: 45%;
+	size: auto;
+}
+
+/*This is for the search form*/
+.searchForm{
+	text-align: center;
+	height: 485px;
+	width: 300px;
+	margin-left: auto;
+	margin-right: auto;	
+}
+
+
+/*This is for the bottom div*/
+#bottom{
+	width: 1436px;
+	margin-left: auto;
+	margin-right: auto;	
+}
+
+/*This is for the datatable*/
 .addressTable {
+	width: 1436px;
+	margin-left: auto;
+	margin-right: auto;
 	border: 1px solid #666666;
 }
+
+/*This is for the datatable header*/
 .addressHeader{
 	text-align: center;
 	font-style: italic;
 }
 
+/*This is for the odd rows in the datatable*/
 .oddRow{
     background-color: #C0C0C0;
 }
 
+/*This is for the even rows in the datatable*/
 .evenRow{
     background-color: #CCCCFF;
 }
 
-.Columns{
+/*This is for the columns in the datatable*/
+.columns{
 	border-right: 1px solid #666666;
     border-bottom: 1px solid #666666;
+    size: auto;
 }
 
+/*This is for the paginator for the datatable*/
 .myTablePaginator{
-	margin: 0px;
+	width: 1436px;
+	margin-left: auto;
+	margin-right: auto;
 	display: inline-table;
 }
 

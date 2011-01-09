@@ -44,6 +44,9 @@ package AddressBook.bean;
 
 
 import java.util.*;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.faces.model.SelectItem;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -91,11 +94,35 @@ public class AddressBean extends SortableList{
 		 * objects.
 		 */
 		super("ID");
-		myTableAddress = new Addresses();
-		myNewAddress = new Addresses();
-		mySearchAddress = new Addresses();
-		myAddresses = myAddressesDAO.findAll();
+		clear(null);
+		
 	}
+	
+    /** Post Constructor fills myAddresses list after bean is loaded.
+     *@TheCs Cohesion - Post Constructor fills myAddresses list after bean is loaded.
+	 * Completeness - Completely fills myAddresses list after bean is loaded.
+	 * Convenience - Simply fills myAddresses list after bean is loaded.
+	 * Clarity - It is simple to understand that this fills myAddresses 
+	 *           list after bean is loaded.
+	 * Consistency - It uses the same syntax rules as the rest of the class and
+	 *               continues to use proper casing and indentation.
+	 */		
+	/**
+	 * This makes use of the PostConstruct annotation so that the code below will
+	 * be ran after the bean is done started. This is necessary to properly fill
+	 * the datatable on the front-end in injunction with making the edit buttons 
+	 * work without having to first hit the 'Clear' button.
+	 */
+    @PostConstruct
+    public void init() {
+    	myAddresses = myAddressesDAO.findAll();
+    }
+    
+    @PreDestroy
+    public void shutdown(){
+    	myAddresses = myAddressesDAO.findAll();
+    }
+	
 
     /** Retrieves the current address object used by the table.
      *@TheCs Cohesion - Retrieves the current address object used by the table.
@@ -517,7 +544,9 @@ public class AddressBean extends SortableList{
      * @param evt ActionEvent         
 	 */		
 	public void cancelEdit(ActionEvent evt){
-		myTableAddress.setEditable(false);
+		if(myTableAddress != null){
+			myTableAddress.setEditable(false);
+		}
 		myTableAddress = new Addresses();
 		
 	}
@@ -852,7 +881,8 @@ public class AddressBean extends SortableList{
     	"2) Once found click the 'Edit' button next to the record and the fields will become editable. <br />" +
     	"3) Once you make your changes click the 'Save' button or the 'Delete button to delete the record. <br />" + 
     	"4) You can also click the 'Cancel' button to not update the record. <br />" +
-    	"*Note - Only one record can be edited at a time.";
+    	"*Note - Only one record can be edited at a time. <br />" +
+    	"*Note - The 'Clear' button clear all fields, not just the 'Add Address' fields.";
     }
 
 }

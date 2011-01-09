@@ -7,7 +7,7 @@ package AddressBook.bean;
 * Date: Jan 6, 2011
 */
 
-/** This class 
+/** This class is used by the AddressBean to sort the front-end table.
 *|----------------------------------------------------------------------------|
 *|                             CRC: SortableList                              |
 *|----------------------------------------------------------------------------|
