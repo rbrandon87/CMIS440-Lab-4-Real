@@ -19,7 +19,7 @@
 		<provider>
 			org.eclipse.persistence.jpa.PersistenceProvider
 		</provider>
-		<class>myPersistance.Addresses</class>
+		<class>myPersistence.Addresses</class>
 		<properties>
 			<property name="eclipselink.jdbc.driver"
 				value="org.apache.derby.jdbc.ClientDriver" />
