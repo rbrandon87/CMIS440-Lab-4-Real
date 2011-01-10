@@ -31,7 +31,7 @@
        <!-- This div contains the header text and also the instructions button which can be used to view a popup 
        		containing instructions.
        -->
-		<ice:panelGrid id="topPanelGrid" columns="2" >
+		
 			<h1> Lab 4 Address Book</h1>
 			<ice:form  id="instructionForm" >
         		<ice:commandButton value="Instructions" action="#{AddressBean.openPopup}" rendered="#{not AddressBean.popupVisible}" />
@@ -50,7 +50,7 @@
                 	</f:facet>
             	</ice:panelPopup>
         	</ice:form>
-		 </ice:panelGrid>
+		 
 		</div>
 		<div id="main">
 		<!-- This div contains the add form and search form. -->
@@ -92,7 +92,7 @@
 						The clear button will clear all fields on the web site and reload the datatable below.
 					 -->
 					<ice:commandButton  style="width:45%" value="Add"  partialSubmit="true" action="#{AddressBean.addAddress }"></ice:commandButton>
-					<ice:commandButton  style="width:45%" value="Clear"  partialSubmit="true" actionListener="#{AddressBean.clear }"></ice:commandButton>				
+					<ice:commandButton  style="width:45%" immediate="true" value="Clear"  partialSubmit="true" actionListener="#{AddressBean.clear }"></ice:commandButton>				
 				</ice:form>
 				<ice:form id="searchForm" partialSubmit="true" >
 				<!-- The search form allows the user to enter a last name to search for. Has they type an associated value change listener
@@ -282,6 +282,10 @@
         			
 				</ice:dataPaginator>	
 			</ice:form>
+			
+		</div>
+		<div id="footer">
+			<ice:outputConnectionStatus style="float:right;"/>
 		</div>
        </body>
     </html>

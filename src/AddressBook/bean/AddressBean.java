@@ -73,9 +73,12 @@ import java.util.*;
 
 import javax.annotation.PostConstruct;
 import javax.faces.model.SelectItem;
+import javax.faces.application.Application;
 import javax.faces.application.FacesMessage;
+import javax.faces.application.ViewHandler;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
+import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
@@ -556,6 +559,14 @@ public class AddressBean extends SortableList{
 		mySearchAddress = new Addresses();
 		myAddresses = myAddressesDAO.findAll();
 		cancelEdit(null);
+	    FacesContext context = FacesContext.getCurrentInstance();
+	    Application application = context.getApplication();
+	    ViewHandler viewHandler = application.getViewHandler();
+	    UIViewRoot viewRoot = viewHandler.createView(context, context
+	     .getViewRoot().getViewId());
+	    context.setViewRoot(viewRoot);
+	    context.renderResponse(); //Optional
+		
 	}
 	
     /** Disables editable field on front-end table.

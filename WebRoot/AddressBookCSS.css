@@ -13,23 +13,26 @@ This is the CSS styling for AddressBook.jspx
 
 /*This is for the top div containing the topPanelGrid*/
 #top{	
-	width: 583px; 
-	margin-left: auto;
-	margin-right: auto;
-		
+	width: 100%; 
 }
+
 
 /*This is for the topPanelGrid containing the H1 header and instructions button*/
 .topPanelGrid{
-	width: 583px; 
-	margin-left: auto;
-	margin-right: auto;	
-	text-align: center;	
-	display: inline-table;
+	width: 100%; 	
+}
+
+h1{
+	position: relative;
+	left: 30%;
+	top: 0px;
 }
 
 /*This is for the form containing the instructions button*/
 .instructionForm{
+	position: absolute;
+	right: 20px;
+	top: 20px;
 	width: 20%;
 	border: none;
 }
@@ -41,6 +44,7 @@ h3{
 
 /*For the body*/
 body{
+	background: #f8f7e5 url(images/backgroundImage.jpg) no-repeat center top;
 	text-align: center;	
 }	
 	
@@ -146,6 +150,13 @@ body{
 	margin-left: auto;
 	margin-right: auto;
 	display: inline-table;
+}
+
+#footer{
+	width: 100%;
+	position: absolute;
+	right: 10px;
+	bottom: 10px;
 }
 
 
