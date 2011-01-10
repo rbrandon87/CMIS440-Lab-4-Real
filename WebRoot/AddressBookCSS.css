@@ -11,42 +11,37 @@
 This is the CSS styling for AddressBook.jspx
 */
 
-/*This is for the top div containing the topPanelGrid*/
-#top{	
-	width: 100%; 
-}
-
-
-/*This is for the topPanelGrid containing the H1 header and instructions button*/
-.topPanelGrid{
-	width: 100%; 	
-}
-
-h1{
-	position: relative;
-	left: 30%;
-	top: 0px;
-}
-
-/*This is for the form containing the instructions button*/
-.instructionForm{
-	position: absolute;
-	right: 20px;
-	top: 20px;
-	width: 20%;
-	border: none;
-}
-
-/*This is for the H3 headers in the add form and search form*/
-h3{
-	text-align: center;	
-}
-
 /*For the body*/
 body{
 	background: #f8f7e5 url(images/backgroundImage.jpg) no-repeat center top;
 	text-align: center;	
 }	
+
+
+/*This is for the top div containing the topPanelGrid*/
+#top{	
+	width: 100%;
+	text-align: center; 
+}
+
+/*This is for the top PanelGrid containing the h1 header and Instructions Form*/
+.topPanelGrid{
+	text-align:center;
+}
+
+/*This is for the H1 header*/
+h1{
+	width:30%;	
+	text-align: left;
+	text-decoration: underline
+}
+
+/*This is for the Instructions Form*/
+#instructionForm{
+	text-align:right;
+}
+
+
 	
 /*This is the main, or middle, div containing the mainPanelGrid*/
 #main{
@@ -60,21 +55,11 @@ body{
 	border: none;
 }
 
-/*This is for the column containing the add form*/
-.addColumn{
-	width: 300px;
-	border: double;
-	left: 0px;
-
+/*This is for the H3 headers in the add form and search form*/
+h3{
+	text-align: center;	
 }
 
-/*This is for the column containing the search form*/
-.searchColumn{
-	width: 300px;
-	border: double;
-	right: 0px;
-
-}
 
 /*This is for the add form*/
 .addForm{
@@ -83,6 +68,13 @@ body{
 	width: 300px;
 	margin-left: auto;
 	margin-right: auto;
+}
+
+/*This is for the column containing the add form*/
+.addColumn{
+	width: 300px;
+	border: double;
+	text-align: left;
 }
 
 /*This is for the column of labels in the add form*/
@@ -105,17 +97,22 @@ body{
 	margin-right: auto;	
 }
 
+/*This is for the column containing the search form*/
+.searchColumn{
+	width: 300px;
+	border: double;
+}
 
 /*This is for the bottom div*/
 #bottom{
-	width: 1436px;
+	width: 100%;
 	margin-left: auto;
 	margin-right: auto;	
 }
 
 /*This is for the datatable*/
 .addressTable {
-	width: 1436px;
+	width: 100%;
 	margin-left: auto;
 	margin-right: auto;
 	border: 1px solid #666666;
@@ -146,7 +143,7 @@ body{
 
 /*This is for the paginator for the datatable*/
 .myTablePaginator{
-	width: 1436px;
+	width: 100%;
 	margin-left: auto;
 	margin-right: auto;
 	display: inline-table;

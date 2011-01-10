@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!--
  Program Name: CMIS440 Lab 4 Address Book Web App
  @author Brandon R Russell
@@ -8,7 +7,6 @@
 
 
  -->
-
 <web-app id="AddressBook" version="2.5"
  xmlns="http://java.sun.com/xml/ns/javaee"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee   http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
@@ -78,6 +76,10 @@
  <welcome-file-list>
   <welcome-file>/index.html</welcome-file>
  </welcome-file-list>
+ <error-page>
+  <exception-type>java.lang.Throwable</exception-type>
+  <location>/ErrorRedirect.jsp</location>
+ </error-page>
  <login-config>
   <auth-method>BASIC</auth-method>
  </login-config>

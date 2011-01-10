@@ -27,20 +27,20 @@
          	<link rel="stylesheet" type="text/css" href="./AddressBookCSS.css"/>
        </head>
        <body>
-       <div id="top" >
+       <div id="top">
        <!-- This div contains the header text and also the instructions button which can be used to view a popup 
        		containing instructions.
        -->
-		
+		<ice:panelGrid id="topPanelGrid" border="0" columns="2" width="100%">
 			<h1> Lab 4 Address Book</h1>
-			<ice:form  id="instructionForm" >
-        		<ice:commandButton value="Instructions" action="#{AddressBean.openPopup}" rendered="#{not AddressBean.popupVisible}" />
+			<ice:form  id="instructionForm">
+        		<ice:commandButton value="Instructions" action="#{AddressBean.getPopup}" />
             	<ice:panelPopup draggable="true" rendered="#{AddressBean.popupVisible}" 
             					style="z-index: 1000; top: 30%; left: 10%; position: absolute; width: 300px;">
                 	<f:facet name="header">
                     	<ice:panelGrid width="100%" cellpadding="0" cellspacing="0" columns="2" style="text-align: center;">
                         	<ice:outputText value="Instructions"/>
-                        	<ice:commandButton image="images/close.gif" action="#{AddressBean.closePopup}" title="Close the instructions"/>
+                        	<ice:commandButton image="images/close.gif" action="#{AddressBean.getPopup}" title="Close the instructions"/>
                     	</ice:panelGrid>
                 	</f:facet>
                 	<f:facet name="body">
@@ -50,12 +50,12 @@
                 	</f:facet>
             	</ice:panelPopup>
         	</ice:form>
-		 
+		 </ice:panelGrid>
 		</div>
 		<div id="main">
 		<!-- This div contains the add form and search form. -->
 			<ice:panelGrid id="mainPanelGrid" columnClasses="addColumn,searchColumn" columns="2" cellspacing="10" >
-				<ice:form id="addForm" partialSubmit="true" >
+				<ice:form id="addForm" partialSubmit="true">
 				<!-- All of the fields have maxlength and required variables to ensure data integrity. Also each field also
 					has validator methods associated with them from the backing bean to also ensure data integrity.
 				 -->

@@ -8,7 +8,7 @@ package AddressBook.bean;
 * IDE: MyEclipse 9.0 M1
 * OS: Windows 7 64 bit
 * Java: JDK 1.6.0_13, Java EE 5, JSF 1.2, JPA 2.0, IceFaces 1.8.1, GlassFish 2.1.1
-* Tested on Firefox 3.6.13 w/ 22in and 14 monitors w/ 1680x1050 and 1440x900 resolution settings.
+* Tested on Firefox 3.6.13 w/ 22in, 17in, and 14in monitors w/ 1680x1050, 1440x900, and 1280x1024 resolution settings.
 * Files: AddressBean.java, Logger.java, SortableList.java, Addresses.java, AddressesDAO.java,
 * 		 EntityManagerHelper.java, persistence.xml, faces-config.xml, web.xml, AddressBook.jspx,
 * 		 AddressBookCSS.css, index.html
@@ -82,7 +82,6 @@ import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
-
 import myPersistence.Addresses;
 import myPersistence.AddressesDAO;
 import myPersistence.EntityManagerHelper;
@@ -122,7 +121,7 @@ public class AddressBean extends SortableList{
 		 * front-end datatable.
 		 */
 		super("ID");
-		myNewAddress = new Addresses();
+		//myNewAddress = new Addresses();
 		mySearchAddress = new Addresses();
 		myTableAddress = new Addresses();
 		myAddresses = myAddressesDAO.findAll();
@@ -195,7 +194,15 @@ public class AddressBean extends SortableList{
 	 * @return myNewAddress object               
 	 */			
 	public Addresses getCurrentNewAddress(){
-		return myNewAddress;
+		try{
+			if (myNewAddress == null){
+				throw new Exception("The New Address object is null!");
+			}
+			return myNewAddress;
+		}catch (Exception exception){
+			myLog.log(exception.getMessage());
+			return null;
+		}
 	}
 
     /** Sets the current address object used to add a record.
@@ -278,7 +285,9 @@ public class AddressBean extends SortableList{
 	 */			    
 	public String addAddress(){
 		try{
-			if (myNewAddress.getCity().equals("") || 
+			if (myNewAddress == null){
+				throw new Exception("New Address object is null");
+			}else if (myNewAddress.getCity().equals("") || 
 					myNewAddress.getEmailaddress().equals("") || 
 					myNewAddress.getFirstname().equals("") || 
 					myNewAddress.getLastname().equals("") ||
@@ -319,6 +328,7 @@ public class AddressBean extends SortableList{
 			return "success";
 			}catch (Exception exception){
 				myLog.log(exception.getMessage());
+				FacesContext.getCurrentInstance().addMessage("Exception:", new FacesMessage( exception.getMessage()));
 				return "failure";
 			}
 	}
@@ -559,6 +569,10 @@ public class AddressBean extends SortableList{
 		mySearchAddress = new Addresses();
 		myAddresses = myAddressesDAO.findAll();
 		cancelEdit(null);
+		/**
+		 * The code below gets the current FacesContext and forces 
+		 * the page to rerender, making sure a good 'Clear' is made.
+		 */
 	    FacesContext context = FacesContext.getCurrentInstance();
 	    Application application = context.getApplication();
 	    ViewHandler viewHandler = application.getViewHandler();
@@ -846,38 +860,21 @@ public class AddressBean extends SortableList{
         }        
         
     }
-    
-    /** Closes the Instructions Popup by setting it's boolean to false.
-     *@TheCs Cohesion - Closes the Instructions Popup by setting it's boolean to false.
-	 * Completeness - Completely closes the Instructions Popup by setting it's boolean
-	 *                to false.
-	 * Convenience - Simply closes the Instructions Popup by setting it's boolean
-	 *                to false.
-	 * Clarity - It is simple to understand that this closes the Instructions Popup by 
-	 *           setting it's boolean to false.
-	 * Consistency - It uses the same syntax rules as the rest of the class and
-	 *               continues to use proper casing and indentation.
-     * @return success
-     */ 	
-    public String closePopup() {
-        instructionsVisible = false;
-        return "success";
-    }
-    
-    /** Opens the Instructions Popup by setting it's boolean to true.
-     *@TheCs Cohesion - Opens the Instructions Popup by setting it's boolean to true.
-	 * Completeness - Completely opens the Instructions Popup by setting it's boolean
+        
+    /** Opens/Closes the Instructions Popup by setting it's boolean to true.
+     *@TheCs Cohesion - Opens/Closes the Instructions Popup by setting it's boolean to true.
+	 * Completeness - Completely opens/closes the Instructions Popup by setting it's boolean
 	 *                to true.
-	 * Convenience - Simply opens the Instructions Popup by setting it's boolean
+	 * Convenience - Simply opens/closes the Instructions Popup by setting it's boolean
 	 *                to true.
-	 * Clarity - It is simple to understand that this opens the Instructions Popup by 
+	 * Clarity - It is simple to understand that this opens/closes the Instructions Popup by 
 	 *           setting it's boolean to true.
 	 * Consistency - It uses the same syntax rules as the rest of the class and
 	 *               continues to use proper casing and indentation.
      * @return success
      */     
-    public String openPopup() {
-        instructionsVisible = true;
+    public String getPopup() {
+        instructionsVisible = !instructionsVisible;
         return "success";
     }
 
@@ -924,6 +921,7 @@ public class AddressBean extends SortableList{
     	"*Note - Only one record can be edited at a time. <br />" +
     	"*Note - The 'Clear' button clear all fields, not just the 'Add Address' fields.";
     }
+    
 
 }
 
