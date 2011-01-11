@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!--
+ Program Name: CMIS440 Lab 4 Address Book Web App
+ @author Brandon R Russell
+ @Course CMIS440
+ Date: Jan 6, 2011
+
+
+ -->
+
 <jsp:root version="1.2"
    xmlns:jsp="http://java.sun.com/JSP/Page"
    xmlns:f="http://java.sun.com/jsf/core"
@@ -7,35 +17,38 @@
    <jsp:directive.page contentType="text/html;charset=ISO-8859-1" pageEncoding="ISO-8859-1" />
  <f:view>
    <html>
-   <head>
-   <title>Lab 4 Error Page</title>
-     <link rel="stylesheet" type="text/css" href="./xmlhttp/css/rime/rime.css"/>
-     <link rel="stylesheet" type="text/css" href="./ErrorPageCSS.css"/>
-   </head>
-   <body >
-   <div id="top">
-   		<h1>Lab 4 Error Page</h1>
-   </div>
-   <div id="middle">
-     <ice:panelGrid id="errorPanelGrid" columns="2" border="1">
-       Message:
-         <ice:outputText value="#{sessionScope._error_message}" />
-       Type:
-         <ice:outputText value="#{sessionScope._error_exception_type}" />
-       Exception:
-         <ice:outputText value="#{sessionScope._error_exception}" />
-       Status Code:
-         <ice:outputText value="#{sessionScope._error_status_code}" />
-       Request URI:
-         <ice:outputText value="#{sessionScope._error_request_uri}" />
-       Servlet Name:
-         <ice:outputText value="#{sessionScope._error_servlet_name}" />
-     </ice:panelGrid>
-     </div>
-     <div id="bottom">
-     <h4>Please refresh the page or come back later.</h4>
-     </div>
-   </body>
+   	<head>
+   		<title>Lab 4 Error Page</title>
+     		<link rel="stylesheet" type="text/css" href="./xmlhttp/css/rime/rime.css"/>
+     		<link rel="stylesheet" type="text/css" href="./ErrorPageCSS.css"/>
+   	</head>
+    <body >
+   		<div id="top">
+   			<h1>Lab 4 Error Page</h1>
+   		</div>
+   		<div id="middle">
+   		<!-- The panel grid below is simply displaying the information gathered
+   			from the redirect page.
+   		 -->
+     		<ice:panelGrid id="errorPanelGrid" columns="2" border="1">
+       			Message:
+         		<ice:outputText value="#{sessionScope._error_message}" />
+       			Type:
+         		<ice:outputText value="#{sessionScope._error_exception_type}" />
+       			Exception:
+         		<ice:outputText value="#{sessionScope._error_exception}" />
+       			Status Code:
+         		<ice:outputText value="#{sessionScope._error_status_code}" />
+       			Request URI:
+         		<ice:outputText value="#{sessionScope._error_request_uri}" />
+       			Servlet Name:
+         		<ice:outputText value="#{sessionScope._error_servlet_name}" />
+     		</ice:panelGrid>
+     	</div>
+     	<div id="bottom">
+     		<h4>Please refresh the page or come back later.</h4>
+     	</div>
+    </body>
    </html>
  </f:view>
 

@@ -1,4 +1,15 @@
 <%@ page language="java" import="java.util.*" pageEncoding="ISO-8859-1"%>
+
+<!--
+ Program Name: CMIS440 Lab 4 Address Book Web App
+ @author Brandon R Russell
+ @Course CMIS440
+ Date: Jan 6, 2011
+
+
+ -->
+
+
 <%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
@@ -14,11 +25,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
 	<meta http-equiv="expires" content="0">    
-	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
-	<meta http-equiv="description" content="This is my page">
-	<!--
-	<link rel="stylesheet" type="text/css" href="styles.css">
-	-->
+	<meta http-equiv="keywords" content="error, redirect">
+	<meta http-equiv="description" content="Error redirect page">
 
   </head>
   
@@ -29,6 +37,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
  response.setStatus(200);
  
  // copy error objects to the session if you want to see details on the error page
+ /** 
+ * Below is simply gathering all of the information on the thrown exception and then
+ * redirects to the jspx error page.
+ */
  session.setAttribute("_error_message",
     request.getAttribute("javax.servlet.error.message"));
  session.setAttribute("_error_exception_type",
@@ -43,8 +55,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     request.getAttribute("javax.servlet.error.servlet_name"));
 response.sendRedirect("ErrorPage.iface");    
  %>
- 
- 
 
    
   </body>

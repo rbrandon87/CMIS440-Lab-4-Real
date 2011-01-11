@@ -18,26 +18,30 @@ body{
 }	
 
 
-/*This is for the H1 header*/
+/*The top div of the error page*/
 #top{
 	width:100%;	
 	text-align: center;
 	
 }
 
+/*This is for the H1 header*/
 h1{
 	text-decoration: underline
 }
 
+/*The middle div of the error page containing the error message*/
 #middle{
 	width: 100%;
 	text-align: center;
 }
 
+/*The Panel Grid containing the error message*/
 .errorPanelGrid{
 	width: 100%;		
 }
 
+/*The bottom div of the error page*/
 #bottom{
 	width: 100%;
 	text-align: center;

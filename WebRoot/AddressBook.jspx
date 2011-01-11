@@ -31,8 +31,9 @@
        <!-- This div contains the header text and also the instructions button which can be used to view a popup 
        		containing instructions.
        -->
-		<ice:panelGrid id="topPanelGrid" border="0" columns="2" width="100%">
-			<h1> Lab 4 Address Book</h1>
+		<ice:panelGrid id="topPanelGrid" border="0" columns="3" width="100%">
+			<h1> Lab 4 Address Book</h1>	
+			
 			<ice:form  id="instructionForm">
         		<ice:commandButton value="Instructions" action="#{AddressBean.getPopup}" />
             	<ice:panelPopup draggable="true" rendered="#{AddressBean.popupVisible}" 
@@ -107,7 +108,11 @@
 							<f:selectItems value="#{AddressBean.lastNameMatches}"/>
 						</ice:selectInputText>
 						<!-- Allow input validation messages are displayed here in red. -->
-						<ice:messages  style="color: red"></ice:messages>			
+						<ice:messages  style="color: red"></ice:messages>
+						<ice:panelGrid border="1" columns="2">
+							<ice:outputLabel for="notifyMessage">Messages:</ice:outputLabel>
+							<ice:outputText id="notifyMessage" value="#{AddressBean.notifyMessage}"></ice:outputText>
+						</ice:panelGrid>			
 					</ice:panelGrid>
 					
 				</ice:form>

@@ -90,7 +90,7 @@ import myPersistence.EntityManagerHelper;
 public class AddressBean extends SortableList{
 
 	
-	AddressesDAO myAddressesDAO = new AddressesDAO();
+	AddressesDAO myAddressesDAO;
 	Addresses myTableAddress;
 	Addresses myNewAddress;
 	Addresses mySearchAddress;
@@ -98,6 +98,7 @@ public class AddressBean extends SortableList{
 	List<SelectItem> lastNames;
 	Logger myLog = new Logger();
 	boolean instructionsVisible = false;
+	String notifyMessage = "";
 	
 	
     
@@ -111,6 +112,7 @@ public class AddressBean extends SortableList{
      *           AddressBean object.
 	 * Consistency - It uses the same syntax rules as the rest of the class and
 	 *               continues to use proper casing and indentation.
+	 * @exception Exception general exception capture               
 	 */	
 	public AddressBean() {
 		/**
@@ -121,11 +123,15 @@ public class AddressBean extends SortableList{
 		 * front-end datatable.
 		 */
 		super("ID");
-		//myNewAddress = new Addresses();
-		mySearchAddress = new Addresses();
-		myTableAddress = new Addresses();
-		myAddresses = myAddressesDAO.findAll();
-		//clear(null);
+		try{
+			myAddressesDAO = new AddressesDAO();
+			myNewAddress = new Addresses();
+			mySearchAddress = new Addresses();
+			myTableAddress = new Addresses();
+			myAddresses = myAddressesDAO.findAll();
+		}catch(Exception exception){
+			myLog.log(exception.getMessage());
+		}
 		
 	}
 	
@@ -161,9 +167,21 @@ public class AddressBean extends SortableList{
 	 * Consistency - It uses the same syntax rules as the rest of the class and
 	 *               continues to use proper casing and indentation.
 	 * @return myTableAddress object               
+	 * @throws Exception if myTableAddress is null
+	 * @exception Exception general exception capture 
 	 */		
 	public Addresses getCurrentTableAddress(){
-		return myTableAddress;
+		try{
+			if (myTableAddress == null){
+				throw new Exception(
+						"The Table Address object is null on getCurrentTableAddress!");
+			}			
+			return myTableAddress;
+		}catch (Exception exception){
+			myLog.log(exception.getMessage());
+			return null;
+		}					
+		
 	}
 
     /** Sets the current address object used by the table.
@@ -175,10 +193,20 @@ public class AddressBean extends SortableList{
 	 *           address object used by the table.
 	 * Consistency - It uses the same syntax rules as the rest of the class and
 	 *               continues to use proper casing and indentation.
-	 * @param tableAddress sets the table address object to another address object              
+	 * @param tableAddress sets the table address object to another address object
+	 * @throws Exception if tableAddress is null
+	 * @exception Exception general exception capture               
 	 */			
 	public void setCurrentTableAddress(Addresses tableAddress){
-		myTableAddress = tableAddress;
+		try{
+			if (tableAddress == null){
+				throw new Exception(
+						"The Table Address object is null on setCurrentTableAddress!");
+			}			
+			myTableAddress = tableAddress;
+		}catch (Exception exception){
+			myLog.log(exception.getMessage());
+		}		
 	}
 		
     /** Retrieves the current address object used to add a record.
@@ -191,12 +219,15 @@ public class AddressBean extends SortableList{
 	 *           address object to add a record.
 	 * Consistency - It uses the same syntax rules as the rest of the class and
 	 *               continues to use proper casing and indentation.
-	 * @return myNewAddress object               
+	 * @return myNewAddress object  
+	 * @throws Exception if myNewAddress is null
+	 * @exception Exception general exception capture             
 	 */			
 	public Addresses getCurrentNewAddress(){
 		try{
 			if (myNewAddress == null){
-				throw new Exception("The New Address object is null!");
+				throw new Exception(
+						"The New Address object is null on getCurrentNewAddress!");
 			}
 			return myNewAddress;
 		}catch (Exception exception){
@@ -214,10 +245,20 @@ public class AddressBean extends SortableList{
 	 *           address object used to add a record.
 	 * Consistency - It uses the same syntax rules as the rest of the class and
 	 *               continues to use proper casing and indentation.
-	 * @param newAddress sets the new address object to another address object              
+	 * @param newAddress sets the new address object to another address object     
+	 * @throws Exception if newAddress is null
+	 * @exception Exception general exception capture           
 	 */	
 	public void setCurrentNewAddress(Addresses newAddress){
-		myNewAddress = newAddress;
+		try{
+			if (newAddress == null){
+				throw new Exception(
+						"The New Address object is null on setCurrentNewAddress!");
+			}				
+			myNewAddress = newAddress;
+		}catch (Exception exception){
+			myLog.log(exception.getMessage());
+		}		
 	}	
 
     /** Retrieves the current address object used to search for a record.
@@ -231,10 +272,21 @@ public class AddressBean extends SortableList{
 	 *           address object to search for a record.
 	 * Consistency - It uses the same syntax rules as the rest of the class and
 	 *               continues to use proper casing and indentation.
-	 * @return mySearchAddress object               
+	 * @return mySearchAddress object 
+	 * @throws Exception if mySearchAddress is null
+	 * @exception Exception general exception capture               
 	 */		
 	public Addresses getCurrentSearchAddress(){
-		return mySearchAddress;
+		try{
+			if (mySearchAddress == null){
+				throw new Exception(
+						"The Search Address object is null on getCurrentSearchAddress!");
+			}			
+			return mySearchAddress;
+		}catch (Exception exception){
+			myLog.log(exception.getMessage());
+			return null;
+		}			
 	}
 	
     /** Sets the current address object used to search for a record.
@@ -248,10 +300,20 @@ public class AddressBean extends SortableList{
 	 *           address object used to search for a record.
 	 * Consistency - It uses the same syntax rules as the rest of the class and
 	 *               continues to use proper casing and indentation.
-	 * @param searchAddress sets the search address object to another address object              
+	 * @param searchAddress sets the search address object to another address object    
+	 * @throws Exception if searchAddress is null
+	 * @exception Exception general exception capture           
 	 */		
 	public void setCurrentSearchAddress(Addresses searchAddress){
-		mySearchAddress = searchAddress;
+		try{
+			if (searchAddress == null){
+				throw new Exception(
+						"The Search Address object is null on setCurrentSearchAddress!");
+			}					
+			mySearchAddress = searchAddress;
+		}catch (Exception exception){
+			myLog.log(exception.getMessage());
+		}					
 	}	
 
     /** Sets the current list of addresses to another list of addresses.
@@ -265,10 +327,20 @@ public class AddressBean extends SortableList{
 	 *           addresses to another list of addresses.
 	 * Consistency - It uses the same syntax rules as the rest of the class and
 	 *               continues to use proper casing and indentation.
-	 * @param addressesDAO set the addresses list to another addresses list              
+	 * @param addressesDAO set the addresses list to another addresses list   
+	 * @throws Exception if addressesDAO is null
+	 * @exception Exception general exception capture            
 	 */			
     public void setAddressDao(AddressesDAO addressesDAO) {
-        myAddressesDAO = addressesDAO;
+    	try{
+			if (addressesDAO == null){
+				throw new Exception(
+						"The AddressesDAO object is null on setAddressDao!");
+			}    		
+    		myAddressesDAO = addressesDAO;
+		}catch (Exception exception){
+			myLog.log(exception.getMessage());
+		}	    		
     }
 	 
 	
@@ -280,13 +352,14 @@ public class AddressBean extends SortableList{
 	 *           to the database.
 	 * Consistency - It uses the same syntax rules as the rest of the class and
 	 *               continues to use proper casing and indentation.
+	 * @throws Exception if myNewAddress object is null               
 	 * @exception Exception general exception capture      
 	 * @return success or failure depending on if transaction goes through        
 	 */			    
 	public String addAddress(){
 		try{
 			if (myNewAddress == null){
-				throw new Exception("New Address object is null");
+				throw new Exception("New Address object is null on addAddress");
 			}else if (myNewAddress.getCity().equals("") || 
 					myNewAddress.getEmailaddress().equals("") || 
 					myNewAddress.getFirstname().equals("") || 
@@ -323,12 +396,12 @@ public class AddressBean extends SortableList{
 			 * renew the list.
 			 */
 			myLog.log("ID: " + myNewAddress.getAddressid() 
-					+ " Successfully added into database");
+					+ " Successfully added into database");			
 			clear(null);
+			notifyMessage = "Record Added!";
 			return "success";
 			}catch (Exception exception){
 				myLog.log(exception.getMessage());
-				FacesContext.getCurrentInstance().addMessage("Exception:", new FacesMessage( exception.getMessage()));
 				return "failure";
 			}
 	}
@@ -341,12 +414,15 @@ public class AddressBean extends SortableList{
 	 *           in the database.
 	 * Consistency - It uses the same syntax rules as the rest of the class and
 	 *               continues to use proper casing and indentation.
-	 * @param evt ActionEvent               
+	 * @param evt ActionEvent      
+	 * @throws Exception if myTableAddress object is null         
 	 * @exception Exception general exception capture              
 	 */		
 	public void updateAddress(ActionEvent evt){
 		try{
-			if (myTableAddress.getCity().equals("") || 
+			if (myTableAddress == null){
+				throw new Exception("MyTableAddress object is null on updateAddress");
+			}else if (myTableAddress.getCity().equals("") || 
 					myTableAddress.getEmailaddress().equals("") || 
 					myTableAddress.getFirstname().equals("") || 
 					myTableAddress.getLastname().equals("") ||
@@ -365,7 +441,8 @@ public class AddressBean extends SortableList{
 				 FacesContext context = FacesContext.getCurrentInstance();
 				 FacesMessage msg = 
 					 new FacesMessage("All fields must be filled before updated!");
-				 context.addMessage("editForm:Edit", msg);				
+				 context.addMessage("editForm:Save", msg);	
+				 
 				return;
 			}				
 					
@@ -386,6 +463,7 @@ public class AddressBean extends SortableList{
 			 */			
 			myLog.log("ID: " + myTableAddress.getAddressid() 
 					+ " Successfully updated in database");
+			notifyMessage = "Record Updated!";
 			cancelEdit(null);
 			
 		}catch (Exception exception){
@@ -401,11 +479,30 @@ public class AddressBean extends SortableList{
 	 *           from the database.
 	 * Consistency - It uses the same syntax rules as the rest of the class and
 	 *               continues to use proper casing and indentation.
-	 * @param evt ActionEvent               
+	 * @param evt ActionEvent    
+	 * @throws Exception if myTableAddress is null           
 	 * @exception Exception general exception capture              
 	 */		
 	public void deleteAddress(ActionEvent evt){
 		try{
+			
+			if (myTableAddress == null){
+				throw new Exception("MyTableAddress object is null on deleteAddress");
+			}else if (myTableAddress.getAddressid().toString().length() == 0){
+				
+				/**
+				 * Here, if the addressid field is blank then it creates a 
+				 * new message to be displayed on the web site and returns instead
+				 * of attempting to delete a record since this is required to  
+				 * delete the record.
+				 */				
+				
+				 FacesContext context = FacesContext.getCurrentInstance();
+				 FacesMessage msg = 
+					 new FacesMessage("The record appears to not be selected for deletion.");
+				 context.addMessage("editForm:Delete", msg);				
+				return;
+			}			
 			
 			/**
 			 * First the EntityManagerHelper is called to initiate the transaction.
@@ -424,8 +521,8 @@ public class AddressBean extends SortableList{
 			 */				
 			myLog.log("ID: " + myTableAddress.getAddressid() 
 					+ " Successfully deleted from database");
-			cancelEdit(null);
-			myAddresses = new AddressesDAO().findAll();
+			clear(null);
+			notifyMessage = "Record Deleted!";
 		}catch (Exception exception){
 			myLog.log(exception.getMessage());
 		}		
@@ -440,12 +537,17 @@ public class AddressBean extends SortableList{
 	 *           objects for front-end table.
 	 * Consistency - It uses the same syntax rules as the rest of the class and
 	 *               continues to use proper casing and indentation.
-	 * @return myAddresses List                              
+	 * @return myAddresses List 
+	 * @throws Exception if mySearchAddress of myAddressesDAO are null                             
 	 * @exception Exception general exception capture              
 	 */		
 	public List<Addresses> getAllAddresses(){
 
 		try{
+			if(mySearchAddress == null || myAddressesDAO == null){
+				throw new Exception(
+						"One or more objects required by the search feature are set to null!");
+			}
 			/**
 			 * First, if mySearchAddress object doesn't have a first name set then do
 			 * nothing to myAddresses List since it will already have in it at this point
@@ -487,7 +589,8 @@ public class AddressBean extends SortableList{
 	 *           database for search field.
 	 * Consistency - It uses the same syntax rules as the rest of the class and
 	 *               continues to use proper casing and indentation.
-	 * @param event a ValueChangeEvent linked to the search field on the front-end                                        
+	 * @param event a ValueChangeEvent linked to the search field on the front-end 
+	 * @throws Exception if myAddressesDAO is null                                       
 	 * @exception Exception general exception capture              
 	 */		
 	public void getAddressesByLastName(ValueChangeEvent event){
@@ -495,13 +598,17 @@ public class AddressBean extends SortableList{
 		 * Whenever the user types something into the search field on the
 		 * front-end this method is called.
 		 */
-		try{			
+		try{
+			if (myAddressesDAO == null){
+				throw new Exception(
+						"The myAddressesDAO object is null on getAddressesByLastName!");
+			}
 			/**
 			 * This will take what the user typed into the searchWord object and also
 			 * refresh the myAddresses list to ensure a complete list is being used.
 			 */
 			lastNames = new ArrayList<SelectItem>();
-			myAddresses = new AddressesDAO().findAll();
+			myAddresses = myAddressesDAO.findAll();
 			Object searchWord = event.getNewValue();
 			for(int i = 0; i < myAddresses.size(); i++){
 				/**
@@ -545,10 +652,21 @@ public class AddressBean extends SortableList{
 	 *           for search field autocomplete.
 	 * Consistency - It uses the same syntax rules as the rest of the class and
 	 *               continues to use proper casing and indentation.
-     * @return lastNames a list of last names that match search field.         
+     * @return lastNames a list of last names that match search field.   
+     * @throws Exception if lastNames is null
+     * @exception Exception general exception capture      
 	 */		
 	public List<SelectItem> getLastNameMatches(){
-		return lastNames;
+		try{
+			if (lastNames == null){
+				throw new Exception(
+						"lastNames List is null on getLastNameMatches!");
+			}
+			return lastNames;
+        }catch (Exception exception){
+        	myLog.log(exception.getMessage());
+        	return null;
+        }			
 	}
 	
     /** Renews Addresses objects, refills myAddresses list, and undo's edit on table.
@@ -563,23 +681,33 @@ public class AddressBean extends SortableList{
 	 * Consistency - It uses the same syntax rules as the rest of the class and
 	 *               continues to use proper casing and indentation.
      * @param evt ActionEvent         
+     * @throws Exception if myAddressesDAO is null
+     * @exception Exception general exception capture
 	 */		
 	public void clear(ActionEvent evt){
-		myNewAddress = new Addresses();
-		mySearchAddress = new Addresses();
-		myAddresses = myAddressesDAO.findAll();
-		cancelEdit(null);
-		/**
-		 * The code below gets the current FacesContext and forces 
-		 * the page to rerender, making sure a good 'Clear' is made.
-		 */
-	    FacesContext context = FacesContext.getCurrentInstance();
-	    Application application = context.getApplication();
-	    ViewHandler viewHandler = application.getViewHandler();
-	    UIViewRoot viewRoot = viewHandler.createView(context, context
-	     .getViewRoot().getViewId());
-	    context.setViewRoot(viewRoot);
-	    context.renderResponse(); //Optional
+		try{
+			if(myAddressesDAO == null){
+				throw new Exception("myAddressesDAO is null on clear");
+			}
+			myNewAddress = new Addresses();
+			mySearchAddress = new Addresses();
+			myAddresses = myAddressesDAO.findAll();
+			notifyMessage = "";
+			cancelEdit(null);
+			/**
+			 * The code below gets the current FacesContext and forces 
+			 * the page to rerender, making sure a good 'Clear' is made.
+			 */
+			FacesContext context = FacesContext.getCurrentInstance();
+			Application application = context.getApplication();
+			ViewHandler viewHandler = application.getViewHandler();
+			UIViewRoot viewRoot = viewHandler.createView(context, context
+					.getViewRoot().getViewId());
+			context.setViewRoot(viewRoot);
+			context.renderResponse(); //Optional
+        }catch (Exception exception){
+        	myLog.log(exception.getMessage());
+        }		    
 		
 	}
 	
@@ -614,10 +742,14 @@ public class AddressBean extends SortableList{
 	 * Consistency - It uses the same syntax rules as the rest of the class and
 	 *               continues to use proper casing and indentation.
      * @param evt ActionEvent
+     * @throws Exception if myAddressesDAO is null
      * @exception Exception general exception capture         
 	 */		
 	public void editAction(ActionEvent evt) {
 		try{
+			if(myAddressesDAO == null){
+				throw new Exception("myAddressesDAO is null on editAction!");
+			}
 			/**
 			 * If another record is already being edited then return here and do nothing.
 			 */
@@ -653,11 +785,15 @@ public class AddressBean extends SortableList{
      * @param context FacesContext used to add message to front-end message object
      * @param validate UIComponent the UI Component this is for
      * @param value Object the text entered into the email address field
+     * @throws Exception if context is null
      * @exception Exception general exception capture         
 	 */		
     public void validateEmail(FacesContext context, 
     		UIComponent validate, Object value){
     	try{
+    		if(context == null){
+    			throw new Exception("FacesContext null on validateEmail");
+    		}
     
     		String email = (String)value;
 
@@ -686,12 +822,17 @@ public class AddressBean extends SortableList{
 	 *               continues to use proper casing and indentation.
      * @param context FacesContext used to add message to front-end message object
      * @param validate UIComponent the UI Component this is for
-     * @param value Object the text entered into the email address field
+     * @param value Object the text entered into the phone number field
+     * @throws Exception if context is null
      * @exception Exception general exception capture         
 	 */	    
     public void validatePhone(FacesContext context, 
     		UIComponent validate, Object value){
     	try{
+    		if(context == null){
+    			throw new Exception("FacesContext null on validatePhone");
+    		}
+    		
     		String phone = (String)value;
     		/**
     		 * If the phone number field is blank or if it's length is greater than 30
@@ -718,11 +859,15 @@ public class AddressBean extends SortableList{
 	 *               continues to use proper casing and indentation.
      * @param context FacesContext used to add message to front-end message object
      * @param validate UIComponent the UI Component this is for
-     * @param value Object the text entered into the email address field
+     * @param value Object the text entered into the fields on the add form
+     * @throws Exception if context is null
      * @exception Exception general exception capture         
 	 */	    
     public void validateAllOthers(FacesContext context, UIComponent validate, Object value){
     	try{
+    		if(context == null){
+    			throw new Exception("FacesContext null on validateEmail");
+    		}    		
     
     		/**
     		 * Each of the else if statements check the clientID of the component in 
@@ -922,6 +1067,20 @@ public class AddressBean extends SortableList{
     	"*Note - The 'Clear' button clear all fields, not just the 'Add Address' fields.";
     }
     
+    
+    /** Returns a string of instructions for using the front-end.
+     *@TheCs Cohesion - Returns a string of instructions for using the front-end.
+	 * Completeness - Completely returns a string of instructions for using the front-end.
+	 * Convenience - Simply returns a string of instructions for using the front-end.
+	 * Clarity - It is simple to understand that this returns a string of instructions 
+	 *           for using the front-end.
+	 * Consistency - It uses the same syntax rules as the rest of the class and
+	 *               continues to use proper casing and indentation.
+     * @return a string of instructions
+     */      
+    public String getNotifyMessage(){
+    	return notifyMessage;
+    }    
 
 }
 
