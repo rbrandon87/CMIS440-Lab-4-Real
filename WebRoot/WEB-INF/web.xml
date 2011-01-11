@@ -80,6 +80,10 @@
   <exception-type>java.lang.Throwable</exception-type>
   <location>/ErrorRedirect.jsp</location>
  </error-page>
+ <error-page>
+  <exception-type>java.lang.Exception</exception-type>
+  <location>/ErrorRedirect.jsp</location>
+ </error-page>
  <login-config>
   <auth-method>BASIC</auth-method>
  </login-config>

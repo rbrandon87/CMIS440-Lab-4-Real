@@ -93,7 +93,7 @@
 						The clear button will clear all fields on the web site and reload the datatable below.
 					 -->
 					<ice:commandButton  style="width:45%" value="Add"  partialSubmit="true" action="#{AddressBean.addAddress }"></ice:commandButton>
-					<ice:commandButton  style="width:45%" immediate="true" value="Clear"  partialSubmit="true" actionListener="#{AddressBean.clear }"></ice:commandButton>				
+					<ice:commandButton  style="width:45%" immediate="true" value="Clear"  partialSubmit="true" action="#{AddressBean.clear }"></ice:commandButton>				
 				</ice:form>
 				<ice:form id="searchForm" partialSubmit="true" >
 				<!-- The search form allows the user to enter a last name to search for. Has they type an associated value change listener
@@ -109,6 +109,9 @@
 						</ice:selectInputText>
 						<!-- Allow input validation messages are displayed here in red. -->
 						<ice:messages  style="color: red"></ice:messages>
+						<!-- The panelGrid below is used to display notifications from the bean when
+							something like a record is added, updated, or deleted.
+						 -->
 						<ice:panelGrid border="1" columns="2">
 							<ice:outputLabel for="notifyMessage">Messages:</ice:outputLabel>
 							<ice:outputText id="notifyMessage" value="#{AddressBean.notifyMessage}"></ice:outputText>
@@ -225,17 +228,17 @@
 						</ice:column>
 						<ice:column> 
 							<f:facet name="header"><ice:outputText value="Action"></ice:outputText></f:facet>
-								<ice:commandButton value="Edit" partialSubmit="true" actionListener="#{AddressBean.editAction}" 
+								<ice:commandButton value="Edit" partialSubmit="true" action="#{AddressBean.editAction}" 
 													rendered="#{not myAddresses.editable}">
-									<f:attribute name="theAddressID" value="#{myAddresses.addressid }"/>
+									<f:setPropertyActionListener value="#{myAddresses.addressid }" target="#{AddressBean.editAddressId }" />
 								</ice:commandButton>
-								<ice:commandButton value="Save" partialSubmit="true" actionListener="#{AddressBean.updateAddress}" 
+								<ice:commandButton value="Save" partialSubmit="true" action="#{AddressBean.updateAddress}" 
 													rendered="#{ myAddresses.editable}">
 								</ice:commandButton>		
-								<ice:commandButton value="Delete"  partialSubmit="true" actionListener="#{AddressBean.deleteAddress}" 
+								<ice:commandButton value="Delete"  partialSubmit="true" action="#{AddressBean.deleteAddress}" 
 													rendered="#{ myAddresses.editable}">
 								</ice:commandButton>
-								<ice:commandButton value="Cancel"  partialSubmit="true" actionListener="#{AddressBean.cancelEdit}" 
+								<ice:commandButton value="Cancel"  partialSubmit="true" action="#{AddressBean.cancelEdit}" 
 													rendered="#{ myAddresses.editable}">
 								</ice:commandButton>																	
 						</ice:column>

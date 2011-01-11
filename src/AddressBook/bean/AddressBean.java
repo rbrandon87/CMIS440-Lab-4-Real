@@ -11,7 +11,7 @@ package AddressBook.bean;
 * Tested on Firefox 3.6.13 w/ 22in, 17in, and 14in monitors w/ 1680x1050, 1440x900, and 1280x1024 resolution settings.
 * Files: AddressBean.java, Logger.java, SortableList.java, Addresses.java, AddressesDAO.java,
 * 		 EntityManagerHelper.java, persistence.xml, faces-config.xml, web.xml, AddressBook.jspx,
-* 		 AddressBookCSS.css, index.html
+* 		 AddressBookCSS.css, index.html, ErrorPage.jspx, ErrorPageCSS.css, ErrorRedirect.jsp
 *
 * Program Requirements: 
 *Minimum Assignment Requirements. Extend the example web application in Chapter 30 as follows:
@@ -99,6 +99,7 @@ public class AddressBean extends SortableList{
 	Logger myLog = new Logger();
 	boolean instructionsVisible = false;
 	String notifyMessage = "";
+	Long tempEditAddressId;
 	
 	
     
@@ -131,6 +132,7 @@ public class AddressBean extends SortableList{
 			myAddresses = myAddressesDAO.findAll();
 		}catch(Exception exception){
 			myLog.log(exception.getMessage());
+			notifyMessage = exception.getMessage();
 		}
 		
 	}
@@ -179,6 +181,7 @@ public class AddressBean extends SortableList{
 			return myTableAddress;
 		}catch (Exception exception){
 			myLog.log(exception.getMessage());
+			notifyMessage = exception.getMessage();
 			return null;
 		}					
 		
@@ -206,6 +209,7 @@ public class AddressBean extends SortableList{
 			myTableAddress = tableAddress;
 		}catch (Exception exception){
 			myLog.log(exception.getMessage());
+			notifyMessage = exception.getMessage();
 		}		
 	}
 		
@@ -232,6 +236,7 @@ public class AddressBean extends SortableList{
 			return myNewAddress;
 		}catch (Exception exception){
 			myLog.log(exception.getMessage());
+			notifyMessage = exception.getMessage();
 			return null;
 		}
 	}
@@ -258,6 +263,7 @@ public class AddressBean extends SortableList{
 			myNewAddress = newAddress;
 		}catch (Exception exception){
 			myLog.log(exception.getMessage());
+			notifyMessage = exception.getMessage();
 		}		
 	}	
 
@@ -285,6 +291,7 @@ public class AddressBean extends SortableList{
 			return mySearchAddress;
 		}catch (Exception exception){
 			myLog.log(exception.getMessage());
+			notifyMessage = exception.getMessage();
 			return null;
 		}			
 	}
@@ -313,6 +320,7 @@ public class AddressBean extends SortableList{
 			mySearchAddress = searchAddress;
 		}catch (Exception exception){
 			myLog.log(exception.getMessage());
+			notifyMessage = exception.getMessage();
 		}					
 	}	
 
@@ -340,6 +348,7 @@ public class AddressBean extends SortableList{
     		myAddressesDAO = addressesDAO;
 		}catch (Exception exception){
 			myLog.log(exception.getMessage());
+			notifyMessage = exception.getMessage();
 		}	    		
     }
 	 
@@ -397,11 +406,12 @@ public class AddressBean extends SortableList{
 			 */
 			myLog.log("ID: " + myNewAddress.getAddressid() 
 					+ " Successfully added into database");			
-			clear(null);
+			clear();
 			notifyMessage = "Record Added!";
 			return "success";
 			}catch (Exception exception){
 				myLog.log(exception.getMessage());
+				notifyMessage = exception.getMessage();
 				return "failure";
 			}
 	}
@@ -418,7 +428,7 @@ public class AddressBean extends SortableList{
 	 * @throws Exception if myTableAddress object is null         
 	 * @exception Exception general exception capture              
 	 */		
-	public void updateAddress(ActionEvent evt){
+	public String updateAddress(){
 		try{
 			if (myTableAddress == null){
 				throw new Exception("MyTableAddress object is null on updateAddress");
@@ -443,7 +453,7 @@ public class AddressBean extends SortableList{
 					 new FacesMessage("All fields must be filled before updated!");
 				 context.addMessage("editForm:Save", msg);	
 				 
-				return;
+				return "failure";
 			}				
 					
 			/**
@@ -464,10 +474,12 @@ public class AddressBean extends SortableList{
 			myLog.log("ID: " + myTableAddress.getAddressid() 
 					+ " Successfully updated in database");
 			notifyMessage = "Record Updated!";
-			cancelEdit(null);
-			
+			cancelEdit();
+			return "success";
 		}catch (Exception exception){
 			myLog.log(exception.getMessage());
+			notifyMessage = exception.getMessage();
+			return "failure";
 		}		
 	}
 	
@@ -483,7 +495,7 @@ public class AddressBean extends SortableList{
 	 * @throws Exception if myTableAddress is null           
 	 * @exception Exception general exception capture              
 	 */		
-	public void deleteAddress(ActionEvent evt){
+	public String deleteAddress(){
 		try{
 			
 			if (myTableAddress == null){
@@ -501,7 +513,7 @@ public class AddressBean extends SortableList{
 				 FacesMessage msg = 
 					 new FacesMessage("The record appears to not be selected for deletion.");
 				 context.addMessage("editForm:Delete", msg);				
-				return;
+				return "failure";
 			}			
 			
 			/**
@@ -521,10 +533,13 @@ public class AddressBean extends SortableList{
 			 */				
 			myLog.log("ID: " + myTableAddress.getAddressid() 
 					+ " Successfully deleted from database");
-			clear(null);
+			clear();
 			notifyMessage = "Record Deleted!";
+			return "success";
 		}catch (Exception exception){
 			myLog.log(exception.getMessage());
+			notifyMessage = exception.getMessage();
+			return "failure";
 		}		
 	}		
 	
@@ -546,7 +561,7 @@ public class AddressBean extends SortableList{
 		try{
 			if(mySearchAddress == null || myAddressesDAO == null){
 				throw new Exception(
-						"One or more objects required by the search feature are set to null!");
+						"One or more objects required by the getAllAddresses are set to null!");
 			}
 			/**
 			 * First, if mySearchAddress object doesn't have a first name set then do
@@ -576,6 +591,7 @@ public class AddressBean extends SortableList{
 			return myAddresses;
         }catch (Exception exception){
         	myLog.log(exception.getMessage());
+        	notifyMessage = exception.getMessage();
         	return myAddresses;
         }
         
@@ -640,6 +656,7 @@ public class AddressBean extends SortableList{
 			}
         }catch (Exception exception){
         	myLog.log(exception.getMessage());
+        	notifyMessage = exception.getMessage();
         }		
 		
 	}
@@ -653,18 +670,14 @@ public class AddressBean extends SortableList{
 	 * Consistency - It uses the same syntax rules as the rest of the class and
 	 *               continues to use proper casing and indentation.
      * @return lastNames a list of last names that match search field.   
-     * @throws Exception if lastNames is null
      * @exception Exception general exception capture      
 	 */		
 	public List<SelectItem> getLastNameMatches(){
 		try{
-			if (lastNames == null){
-				throw new Exception(
-						"lastNames List is null on getLastNameMatches!");
-			}
 			return lastNames;
         }catch (Exception exception){
         	myLog.log(exception.getMessage());
+        	notifyMessage = exception.getMessage();
         	return null;
         }			
 	}
@@ -684,7 +697,7 @@ public class AddressBean extends SortableList{
      * @throws Exception if myAddressesDAO is null
      * @exception Exception general exception capture
 	 */		
-	public void clear(ActionEvent evt){
+	public String clear(){
 		try{
 			if(myAddressesDAO == null){
 				throw new Exception("myAddressesDAO is null on clear");
@@ -693,7 +706,7 @@ public class AddressBean extends SortableList{
 			mySearchAddress = new Addresses();
 			myAddresses = myAddressesDAO.findAll();
 			notifyMessage = "";
-			cancelEdit(null);
+			cancelEdit();
 			/**
 			 * The code below gets the current FacesContext and forces 
 			 * the page to rerender, making sure a good 'Clear' is made.
@@ -705,8 +718,11 @@ public class AddressBean extends SortableList{
 					.getViewRoot().getViewId());
 			context.setViewRoot(viewRoot);
 			context.renderResponse(); //Optional
+			return "success";
         }catch (Exception exception){
         	myLog.log(exception.getMessage());
+        	notifyMessage = exception.getMessage();
+        	return "failure";
         }		    
 		
 	}
@@ -721,7 +737,7 @@ public class AddressBean extends SortableList{
 	 *               continues to use proper casing and indentation.
      * @param evt ActionEvent         
 	 */		
-	public void cancelEdit(ActionEvent evt){
+	public String cancelEdit(){
 		if(myTableAddress != null){
 			/**
 			 * If not null then set the editable to false to clean up
@@ -730,7 +746,7 @@ public class AddressBean extends SortableList{
 			myTableAddress.setEditable(false);
 		}
 		myTableAddress = new Addresses();
-		
+		return "success";
 	}
 	
     /** Makes a record on the front-end table editable.
@@ -745,7 +761,7 @@ public class AddressBean extends SortableList{
      * @throws Exception if myAddressesDAO is null
      * @exception Exception general exception capture         
 	 */		
-	public void editAction(ActionEvent evt) {
+	public String editAction() {
 		try{
 			if(myAddressesDAO == null){
 				throw new Exception("myAddressesDAO is null on editAction!");
@@ -754,25 +770,40 @@ public class AddressBean extends SortableList{
 			 * If another record is already being edited then return here and do nothing.
 			 */
 			if (myTableAddress.getAddressid()!= null){
-				return;
+				return "failure";
 			}		
 			/**
 			 * Set the myTableAddress object to the record that was clicked to be edited
 			 * by using the AddressDAO findbyID method to find the record. It will retrieve
 			 * the actually ID from the 'theAddressID' attribute set on the front-end.
-			 */
-			myTableAddress = 
-				myAddressesDAO.findById(
-						(Long) evt.getComponent().getAttributes()
-						.get("theAddressID"));
+			 */			
+			myTableAddress = myAddressesDAO.findById(tempEditAddressId);
+			tempEditAddressId = null;
 			/**
 			 * Make the field editable.
 			 */
 			myTableAddress.setEditable(true);
+			return "success";
 		
 		}catch (Exception exception){
         	myLog.log(exception.getMessage());
+        	notifyMessage = exception.getMessage();
+        	return "failure";
         }
+	}
+	
+    /** Sets Address ID of record to be edited.
+     *@TheCs Cohesion - Sets Address ID of record to be edited.
+	 * Completeness - Completely Sets Address ID of record to be edited.
+	 * Convenience - Simply Sets Address ID of record to be edited.
+	 * Clarity - It is simple to understand that this Sets Address ID of record 
+	 * 			 to be edited.
+	 * Consistency - It uses the same syntax rules as the rest of the class and
+	 *               continues to use proper casing and indentation.
+     * @param aEditAddressId Address ID of record to be edited         
+	 */		
+	public void setEditAddressId(Long aEditAddressId){
+		tempEditAddressId = aEditAddressId;
 	}
 	
     /** Validates email address field.
@@ -810,6 +841,7 @@ public class AddressBean extends SortableList{
         
         }catch (Exception exception){
         	myLog.log(exception.getMessage());
+        	notifyMessage = exception.getMessage();
         }        
     }
     
@@ -846,7 +878,8 @@ public class AddressBean extends SortableList{
     		}
         
         }catch (Exception exception){
-        	myLog.log(exception.getMessage() + "\n");
+        	myLog.log(exception.getMessage());
+        	notifyMessage = exception.getMessage();
         }        
     }
     
@@ -914,6 +947,7 @@ public class AddressBean extends SortableList{
         
         }catch (Exception exception){
         	myLog.log(exception.getMessage());
+        	notifyMessage = exception.getMessage();
         }        
     }   
     
@@ -1002,6 +1036,7 @@ public class AddressBean extends SortableList{
         
         }catch (Exception exception){
         	myLog.log(exception.getMessage());
+        	notifyMessage = exception.getMessage();
         }        
         
     }
@@ -1068,15 +1103,15 @@ public class AddressBean extends SortableList{
     }
     
     
-    /** Returns a string of instructions for using the front-end.
-     *@TheCs Cohesion - Returns a string of instructions for using the front-end.
-	 * Completeness - Completely returns a string of instructions for using the front-end.
-	 * Convenience - Simply returns a string of instructions for using the front-end.
-	 * Clarity - It is simple to understand that this returns a string of instructions 
-	 *           for using the front-end.
+    /** Returns a notification when a record is added, updated, or deleted.
+     *@TheCs Cohesion - Returns a notification when a record is added, updated, or deleted.
+	 * Completeness - Completely a notification when a record is added, updated, or deleted.
+	 * Convenience - Simply a notification when a record is added, updated, or deleted.
+	 * Clarity - It is simple to understand that this returns a notification when a record 
+	 * 			 is added, updated, or deleted.
 	 * Consistency - It uses the same syntax rules as the rest of the class and
 	 *               continues to use proper casing and indentation.
-     * @return a string of instructions
+     * @return a notification when a record is added, updated, or deleted
      */      
     public String getNotifyMessage(){
     	return notifyMessage;

@@ -12,5 +12,7 @@
 			<attribute name="optional" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/Bwiz_Dual_PC/mojarra-1.2_15-b01-FCS/lib/jsf-api.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Bwiz_Dual_PC/mojarra-1.2_15-b01-FCS/lib/jsf-impl.jar"/>
 	<classpathentry kind="output" path="WebRoot/WEB-INF/classes"/>
 </classpath>
