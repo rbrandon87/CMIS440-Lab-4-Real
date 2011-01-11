@@ -17,7 +17,7 @@
    		<h1>Lab 4 Error Page</h1>
    </div>
    <div id="middle">
-     <ice:panelGrid id="errorPanelGrid" columns="2">
+     <ice:panelGrid id="errorPanelGrid" columns="2" border="1">
        Message:
          <ice:outputText value="#{sessionScope._error_message}" />
        Type:
