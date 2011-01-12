@@ -29,18 +29,26 @@ body{
 	text-align:center;
 }
 
+/*This is for the H1 title column*/
+.topH1{
+	width:65%;
+}
+
 /*This is for the H1 header*/
-h1{
-	width:30%;	
+h1{	
 	text-align: left;
 	text-decoration: underline
 }
 
-/*This is for the Instructions Form*/
-#instructionForm{
-	text-align:center;
+/*This is for the Instructions Form column*/
+.topInstructions{
+	width:15%;
 }
 
+/*This is for the Connection Status column*/
+.topConnection{
+	width:15%
+}
 
 	
 /*This is the main, or middle, div containing the mainPanelGrid*/
@@ -149,12 +157,6 @@ h3{
 	display: inline-table;
 }
 
-#footer{
-	width: 100%;
-	position: absolute;
-	right: 10px;
-	bottom: 10px;
-}
 
 
 

@@ -29,11 +29,11 @@
        <!-- This div contains the header text and also the instructions button which can be used to view a popup 
        		containing instructions.
        -->
-		<ice:panelGrid id="topPanelGrid" border="0" columns="2" width="100%">
+		<ice:panelGrid id="topPanelGrid" border="0" columns="3" width="100%" columnClasses="topH1,topInstructions,topConnection">
 			<h1> Lab 4 Address Book</h1>	
 			
-			<ice:form  id="instructionForm">
-        		<ice:commandButton style="margin-left: 150px" value="Instructions" action="#{AddressBean.getPopup}" />
+			<ice:form  id="instructionForm" >
+        		<ice:commandButton value="Instructions" action="#{AddressBean.getPopup}" style="margin-left:175px"/>
             	<ice:panelPopup draggable="true" rendered="#{AddressBean.popupVisible}" 
             					style="z-index: 1000; top: 30%; left: 10%; position: absolute; width: 300px;">
                 	<f:facet name="header">
@@ -49,6 +49,13 @@
                 	</f:facet>
             	</ice:panelPopup>
         	</ice:form>
+        	<ice:panelGrid border="1" columns="2" >
+        	<!-- This section of code provides a means to show the current status of the connection
+        		to the server, i.e. Idle, Active, Caution, or Disconnected
+        	 -->
+        		<ice:outputText value="Connection Status:"/>
+        		<ice:outputConnectionStatus />
+        	</ice:panelGrid>
 		 </ice:panelGrid>
 		</div>
 		<div id="main">
@@ -211,8 +218,8 @@
 								</ice:commandSortHeader>
 							</f:facet>
     						<ice:inputText id="editEmailAddress" value="#{AddressBean.currentTableAddress.emailaddress}"  validator="#{AddressBean.validateEmail}" 
-    										maxlength="50" required="true" rendered="#{myAddresses.editable}" styleClass="editField"/>
-    						<ice:outputText value="#{myAddresses.emailaddress}" rendered="#{not myAddresses.editable}" />					
+    										maxlength="50" required="true" rendered="#{myAddresses.editable}" />
+  							<ice:outputText value="#{myAddresses.emailaddress}"  rendered="#{not myAddresses.editable}"/>	
 						</ice:column>
 						<ice:column>
 							<f:facet name="header">
@@ -221,7 +228,7 @@
 								</ice:commandSortHeader>
 							</f:facet>
     						<ice:inputText id="editPhoneNumber" value="#{AddressBean.currentTableAddress.phonenumber}"  validator="#{AddressBean.validatePhone}" 
-    										maxlength="30" required="true" rendered="#{myAddresses.editable}" styleClass="editField"/>
+    										maxlength="30" required="true" rendered="#{myAddresses.editable}" />
     						<ice:outputText value="#{myAddresses.phonenumber}" rendered="#{not myAddresses.editable}" />							
 						</ice:column>
 						<ice:column> 
@@ -289,9 +296,6 @@
 				</ice:dataPaginator>	
 			</ice:form>
 			
-		</div>
-		<div id="footer">
-			<ice:outputConnectionStatus style="float:right;"/>
 		</div>
        </body>
     </html>

@@ -7,7 +7,7 @@ package AddressBook.bean;
 * Date: Jan 6, 2011
 * IDE: MyEclipse 9.0 M1
 * OS: Windows 7 64 bit
-* Java: JDK 1.6.0_13, Java EE 5, JSF 1.2, JPA 2.0, IceFaces 1.8.1, GlassFish 2.1.1
+* Java: JDK 1.6.0_13, Java EE 5, JSF 1.2, JPA 2.0, IceFaces 1.8.1, GlassFish 2.1.1 & GlassFish v3 Prelude
 * Tested on Firefox 3.6.13 w/ 22in, 17in, and 14in monitors w/ 1680x1050, 1440x900, and 1280x1024 resolution settings.
 * Files: AddressBean.java, Logger.java, SortableList.java, Addresses.java, AddressesDAO.java,
 * 		 EntityManagerHelper.java, persistence.xml, faces-config.xml, web.xml, AddressBook.jspx,
@@ -70,7 +70,6 @@ package AddressBook.bean;
 
 
 import java.util.*;
-import javax.annotation.PostConstruct;
 import javax.faces.model.SelectItem;
 import javax.faces.application.Application;
 import javax.faces.application.FacesMessage;
@@ -90,16 +89,16 @@ import java.util.regex.Pattern;
 public class AddressBean extends SortableList{
 
 	
-	AddressesDAO myAddressesDAO;
-	Addresses myTableAddress;
-	Addresses myNewAddress;
-	Addresses mySearchAddress;
-	List<Addresses> myAddresses = new ArrayList<Addresses>();
-	List<SelectItem> lastNames;
-	Logger myLog = new Logger();
-	boolean instructionsVisible = false;
-	String notifyMessage = "";
-	Long tempEditAddressId;
+	private AddressesDAO myAddressesDAO;
+	private Addresses myTableAddress;
+	private Addresses myNewAddress;
+	private Addresses mySearchAddress;
+	private List<Addresses> myAddresses = new ArrayList<Addresses>();
+	private List<SelectItem> lastNames;
+	private Logger myLog = new Logger();
+	private boolean instructionsVisible = false;
+	private String notifyMessage = "";
+	private Long tempEditAddressId;
 	
 	
     
@@ -136,27 +135,7 @@ public class AddressBean extends SortableList{
 		}
 		
 	}
-	
-    /** Post Constructor fills myAddresses list after bean is loaded.
-     *@TheCs Cohesion - Post Constructor fills myAddresses list after bean is loaded.
-	 * Completeness - Completely fills myAddresses list after bean is loaded.
-	 * Convenience - Simply fills myAddresses list after bean is loaded.
-	 * Clarity - It is simple to understand that this fills myAddresses 
-	 *           list after bean is loaded.
-	 * Consistency - It uses the same syntax rules as the rest of the class and
-	 *               continues to use proper casing and indentation.
-	 */		
-	/**
-	 * This makes use of the PostConstruct annotation so that the code below will
-	 * be ran after the bean is done started. This is necessary to properly fill
-	 * the datatable on the front-end in injunction with making the edit buttons 
-	 * work without having to first hit the 'Clear' button.
-	 */
-    @PostConstruct
-    public void init() {
-    	
-    }
-    
+	    
 	
 
     /** Retrieves the current address object used by the table.
@@ -367,26 +346,18 @@ public class AddressBean extends SortableList{
 	 */			    
 	public String addAddress(){
 		try{
+			FacesContext context = FacesContext.getCurrentInstance();
 			if (myNewAddress == null){
 				throw new Exception("New Address object is null on addAddress");
-			}else if (myNewAddress.getCity().equals("") || 
-					myNewAddress.getEmailaddress().equals("") || 
-					myNewAddress.getFirstname().equals("") || 
-					myNewAddress.getLastname().equals("") ||
-					myNewAddress.getPhonenumber().equals("") || 
-					myNewAddress.getState().equals("") ||
-					myNewAddress.getStreet().equals("") ||
-					myNewAddress.getZip().equals("")){
+			}else if (context.getMessages().hasNext()){
 				/**
 				 * Here, if any of the fields are left blank then it creates a 
 				 * new message to be displayed on the web site and returns instead
 				 * of attempting to add a record since all of the fields are 
 				 * required.
 				 */
-				
-				FacesContext context = FacesContext.getCurrentInstance();
 				FacesMessage msg = 
-					new FacesMessage("Everything with an asterisk* is required!");
+					new FacesMessage("Clear all errors before adding record!");
 				context.addMessage("addForm:Add", msg);
 				return "failure";
 			}
@@ -430,16 +401,10 @@ public class AddressBean extends SortableList{
 	 */		
 	public String updateAddress(){
 		try{
+			FacesContext context = FacesContext.getCurrentInstance();
 			if (myTableAddress == null){
 				throw new Exception("MyTableAddress object is null on updateAddress");
-			}else if (myTableAddress.getCity().equals("") || 
-					myTableAddress.getEmailaddress().equals("") || 
-					myTableAddress.getFirstname().equals("") || 
-					myTableAddress.getLastname().equals("") ||
-					myTableAddress.getPhonenumber().equals("") || 
-					myTableAddress.getState().equals("") ||
-					myTableAddress.getStreet().equals("") ||
-					myTableAddress.getZip().equals("")){
+			}else if (context.getMessages().hasNext()){
 				
 				/**
 				 * Here, if any of the fields are left blank then it creates a 
@@ -448,9 +413,8 @@ public class AddressBean extends SortableList{
 				 * required.
 				 */				
 				
-				 FacesContext context = FacesContext.getCurrentInstance();
 				 FacesMessage msg = 
-					 new FacesMessage("All fields must be filled before updated!");
+					 new FacesMessage("Clear all errors before saving record!");
 				 context.addMessage("editForm:Save", msg);	
 				 
 				return "failure";
@@ -646,7 +610,8 @@ public class AddressBean extends SortableList{
 						.substring(0,searchWord.toString().length())
 						.equalsIgnoreCase(searchWord.toString())){
 					
-					if (!lastNames.contains(myAddresses.get(i).getLastname())){
+					if (!lastNames.contains(new SelectItem(myAddresses.get(i).getLastname(),
+							myAddresses.get(i).getLastname()))){
 						lastNames.add(
 								new SelectItem(myAddresses.get(i).getLastname(),
 										myAddresses.get(i).getLastname()));
@@ -841,9 +806,8 @@ public class AddressBean extends SortableList{
     			context.addMessage(validate.getClientId(context), msg);
             }    		
     		/**
-    		 * If the email address field doesn't contain a @ then add a message
-    		 * to let the user know they didn't enter a correct e-mail. Also checks
-    		 * the length.
+    		 * If the email address field is greater than 50 let the user know they
+    		 * exceeded the maximum allowed length.
     		 */
     		if(email.length() > 50){
     			((UIInput)validate).setValid(false);
@@ -892,9 +856,8 @@ public class AddressBean extends SortableList{
     			context.addMessage(validate.getClientId(context), msg);
             }    		
     		/**
-    		 * If the phone number field is blank or if it's length is greater than 30
-    		 * then add a message to the front-end to let the user know they entered it
-    		 * wrong.
+    		 * If the length is greater than 30 then add a message to the front-end
+    		 *  to let the user know they exceeded the max length.
     		 */
     		if(phone.length() > 30){
     			((UIInput)validate).setValid(false);
@@ -908,16 +871,16 @@ public class AddressBean extends SortableList{
         }        
     }
     
-    /** Validates phone number field.
-     *@TheCs Cohesion - Validates phone number field.
-	 * Completeness - Completely validates phone number field.
-	 * Convenience - Simply validates phone number field.
-	 * Clarity - It is simple to understand that this validates phone number field.
+    /** Validates zip code field.
+     *@TheCs Cohesion - Validates zip code field.
+	 * Completeness - Completely validates zip code field.
+	 * Convenience - Simply validates zip code field.
+	 * Clarity - It is simple to understand that this validates the zip code field.
 	 * Consistency - It uses the same syntax rules as the rest of the class and
 	 *               continues to use proper casing and indentation.
      * @param context FacesContext used to add message to front-end message object
      * @param validate UIComponent the UI Component this is for
-     * @param value Object the text entered into the phone number field
+     * @param value Object the text entered into the zip code field
      * @throws Exception if context is null
      * @exception Exception general exception capture         
 	 */	    
@@ -931,8 +894,8 @@ public class AddressBean extends SortableList{
     		String zip = (String)value;
     		
     		/**
-    		 * This regex ensures the phone number entered is a valid North America
-    		 *  phone number. Again this one I got from Regexbuddy 3.
+    		 * This regex ensures the zip code entered is only digits
+    		 * and is 5 digits long.
     		 */
             String extRegex = 
             	"\\d{5}";
@@ -942,16 +905,6 @@ public class AddressBean extends SortableList{
     			FacesMessage msg = new FacesMessage("Invalid Zip Code entered");
     			context.addMessage(validate.getClientId(context), msg);
             }    		
-    		/**
-    		 * If the phone number field is blank or if it's length is greater than 30
-    		 * then add a message to the front-end to let the user know they entered it
-    		 * wrong.
-    		 */
-    		if(zip.length() > 5){
-    			((UIInput)validate).setValid(false);
-    			FacesMessage msg = new FacesMessage("Zip Code is incorrect");
-    			context.addMessage(validate.getClientId(context), msg);
-    		}
         
         }catch (Exception exception){
         	myLog.log(exception.getMessage());
@@ -959,16 +912,16 @@ public class AddressBean extends SortableList{
         }        
     }    
     
-    /** Validates phone number field.
-     *@TheCs Cohesion - Validates phone number field.
-	 * Completeness - Completely validates phone number field.
-	 * Convenience - Simply validates phone number field.
-	 * Clarity - It is simple to understand that this validates phone number field.
+    /** Validates State field.
+     *@TheCs Cohesion - Validates State field.
+	 * Completeness - Completely validates State field.
+	 * Convenience - Simply validates State field.
+	 * Clarity - It is simple to understand that this validates the state field.
 	 * Consistency - It uses the same syntax rules as the rest of the class and
 	 *               continues to use proper casing and indentation.
      * @param context FacesContext used to add message to front-end message object
      * @param validate UIComponent the UI Component this is for
-     * @param value Object the text entered into the phone number field
+     * @param value Object the text entered into the state field
      * @throws Exception if context is null
      * @exception Exception general exception capture         
 	 */	    
@@ -982,8 +935,8 @@ public class AddressBean extends SortableList{
     		String state = (String)value;
     		
     		/**
-    		 * This regex ensures the phone number entered is a valid North America
-    		 *  phone number. Again this one I got from Regexbuddy 3.
+    		 * This regex ensures the state entered only contains letters
+    		 * and is only 2 letters long.
     		 */
             String extRegex = 
             	"\\p{L}{2}";
@@ -993,16 +946,6 @@ public class AddressBean extends SortableList{
     			FacesMessage msg = new FacesMessage("Invalid State entered");
     			context.addMessage(validate.getClientId(context), msg);
             }    		
-    		/**
-    		 * If the phone number field is blank or if it's length is greater than 30
-    		 * then add a message to the front-end to let the user know they entered it
-    		 * wrong.
-    		 */
-    		if(state.length() > 2){
-    			((UIInput)validate).setValid(false);
-    			FacesMessage msg = new FacesMessage("State is incorrect");
-    			context.addMessage(validate.getClientId(context), msg);
-    		}
         
         }catch (Exception exception){
         	myLog.log(exception.getMessage());
@@ -1042,37 +985,26 @@ public class AddressBean extends SortableList{
     			context.addMessage(validate.getClientId(context), msg);
     		}else if(validate.getClientId(context).toLowerCase().contains("lastname") && 
 			allOther.length() > 30){
-			FacesMessage msg = 
-				new FacesMessage("Last Name is incorrect");
-			context.addMessage(validate.getClientId(context), msg);    			
-		}else if(validate.getClientId(context).toLowerCase().contains("firstname") &&
+    			FacesMessage msg = 
+    				new FacesMessage("Last Name is incorrect");
+    			context.addMessage(validate.getClientId(context), msg);    			
+    		}else if(validate.getClientId(context).toLowerCase().contains("firstname") &&
 				allOther.length() > 30){
-			FacesMessage msg = 
-				new FacesMessage("First Name is incorrect");
-			context.addMessage(validate.getClientId(context), msg);    			
-		}else if(validate.getClientId(context).toLowerCase().contains("street") &&
+    			FacesMessage msg = 
+    				new FacesMessage("First Name is incorrect");
+    			context.addMessage(validate.getClientId(context), msg);    			
+    		}else if(validate.getClientId(context).toLowerCase().contains("street") &&
 				allOther.length() > 150){
-			FacesMessage msg = 
-				new FacesMessage("Street is incorrect");
-			context.addMessage(validate.getClientId(context), msg);    			
-		}else if(validate.getClientId(context).toLowerCase().contains("city") &&
+    			FacesMessage msg = 
+    				new FacesMessage("Street is incorrect");
+    			context.addMessage(validate.getClientId(context), msg);    			
+    		}else if(validate.getClientId(context).toLowerCase().contains("city") &&
 				allOther.length() > 30){
-			FacesMessage msg = 
-				new FacesMessage("City is incorrect");
-			context.addMessage(validate.getClientId(context), msg);    			
-		}else if(validate.getClientId(context).toLowerCase().contains("State") &&
-				allOther.length() > 2){
-			FacesMessage msg = 
-				new FacesMessage("State is incorrect");
-			context.addMessage(validate.getClientId(context), msg);    			
-		}else if(validate.getClientId(context).toLowerCase().contains("zip") &&
-				allOther.length() > 5){
-			FacesMessage msg = 
-				new FacesMessage("Zip Code is incorrect");
-			context.addMessage(validate.getClientId(context), msg);    			
-		}
-        
-        }catch (Exception exception){
+    			FacesMessage msg = 
+    				new FacesMessage("City is incorrect");
+    			context.addMessage(validate.getClientId(context), msg);    			
+    		}
+    	}catch (Exception exception){
         	myLog.log(exception.getMessage());
         	notifyMessage = exception.getMessage();
         }        
