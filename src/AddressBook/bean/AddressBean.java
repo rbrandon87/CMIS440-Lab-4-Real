@@ -70,7 +70,6 @@ package AddressBook.bean;
 
 
 import java.util.*;
-
 import javax.annotation.PostConstruct;
 import javax.faces.model.SelectItem;
 import javax.faces.application.Application;
@@ -80,11 +79,12 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 import myPersistence.Addresses;
 import myPersistence.AddressesDAO;
 import myPersistence.EntityManagerHelper;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class AddressBean extends SortableList{
@@ -424,9 +424,9 @@ public class AddressBean extends SortableList{
 	 *           in the database.
 	 * Consistency - It uses the same syntax rules as the rest of the class and
 	 *               continues to use proper casing and indentation.
-	 * @param evt ActionEvent      
 	 * @throws Exception if myTableAddress object is null         
 	 * @exception Exception general exception capture              
+	 * @return success or failure depending on if transaction goes through
 	 */		
 	public String updateAddress(){
 		try{
@@ -490,10 +490,10 @@ public class AddressBean extends SortableList{
 	 * Clarity - It is simple to understand that this deletes a address record
 	 *           from the database.
 	 * Consistency - It uses the same syntax rules as the rest of the class and
-	 *               continues to use proper casing and indentation.
-	 * @param evt ActionEvent    
+	 *               continues to use proper casing and indentation.   
 	 * @throws Exception if myTableAddress is null           
 	 * @exception Exception general exception capture              
+	 * @return success or failure depending on if transaction goes through
 	 */		
 	public String deleteAddress(){
 		try{
@@ -692,10 +692,10 @@ public class AddressBean extends SortableList{
 	 * Clarity - It is simple to understand that this Renews Addresses objects, 
 	 *           refills myAddresses list, and undo's edit on table.
 	 * Consistency - It uses the same syntax rules as the rest of the class and
-	 *               continues to use proper casing and indentation.
-     * @param evt ActionEvent         
+	 *               continues to use proper casing and indentation.  
      * @throws Exception if myAddressesDAO is null
      * @exception Exception general exception capture
+     * @return success or failure depending on if clear is handled properly
 	 */		
 	public String clear(){
 		try{
@@ -735,7 +735,7 @@ public class AddressBean extends SortableList{
 	 *           on front-end table.
 	 * Consistency - It uses the same syntax rules as the rest of the class and
 	 *               continues to use proper casing and indentation.
-     * @param evt ActionEvent         
+     * @return success       
 	 */		
 	public String cancelEdit(){
 		if(myTableAddress != null){
@@ -757,9 +757,9 @@ public class AddressBean extends SortableList{
 	 *           the front-end table editable.
 	 * Consistency - It uses the same syntax rules as the rest of the class and
 	 *               continues to use proper casing and indentation.
-     * @param evt ActionEvent
      * @throws Exception if myAddressesDAO is null
      * @exception Exception general exception capture         
+     * @return success or failure depending on if transaction goes through
 	 */		
 	public String editAction() {
 		try{
@@ -829,11 +829,23 @@ public class AddressBean extends SortableList{
     		String email = (String)value;
 
     		/**
+    		 * This regex ensures the email entered matches RFC 2822. I won't take credit for
+    		 * this one, I got this from Regexbuddy 3.
+    		 */
+            String extRegex = 
+            	"[a-z0-9!#$%&'*+\\/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+\\/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?";
+            Pattern pattern = Pattern.compile(extRegex);
+            Matcher matcher = pattern.matcher(email);
+            if (!matcher.find()){
+    			FacesMessage msg = new FacesMessage("Invalid Email entered");
+    			context.addMessage(validate.getClientId(context), msg);
+            }    		
+    		/**
     		 * If the email address field doesn't contain a @ then add a message
     		 * to let the user know they didn't enter a correct e-mail. Also checks
     		 * the length.
     		 */
-    		if(email.indexOf('@')==-1 || email.length() > 50){
+    		if(email.length() > 50){
     			((UIInput)validate).setValid(false);
     			FacesMessage msg = new FacesMessage("Invalid Email entered");
     			context.addMessage(validate.getClientId(context), msg);
@@ -866,12 +878,25 @@ public class AddressBean extends SortableList{
     		}
     		
     		String phone = (String)value;
+    		
+    		/**
+    		 * This regex ensures the phone number entered is a valid North America
+    		 *  phone number. Again this one I got from Regexbuddy 3.
+    		 */
+            String extRegex = 
+            	"\\(?\\b[0-9]{3}\\)?[-\\. ]?[0-9]{3}[-\\. ]?[0-9]{4}\\b";
+            Pattern pattern = Pattern.compile(extRegex);
+            Matcher matcher = pattern.matcher(phone);
+            if (!matcher.find()){
+    			FacesMessage msg = new FacesMessage("Invalid Phone Number entered");
+    			context.addMessage(validate.getClientId(context), msg);
+            }    		
     		/**
     		 * If the phone number field is blank or if it's length is greater than 30
     		 * then add a message to the front-end to let the user know they entered it
     		 * wrong.
     		 */
-    		if(phone.equals("") || phone.length() > 30){
+    		if(phone.length() > 30){
     			((UIInput)validate).setValid(false);
     			FacesMessage msg = new FacesMessage("Phone Number is incorrect");
     			context.addMessage(validate.getClientId(context), msg);
@@ -882,6 +907,108 @@ public class AddressBean extends SortableList{
         	notifyMessage = exception.getMessage();
         }        
     }
+    
+    /** Validates phone number field.
+     *@TheCs Cohesion - Validates phone number field.
+	 * Completeness - Completely validates phone number field.
+	 * Convenience - Simply validates phone number field.
+	 * Clarity - It is simple to understand that this validates phone number field.
+	 * Consistency - It uses the same syntax rules as the rest of the class and
+	 *               continues to use proper casing and indentation.
+     * @param context FacesContext used to add message to front-end message object
+     * @param validate UIComponent the UI Component this is for
+     * @param value Object the text entered into the phone number field
+     * @throws Exception if context is null
+     * @exception Exception general exception capture         
+	 */	    
+    public void validateZip(FacesContext context, 
+    		UIComponent validate, Object value){
+    	try{
+    		if(context == null){
+    			throw new Exception("FacesContext null on validateZip");
+    		}
+    		
+    		String zip = (String)value;
+    		
+    		/**
+    		 * This regex ensures the phone number entered is a valid North America
+    		 *  phone number. Again this one I got from Regexbuddy 3.
+    		 */
+            String extRegex = 
+            	"\\d{5}";
+            Pattern pattern = Pattern.compile(extRegex);
+            Matcher matcher = pattern.matcher(zip);
+            if (!matcher.find()){
+    			FacesMessage msg = new FacesMessage("Invalid Zip Code entered");
+    			context.addMessage(validate.getClientId(context), msg);
+            }    		
+    		/**
+    		 * If the phone number field is blank or if it's length is greater than 30
+    		 * then add a message to the front-end to let the user know they entered it
+    		 * wrong.
+    		 */
+    		if(zip.length() > 5){
+    			((UIInput)validate).setValid(false);
+    			FacesMessage msg = new FacesMessage("Zip Code is incorrect");
+    			context.addMessage(validate.getClientId(context), msg);
+    		}
+        
+        }catch (Exception exception){
+        	myLog.log(exception.getMessage());
+        	notifyMessage = exception.getMessage();
+        }        
+    }    
+    
+    /** Validates phone number field.
+     *@TheCs Cohesion - Validates phone number field.
+	 * Completeness - Completely validates phone number field.
+	 * Convenience - Simply validates phone number field.
+	 * Clarity - It is simple to understand that this validates phone number field.
+	 * Consistency - It uses the same syntax rules as the rest of the class and
+	 *               continues to use proper casing and indentation.
+     * @param context FacesContext used to add message to front-end message object
+     * @param validate UIComponent the UI Component this is for
+     * @param value Object the text entered into the phone number field
+     * @throws Exception if context is null
+     * @exception Exception general exception capture         
+	 */	    
+    public void validateState(FacesContext context, 
+    		UIComponent validate, Object value){
+    	try{
+    		if(context == null){
+    			throw new Exception("FacesContext null on validateState");
+    		}
+    		
+    		String state = (String)value;
+    		
+    		/**
+    		 * This regex ensures the phone number entered is a valid North America
+    		 *  phone number. Again this one I got from Regexbuddy 3.
+    		 */
+            String extRegex = 
+            	"\\p{L}{2}";
+            Pattern pattern = Pattern.compile(extRegex);
+            Matcher matcher = pattern.matcher(state);
+            if (!matcher.find()){
+    			FacesMessage msg = new FacesMessage("Invalid State entered");
+    			context.addMessage(validate.getClientId(context), msg);
+            }    		
+    		/**
+    		 * If the phone number field is blank or if it's length is greater than 30
+    		 * then add a message to the front-end to let the user know they entered it
+    		 * wrong.
+    		 */
+    		if(state.length() > 2){
+    			((UIInput)validate).setValid(false);
+    			FacesMessage msg = new FacesMessage("State is incorrect");
+    			context.addMessage(validate.getClientId(context), msg);
+    		}
+        
+        }catch (Exception exception){
+        	myLog.log(exception.getMessage());
+        	notifyMessage = exception.getMessage();
+        }        
+    }    
     
     /** Validates all other input fields.
      *@TheCs Cohesion - Validates all other input fields.

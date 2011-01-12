@@ -5,8 +5,6 @@
  @author Brandon R Russell
  @Course CMIS440
  Date: Jan 6, 2011
-
-
  -->
 
 <jsp:root version="1.2"
@@ -31,11 +29,11 @@
        <!-- This div contains the header text and also the instructions button which can be used to view a popup 
        		containing instructions.
        -->
-		<ice:panelGrid id="topPanelGrid" border="0" columns="3" width="100%">
+		<ice:panelGrid id="topPanelGrid" border="0" columns="2" width="100%">
 			<h1> Lab 4 Address Book</h1>	
 			
 			<ice:form  id="instructionForm">
-        		<ice:commandButton value="Instructions" action="#{AddressBean.getPopup}" />
+        		<ice:commandButton style="margin-left: 150px" value="Instructions" action="#{AddressBean.getPopup}" />
             	<ice:panelPopup draggable="true" rendered="#{AddressBean.popupVisible}" 
             					style="z-index: 1000; top: 30%; left: 10%; position: absolute; width: 300px;">
                 	<f:facet name="header">
@@ -78,10 +76,10 @@
 										validator="#{AddressBean.validateAllOthers}" required="true" ></ice:inputText>
 						<ice:outputText value="State *"></ice:outputText>
 						<ice:inputText id="state" value="#{AddressBean.currentNewAddress.state }" maxlength="2" 
-										validator="#{AddressBean.validateAllOthers}" required="true" ></ice:inputText>
+										validator="#{AddressBean.validateState}" required="true" ></ice:inputText>
 						<ice:outputText value="Zip *"></ice:outputText>
 						<ice:inputText id="zip" value="#{AddressBean.currentNewAddress.zip }" maxlength="5"  
-										validator="#{AddressBean.validateAllOthers}" required="true" ></ice:inputText>
+										validator="#{AddressBean.validateZip}" required="true" ></ice:inputText>
 						<ice:outputText value="Email Address *"></ice:outputText>
 						<ice:inputText id="emailAddress" value="#{AddressBean.currentNewAddress.emailaddress }" maxlength="50" 
 										validator="#{AddressBean.validateEmail}" required="true" ></ice:inputText>
@@ -192,7 +190,7 @@
 									<ice:outputText value="State"></ice:outputText>
 								</ice:commandSortHeader>
 							</f:facet>
-    						<ice:inputText id="editState" value="#{AddressBean.currentTableAddress.state}"  validator="#{AddressBean.validateAllOthers}"  
+    						<ice:inputText id="editState" value="#{AddressBean.currentTableAddress.state}"  validator="#{AddressBean.validateState}"  
     										maxlength="2" required="true" rendered="#{myAddresses.editable}" />
     						<ice:outputText value="#{myAddresses.state}" rendered="#{not myAddresses.editable}" />							
 						</ice:column>
@@ -202,7 +200,7 @@
 									<ice:outputText value="Zip Code"></ice:outputText>
 								</ice:commandSortHeader>
 							</f:facet>
-    						<ice:inputText id="editZip" value="#{AddressBean.currentTableAddress.zip}"  validator="#{AddressBean.validateAllOthers}"  
+    						<ice:inputText id="editZip" value="#{AddressBean.currentTableAddress.zip}"  validator="#{AddressBean.validateZip}"  
     										maxlength="5" required="true" rendered="#{myAddresses.editable}" />
     						<ice:outputText value="#{myAddresses.zip}" rendered="#{not myAddresses.editable}" />	
 						</ice:column>
