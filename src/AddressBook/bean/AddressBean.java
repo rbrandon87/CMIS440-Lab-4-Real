@@ -589,8 +589,11 @@ public class AddressBean extends SortableList{
 			 */
 			lastNames = new ArrayList<SelectItem>();
 			myAddresses = myAddressesDAO.findAll();
+			HashSet<Addresses> myTempHashSet = new HashSet<Addresses>(myAddresses);
+			List<Addresses> myTempAddresses = new ArrayList<Addresses>();
+			myTempAddresses.addAll(myTempHashSet);
 			Object searchWord = event.getNewValue();
-			for(int i = 0; i < myAddresses.size(); i++){
+			for(int i = 0; i < myTempAddresses.size(); i++){
 				/**
 				 * If for some reason the last name for this addresses object is
 				 * blank then do nothing with it. Else if the length of the addresses
@@ -601,24 +604,20 @@ public class AddressBean extends SortableList{
 				 *  lastNames list doesn't already contain this last name then add it to
 				 *  the list.
 				 */
-				if (myAddresses.get(i).getLastname().length() == 0){
+				if (myTempAddresses.get(i).getLastname().length() == 0){
 					
-				}else if (myAddresses.get(i).getLastname().length() < 
+				}else if (myTempAddresses.get(i).getLastname().length() < 
 						searchWord.toString().length()){
 				
-				}else if(myAddresses.get(i).getLastname()
+				}else if(myTempAddresses.get(i).getLastname()
 						.substring(0,searchWord.toString().length())
 						.equalsIgnoreCase(searchWord.toString())){
 					
-					if (!lastNames.contains(new SelectItem(myAddresses.get(i).getLastname(),
-							myAddresses.get(i).getLastname()))){
-						lastNames.add(
-								new SelectItem(myAddresses.get(i).getLastname(),
-										myAddresses.get(i).getLastname()));
-					}
-					
+					lastNames.add(
+							new SelectItem(myTempAddresses.get(i).getLastname(),
+										   myTempAddresses.get(i).getLastname()));
 				}
-			}
+			}		
         }catch (Exception exception){
         	myLog.log(exception.getMessage());
         	notifyMessage = exception.getMessage();
