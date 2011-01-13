@@ -1,4 +1,4 @@
-<%@ page language="java" import="java.util.*" pageEncoding="ISO-8859-1"%>
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 
 <!--
  Program Name: CMIS440 Lab 4 Address Book Web App
@@ -6,7 +6,7 @@
  @Course CMIS440
  Date: Jan 6, 2011
 
-
+This page collects information about the error and redirects to the error page.
  -->
 
 

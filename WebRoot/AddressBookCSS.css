@@ -1,4 +1,4 @@
-@CHARSET "ISO-8859-1";
+@CHARSET "UTF-8";
 
 /*
  Program Name: CMIS440 Lab 4 Address Book Web App
@@ -37,12 +37,17 @@ body{
 /*This is for the H1 header*/
 h1{	
 	text-align: left;
-	text-decoration: underline
+	text-decoration: underline;
 }
 
 /*This is for the Instructions Form column*/
 .topInstructions{
 	width:15%;
+}
+
+/*This is for the Instruction Panel Grid*/
+.instructionPanelGrid{
+	text-align: center;
 }
 
 /*This is for the Connection Status column*/

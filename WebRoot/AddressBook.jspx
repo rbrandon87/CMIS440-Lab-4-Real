@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 
 <!--
  Program Name: CMIS440 Lab 4 Address Book Web App
@@ -12,7 +12,7 @@
    xmlns:f="http://java.sun.com/jsf/core"
    xmlns:h="http://java.sun.com/jsf/html"
    xmlns:ice="http://www.icesoft.com/icefaces/component">
-   <jsp:directive.page contentType="text/html;charset=ISO-8859-1" pageEncoding="ISO-8859-1" />
+   <jsp:directive.page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" />
    <f:view>
    		<ice:outputDeclaration 
             doctypeRoot="html" 
@@ -27,17 +27,17 @@
        <body>
        <div id="top">
        <!-- This div contains the header text and also the instructions button which can be used to view a popup 
-       		containing instructions.
+       		containing instructions. It also contains the connection status display.
        -->
-		<ice:panelGrid id="topPanelGrid" border="0" columns="3" width="100%" columnClasses="topH1,topInstructions,topConnection">
+		<ice:panelGrid id="topPanelGrid" width="100%" border="0" columns="3" columnClasses="topH1,topInstructions,topConnection">
 			<h1> Lab 4 Address Book</h1>	
 			
 			<ice:form  id="instructionForm" >
-        		<ice:commandButton value="Instructions" action="#{AddressBean.getPopup}" style="margin-left:175px"/>
+        		<ice:commandButton value="Instructions" action="#{AddressBean.getPopup}" style="margin-left:175px;"/>
             	<ice:panelPopup draggable="true" rendered="#{AddressBean.popupVisible}" 
-            					style="z-index: 1000; top: 30%; left: 10%; position: absolute; width: 300px;">
+            				style="z-index: 1000;top: 30%;left: 10%;position: absolute;width: 300px;">
                 	<f:facet name="header">
-                    	<ice:panelGrid width="100%" cellpadding="0" cellspacing="0" columns="2" style="text-align: center;">
+                    	<ice:panelGrid id="instructionPanelGrid" width="100%" cellpadding="0" cellspacing="0" columns="2">
                         	<ice:outputText value="Instructions"/>
                         	<ice:commandButton image="images/close.gif" action="#{AddressBean.getPopup}" title="Close the instructions"/>
                     	</ice:panelGrid>
@@ -112,7 +112,7 @@
 											valueChangeListener="#{AddressBean.getAddressesByLastName }" >
 							<f:selectItems value="#{AddressBean.lastNameMatches}"/>
 						</ice:selectInputText>
-						<!-- Allow input validation messages are displayed here in red. -->
+						<!-- All input validation messages are displayed here in red. -->
 						<ice:messages  style="color: red"></ice:messages>
 						<!-- The panelGrid below is used to display notifications from the bean when
 							something like a record is added, updated, or deleted.
@@ -219,7 +219,10 @@
 							</f:facet>
     						<ice:inputText id="editEmailAddress" value="#{AddressBean.currentTableAddress.emailaddress}"  validator="#{AddressBean.validateEmail}" 
     										maxlength="50" required="true" rendered="#{myAddresses.editable}" />
-  							<ice:outputText value="#{myAddresses.emailaddress}"  rendered="#{not myAddresses.editable}"/>	
+    						<ice:outputLink value="mailto:#{myAddresses.emailaddress}">				
+  								<ice:outputText value="#{myAddresses.emailaddress}"  rendered="#{not myAddresses.editable}" 
+  												style="color: blue;text-decoration: underline;"/>
+  							</ice:outputLink>	
 						</ice:column>
 						<ice:column>
 							<f:facet name="header">

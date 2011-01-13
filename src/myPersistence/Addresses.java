@@ -405,55 +405,52 @@ public class Addresses implements java.io.Serializable {
 	}
 	
     /**
-	    * This method takes the author first/last name and the book isbn, and
-	    * multiplies their hashCodes together and by 17, a prime number,
-	    * to create a unique hashCode that will later be used to test for equality
-	    * of Book objects in the BooksQuery class.
-	    * @TheCs Cohesion - Sets the hashCode of the Book object to 17 times
-	    *                   the first/last name and isbn. 17 used since it's a prime
-	    * Completeness - Completely sets the hashCode of the Book object.
-	    * Convenience -  Simply sets the hashCode of the Book object.
-	    * Clarity - It is simple to understand that this sets the hashCode of the
-	    *           Book object.
-	    * Consistency - It uses the same syntax rules as the rest of the class and
-	    *               continues to use proper casing and indentation.
-	    * @return unique hashCode of book object
-	    */
-	    @Override
-	    public int hashCode(){
-	        return 17 * getLastname().hashCode();
+	  * This method takes the records last name and multiplies its hashCode by 17
+	  * , a prime number, to create a unique hashCode that will later be used 
+	  * to test for equality of Addresses objects in the AddressBean class.
+	  * @TheCs Cohesion - Sets the hashCode of the Addresses object to 17 times
+	  *                   the last name. 17 used since it's a prime
+	  * Completeness - Completely sets the hashCode of the Addresses object.
+	  * Convenience -  Simply sets the hashCode of the Addresses object.
+	  * Clarity - It is simple to understand that this sets the hashCode of the
+	  *           Addresses object.
+	  * Consistency - It uses the same syntax rules as the rest of the class and
+	  *               continues to use proper casing and indentation.
+	  * @return unique hashCode of Addresses object
+	  */
+	@Override
+	public int hashCode(){
+		return 17 * getLastname().hashCode();
+	}
+
+	/**
+	  * This method first checks to see if the object in question is null and
+	  * if so returns false. It then test to see if the objects refer to the same
+	  * object and returns true if they do. It then checks to see if obj is an
+	  * instance of Addresses and returns false if it is not or if so it then cast
+	  * the object to an Addresses object and test the hashCode of each object and
+	  * returns true or false depending on if the hashCodes are equals or not.
+	  * @TheCs Cohesion - Overrides the equals method. Test for equality of two
+	  *                   objects.
+	  * Completeness - Completely test for equality of two objects.
+	  * Convenience -  Simply test for equality of two objects.
+	  * Clarity - It is simple to understand that this test for equality of two
+	  *           Addresses objects.
+	  * Consistency - It uses the same syntax rules as the rest of the class and
+	  *               continues to use proper casing and indentation.
+	  * @param obj Check for equality against this object.
+	  * @precondition obj be a Addresses object, otherwise return false.
+	  * @return true or false depending on if objects are equal or not
+	  */
+	@Override
+	public boolean equals(Object obj){
+		if (obj == null) return false;
+	    if (this == obj) return true;
+	    if (obj instanceof Addresses){
+	    	Addresses other = (Addresses) obj;
+	    	return this.hashCode() == other.hashCode();
+	    }else{
+	    	return false;
 	    }
-
-	    /**
-	    * This method first checks to see if the object in question is null and
-	    * if so returns false. It then test to see if the objects refer to the same
-	    * object and returns true if they do. It then checks to see if obj is an
-	    * instance of Book and returns false if it is not or if so it then cast
-	    * the object to an Book object and test the hashCode of each object and
-	    * returns true or false depending on if the hashCodes are equals or not.
-	    * @TheCs Cohesion - Overrides the equals method. Test for equality of two
-	    *                   objects.
-	    * Completeness - Completely test for equality of two objects.
-	    * Convenience -  Simply test for equality of two objects.
-	    * Clarity - It is simple to understand that this test for equality of two
-	    *           Book objects.
-	    * Consistency - It uses the same syntax rules as the rest of the class and
-	    *               continues to use proper casing and indentation.
-	    * @param obj Check for equality against this object.
-	    * @precondition obj be a Book object, otherwise return false.
-	    * @return true or false depending on if objects are equal or not
-	    */
-	    @Override
-	    public boolean equals(Object obj){
-
-	        if (obj == null) return false;
-	        if (this == obj) return true;
-	        if (obj instanceof Addresses){
-	            Addresses other = (Addresses) obj;
-	            return this.hashCode() == other.hashCode();
-	        }else{
-	            return false;
-	        }
-
-	    }	
+	}	
 }
