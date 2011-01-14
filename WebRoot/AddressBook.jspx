@@ -29,7 +29,7 @@
        <!-- This div contains the header text and also the instructions button which can be used to view a popup 
        		containing instructions. It also contains the connection status display.
        -->
-		<ice:panelGrid id="topPanelGrid" width="100%" border="0" columns="3" columnClasses="topH1,topInstructions,topConnection">
+		<ice:panelGrid id="topPanelGrid" width="100%" border="0" columns="4" columnClasses="topH1,topInstructions,topRefresh,topConnection">
 			<h1> Lab 4 Address Book</h1>	
 			
 			<ice:form  id="instructionForm" >
@@ -49,6 +49,9 @@
                 	</f:facet>
             	</ice:panelPopup>
         	</ice:form>
+        	<ice:form>
+        		<ice:commandButton  immediate="true" value="Refresh"  partialSubmit="true" action="#{AddressBean.clear }"></ice:commandButton>
+        	</ice:form>        	
         	<ice:panelGrid border="1" columns="2" >
         	<!-- This section of code provides a means to show the current status of the connection
         		to the server, i.e. Idle, Active, Caution, or Disconnected
@@ -98,7 +101,7 @@
 						The clear button will clear all fields on the web site and reload the datatable below.
 					 -->
 					<ice:commandButton  style="width:45%" value="Add"  partialSubmit="true" action="#{AddressBean.addAddress }"></ice:commandButton>
-					<ice:commandButton  style="width:45%" immediate="true" value="Clear"  partialSubmit="true" action="#{AddressBean.clear }"></ice:commandButton>				
+					<ice:commandButton  style="width:45%" value="Clear" type="reset"></ice:commandButton>				
 				</ice:form>
 				<ice:form id="searchForm" partialSubmit="true" >
 				<!-- The search form allows the user to enter a last name to search for. Has they type an associated value change listener
