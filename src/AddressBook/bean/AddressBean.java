@@ -7,8 +7,10 @@ package AddressBook.bean;
 * Date: Jan 6, 2011
 * IDE: MyEclipse 9.0 M1
 * OS: Windows 7 64 bit
-* Java: JDK 1.6.0_13, Java EE 5, JSF 1.2, JPA 2.0, IceFaces 1.8.1, GlassFish 2.1.1 & GlassFish v3 Prelude
-* Tested on Firefox 3.6.13 w/ 22in, 17in, and 14in monitors w/ 1680x1050, 1440x900, and 1280x1024 resolution settings.
+* Java: JDK 1.6.0_13, Java EE 5, JSF 1.2, JPA 2.0, IceFaces 1.8.1, GlassFish 2.1.1 
+* 																& GlassFish v3 Prelude
+* Tested on Firefox 3.6.13 w/ 22in, 17in, and 14in monitors w/ 1680x1050, 1440x900, 
+* 													and 1280x1024 resolution settings.
 * Files: AddressBean.java, Logger.java, SortableList.java, Addresses.java, AddressesDAO.java,
 * 		 EntityManagerHelper.java, persistence.xml, faces-config.xml, web.xml, AddressBook.jspx,
 * 		 AddressBookCSS.css, index.html, ErrorPage.jspx, ErrorPageCSS.css, ErrorRedirect.jsp
@@ -797,6 +799,10 @@ public class AddressBean extends SortableList{
      * @param aEditAddressId Address ID of record to be edited         
 	 */		
 	public void setEditAddressId(Long aEditAddressId){
+		/**
+		 * This is set by a Property Action Listener when the edit button
+		 * is clicked on the front-end.
+		 */
 		tempEditAddressId = aEditAddressId;
 	}
 	
@@ -1186,8 +1192,7 @@ public class AddressBean extends SortableList{
     	"2) Once found click the 'Edit' button next to the record and the fields will become editable. <br />" +
     	"3) Once you make your changes click the 'Save' button or the 'Delete button to delete the record. <br />" + 
     	"4) You can also click the 'Cancel' button to not update the record. <br />" +
-    	"*Note - Only one record can be edited at a time. <br />" +
-    	"*Note - The 'Clear' button clear all fields, not just the 'Add Address' fields.";
+    	"*Note - Only one record can be edited at a time.";
     }
     
     
