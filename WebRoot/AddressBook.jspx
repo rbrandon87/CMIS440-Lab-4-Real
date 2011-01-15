@@ -31,7 +31,6 @@
        -->
 		<ice:panelGrid id="topPanelGrid" width="100%" border="0" columns="4" columnClasses="topH1,topInstructions,topRefresh,topConnection">
 			<h1> Lab 4 Address Book</h1>	
-			
 			<ice:form  id="instructionForm" >
         		<ice:commandButton value="Instructions" action="#{AddressBean.getPopup}" style="margin-left:175px;"/>
             	<ice:panelPopup draggable="true" rendered="#{AddressBean.popupVisible}" 
@@ -48,7 +47,7 @@
                     	</ice:panelGrid>
                 	</f:facet>
             	</ice:panelPopup>
-        	</ice:form>
+        	</ice:form>			
         	<ice:form>
         		<ice:commandButton  immediate="true" value="Refresh"  partialSubmit="true" action="#{AddressBean.clear }"></ice:commandButton>
         	</ice:form>        	
@@ -69,6 +68,7 @@
 					has validator methods associated with them from the backing bean to also ensure data integrity.
 				 -->
 					<h3>Add new Address:</h3>
+					<ice:outputLabel value="* = required" style="width: 100%; text-align: right;"/>
 					<ice:panelGrid border="1" columns="2" columnClasses="addLabels,addFields">
 						<ice:inputHidden id="addressID" value="#{AddressBean.currentNewAddress.addressid }"></ice:inputHidden>
 						<ice:inputHidden></ice:inputHidden>
@@ -240,7 +240,7 @@
 						<ice:column> 
 							<f:facet name="header"><ice:outputText value="Action"></ice:outputText></f:facet>
 								<ice:commandButton value="Edit" partialSubmit="true" action="#{AddressBean.editAction}" 
-													rendered="#{not myAddresses.editable}">
+													rendered="#{not myAddresses.editable}" >
 									<f:setPropertyActionListener value="#{myAddresses.addressid }" target="#{AddressBean.editAddressId }" />
 								</ice:commandButton>
 								<ice:commandButton value="Save" partialSubmit="true" action="#{AddressBean.updateAddress}" 

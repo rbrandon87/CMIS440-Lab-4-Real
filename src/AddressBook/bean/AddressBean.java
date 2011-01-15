@@ -76,6 +76,7 @@ package AddressBook.bean;
 
 
 import java.util.*;
+
 import javax.faces.model.SelectItem;
 import javax.faces.application.Application;
 import javax.faces.application.FacesMessage;
@@ -95,10 +96,10 @@ import java.util.regex.Pattern;
 public class AddressBean extends SortableList{
 
 	
-	private AddressesDAO myAddressesDAO;
-	private Addresses myTableAddress;
-	private Addresses myNewAddress;
-	private Addresses mySearchAddress;
+	private AddressesDAO myAddressesDAO = new AddressesDAO();
+	private Addresses myTableAddress = new Addresses();
+	private Addresses myNewAddress = new Addresses();
+	private Addresses mySearchAddress = new Addresses();
 	private List<Addresses> myAddresses = new ArrayList<Addresses>();
 	private List<SelectItem> lastNames;
 	private Logger myLog = new Logger();
@@ -130,10 +131,6 @@ public class AddressBean extends SortableList{
 		 */
 		super("ID");
 		try{
-			myAddressesDAO = new AddressesDAO();
-			myNewAddress = new Addresses();
-			mySearchAddress = new Addresses();
-			myTableAddress = new Addresses();
 			myAddresses = myAddressesDAO.findAll();
 		}catch(Exception exception){
 			myLog.log(exception.getMessage());
@@ -141,7 +138,6 @@ public class AddressBean extends SortableList{
 		}
 		
 	}
-	    
 	
 
     /** Retrieves the current address object used by the table.
@@ -543,6 +539,7 @@ public class AddressBean extends SortableList{
 			 */
 			if ( mySearchAddress.getLastname() == null ||
 					mySearchAddress.getLastname().equals("")){
+				notifyMessage = "Showing all records";
 				
 			}else{
 				myAddresses =  
@@ -551,6 +548,7 @@ public class AddressBean extends SortableList{
 				 *Return here since you don't need to sort last names that are all the
 				 *same.
 				 */
+				notifyMessage = "Showing records for specified last name";
 				return myAddresses;
 			}
 			/**
@@ -688,6 +686,7 @@ public class AddressBean extends SortableList{
 			if(myAddressesDAO == null){
 				throw new Exception("myAddressesDAO is null on clear");
 			}
+			myAddresses = myAddressesDAO.findAll();
 			myNewAddress = new Addresses();
 			if (clearSearch){
 				/**
@@ -697,12 +696,14 @@ public class AddressBean extends SortableList{
 				 * delete one and then edit the other two you would not want the search
 				 * results to be cleared after you deleted the first record.
 				 */
-				mySearchAddress = new Addresses();
+				mySearchAddress.setLastname("");
+				
+			}else{
 				clearSearch = true;
 			}
-			myAddresses = myAddressesDAO.findAll();
-			notifyMessage = "";
+			
 			cancelEdit();
+
 			/**
 			 * The code below gets the current FacesContext and forces 
 			 * the page to rerender, making sure a good 'Clear' is made.
@@ -713,7 +714,8 @@ public class AddressBean extends SortableList{
 			UIViewRoot viewRoot = viewHandler.createView(context, context
 					.getViewRoot().getViewId());
 			context.setViewRoot(viewRoot);
-			context.renderResponse(); //Optional
+			context.renderResponse(); //Optional	
+			notifyMessage = "";
 			return "success";
         }catch (Exception exception){
         	myLog.log(exception.getMessage());
@@ -722,6 +724,7 @@ public class AddressBean extends SortableList{
         }		    
 		
 	}
+
 	
     /** Disables editable field on front-end table.
      *@TheCs Cohesion - Disables editable field on front-end table.
@@ -765,7 +768,8 @@ public class AddressBean extends SortableList{
 			/**
 			 * If another record is already being edited then return here and do nothing.
 			 */
-			if (myTableAddress.getAddressid()!= null){
+			if (myTableAddress.getAddressid() != null){
+				notifyMessage = "You can only edit one record at a time";
 				return "failure";
 			}		
 			/**
@@ -1094,35 +1098,35 @@ public class AddressBean extends SortableList{
     							new Long(c1.getAddressid()).compareTo(new Long(c2.getAddressid())) :
     							new Long(c2.getAddressid()).compareTo(new Long(c1.getAddressid()));
     				} else if (sortColumnName.equals("First Name")) {
-    					return ascending ? c1.getFirstname().compareTo(c2.getFirstname()) :
-    						c2.getFirstname().compareTo(c1.getFirstname());
+    					return ascending ? c1.getFirstname().compareToIgnoreCase(c2.getFirstname()) :
+    						c2.getFirstname().compareToIgnoreCase(c1.getFirstname());
     				} else if (sortColumnName.equals("Last Name")) {
-    					return ascending ? c1.getLastname().compareTo(c2.getLastname()) :
-                            c2.getLastname().compareTo(c1.getLastname());
+    					return ascending ? c1.getLastname().compareToIgnoreCase(c2.getLastname()) :
+                            c2.getLastname().compareToIgnoreCase(c1.getLastname());
     				} else if (sortColumnName.equals("Street")) {
     					return ascending ?
-                            c1.getStreet().compareTo(c2.getStreet()) :
-                            c2.getStreet().compareTo(c1.getStreet());
+                            c1.getStreet().compareToIgnoreCase(c2.getStreet()) :
+                            c2.getStreet().compareToIgnoreCase(c1.getStreet());
     				} else if (sortColumnName.equals("City")) {
     					return ascending ?
-                            c1.getCity().compareTo(c2.getCity()) :
-                            c2.getCity().compareTo(c1.getCity());
+                            c1.getCity().compareToIgnoreCase(c2.getCity()) :
+                            c2.getCity().compareToIgnoreCase(c1.getCity());
     				}  else if (sortColumnName.equals("State")) {
     					return ascending ?
-                            c1.getState().compareTo(c2.getState()) :
-                            c2.getState().compareTo(c1.getState());
+                            c1.getState().compareToIgnoreCase(c2.getState()) :
+                            c2.getState().compareToIgnoreCase(c1.getState());
     				} else if (sortColumnName.equals("Zip Code")) {
     					return ascending ?
-                            c1.getZip().compareTo(c2.getZip()) :
-                            c2.getZip().compareTo(c1.getZip());
+                            c1.getZip().compareToIgnoreCase(c2.getZip()) :
+                            c2.getZip().compareToIgnoreCase(c1.getZip());
     				} else if (sortColumnName.equals("Email Address")) {
     					return ascending ?
-                            c1.getEmailaddress().compareTo(c2.getEmailaddress()) :
-                            c2.getEmailaddress().compareTo(c1.getEmailaddress());
+                            c1.getEmailaddress().compareToIgnoreCase(c2.getEmailaddress()) :
+                            c2.getEmailaddress().compareToIgnoreCase(c1.getEmailaddress());
     				} else if (sortColumnName.equals("Phone Number")) {
     					return ascending ?
-                            c1.getPhonenumber().compareTo(c2.getPhonenumber()) :
-                            c2.getPhonenumber().compareTo(c1.getPhonenumber());
+                            c1.getPhonenumber().compareToIgnoreCase(c2.getPhonenumber()) :
+                            c2.getPhonenumber().compareToIgnoreCase(c1.getPhonenumber());
     				} else return 0;
     				}
     			};

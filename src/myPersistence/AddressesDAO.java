@@ -242,8 +242,8 @@ public class AddressesDAO {
 		myLog.log("finding Addresses instance with property: "
 				+ propertyName + ", value: " + value + Level.INFO);
 		try {
-			final String queryString = "select model from Addresses model where model."
-					+ propertyName + "= :propertyValue";
+			final String queryString = "select model from Addresses model where lower(model."
+					+ propertyName + ")= lower(:propertyValue)";
 			Query query = getEntityManager().createQuery(queryString);
 			query.setParameter("propertyValue", value);
 			if (rowStartIdxAndCount != null && rowStartIdxAndCount.length > 0) {
