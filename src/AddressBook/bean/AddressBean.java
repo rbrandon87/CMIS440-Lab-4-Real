@@ -54,7 +54,9 @@ package AddressBook.bean;
 * Glassfish 2.1.1 and v3 Prelude, but I think for some reason it works best on 
 * Glassfish 2.1.1. Also, I definitely went beyond the 80 character mark in a lot of
 * these files, but for some areas here and especially in the front-end code it was 
-* just more feasible to go beyond 80 characters.
+* just more feasible to go beyond 80 characters. If you change a field that is 
+* currently being used as the sorted field, you will have to hit update twice
+* since the field is going to move the first time to be properly sorted.
 */
 
 /** This class manages interaction between front-end and back-end classes.
@@ -94,6 +96,9 @@ import javax.faces.component.UIInput;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
+
+import com.icesoft.faces.async.render.SessionRenderer;
+
 import myPersistence.Addresses;
 import myPersistence.AddressesDAO;
 import myPersistence.EntityManagerHelper;
@@ -134,6 +139,7 @@ public class AddressBean extends SortableList{
 		 * is called to fill the myAddresses list for the front-end datatable.
 		 */
 		super("ID");
+		SessionRenderer.addCurrentSession("all");//This is used for automatic ajax push.
 	}
 	
 	
@@ -368,19 +374,18 @@ public class AddressBean extends SortableList{
 	 */			    
 	public String addAddress(){
 		try{
+			SessionRenderer.addCurrentSession("all");//This is used for automatic ajax push.
 			FacesContext context = FacesContext.getCurrentInstance();
 			if (myNewAddress == null){
 				throw new Exception("New Address object is null on addAddress");
-			}else if (context.getMessages().hasNext()){
-				/**
-				 * Here, if there are any error messages, let the user know
-				 * they need to clear these messages before adding a new record.
-				 */
-				FacesMessage msg = 
-					new FacesMessage("Clear all errors before adding record!");
-				context.addMessage("addForm:Add", msg);
-				return "failure";
 			}
+			if (checkForErrors(context,"addForm")){
+				/**
+				 * If there are any error messages for this form, do not
+				 * add record.
+				 */
+				return "failure";
+			}			
 			/**
 			 * First the EntityManagerHelper is called to initiate the transaction.
 			 * Then, the AddressesDAO object save method is called to persist the
@@ -399,6 +404,7 @@ public class AddressBean extends SortableList{
 					+ " Successfully added into database");
 			clear();
 			notifyMessage = "Record Added!";
+			SessionRenderer.render("all");//This is used for automatic ajax push.
 			return "success";
 			}catch (Exception exception){
 				myLog.log(exception.getMessage());
@@ -421,21 +427,18 @@ public class AddressBean extends SortableList{
 	 */		
 	public String updateAddress(){
 		try{
+			SessionRenderer.addCurrentSession("all");//This is used for automatic ajax push.
 			FacesContext context = FacesContext.getCurrentInstance();
 			if (myTableAddress == null){
 				throw new Exception("MyTableAddress object is null on updateAddress");
-			}else if (context.getMessages().hasNext()){
-				/**
-				 * Here, if there are any error messages, let the user know
-				 * they need to clear these messages before updating a new record.
-				 */
-				 FacesMessage msg = 
-					 new FacesMessage("Clear all errors before saving record!");
-				 context.addMessage("editForm:Save", msg);	
-				 
-				return "failure";
 			}
-					
+			if (checkForErrors(context,"dataTableForm")){
+				/**
+				 * If there are any error messages for this form, do not
+				 * update record.
+				 */				
+				return "failure";
+			}					
 			/**
 			 * First the EntityManagerHelper is called to initiate the transaction.
 			 * Then, the AddressesDAO object update method is called to merge the
@@ -455,6 +458,7 @@ public class AddressBean extends SortableList{
 					+ " Successfully updated in database");
 			notifyMessage = "Record Updated!";
 			cancelEdit();
+			SessionRenderer.render("all");//This is used for automatic ajax push.
 			return "success";
 		}catch (Exception exception){
 			myLog.log(exception.getMessage());
@@ -477,6 +481,8 @@ public class AddressBean extends SortableList{
 	 */		
 	public String deleteAddress(){
 		try{
+			SessionRenderer.addCurrentSession("all");//This is used for automatic ajax push.
+			FacesContext context = FacesContext.getCurrentInstance();
 			if (myTableAddress == null){
 				throw new Exception("myTableAddress object is null on deleteAddress");
 			}else if (myTableAddress.getAddressid().toString().length() == 0){
@@ -488,10 +494,17 @@ public class AddressBean extends SortableList{
 				 * delete the record.
 				 */				
 				
-				 FacesContext context = FacesContext.getCurrentInstance();
+				 
 				 FacesMessage msg = 
 					 new FacesMessage("The record appears to not be selected for deletion.");
 				 context.addMessage("editForm:Delete", msg);				
+				return "failure";
+			}
+			if (checkForErrors(context,"dataTableForm")){
+				/**
+				 * If there are any error messages for this form, do not
+				 * delete record.
+				 */
 				return "failure";
 			}
 			/**
@@ -513,6 +526,7 @@ public class AddressBean extends SortableList{
 					+ " Successfully deleted from database");
 			cancelEdit();
 			notifyMessage = "Record Deleted!";
+			SessionRenderer.render("all");//This is used for automatic ajax push.
 			return "success";
 		}catch (Exception exception){
 			myLog.log(exception.getMessage());
@@ -521,6 +535,40 @@ public class AddressBean extends SortableList{
 		}		
 	}		
 	
+    /** Checks for error messages on front-end.
+     *@TheCs Cohesion - Checks for error messages on front-end.
+	 * Completeness - Completely checks for error messages on front-end.
+	 * Convenience - Simply checks for error messages on front-end.
+	 * Clarity - It is simple to understand that this checks for error 
+	 *           messages on front-end.
+	 * Consistency - It uses the same syntax rules as the rest of the class and
+	 *               continues to use proper casing and indentation.
+	 * @param context the FacesContext instance this is for.
+	 * @param aForm the form on the front-end this is for.               
+	 * @return true or false depending on if there are errors or not.                              
+	 * @exception Exception general exception capture              
+	 */		
+	private boolean checkForErrors(FacesContext context, String aForm){
+		try{
+			while (context.getMessages().hasNext()){
+				if (context.getMessages().next().getDetail().contains(aForm)){
+					/**
+					 * Here, if there are any error messages, let the user know
+					 * they need to clear these messages before adding/updating/deleting records.
+					 */
+					FacesMessage msg = 
+						new FacesMessage("Clear all errors before adding/updating/deleting records!");
+					context.addMessage(aForm, msg);
+					return true;					
+				}
+			}
+			return false;
+		}catch (Exception exception){
+			myLog.log(exception.getMessage());
+			notifyMessage = exception.getMessage();
+			return false;
+		}			
+	}
 	
     /** Returns list of addresses objects for front-end table.
      *@TheCs Cohesion - Returns list of addresses objects for front-end table.
@@ -552,7 +600,13 @@ public class AddressBean extends SortableList{
 				 * If the search field is blank get all the address objects and
 				 * then sort before returning.
 				 */
-				myAddresses = myAddressesDAO.findAll();
+				if (! myTableAddress.isEditable()){
+					/**
+					 * If a record is being updated, make sure the myAddresses
+					 * list isn't affected.
+					 */
+					myAddresses = myAddressesDAO.findAll();
+				}
 				sort(); //Sort myAddresses
 				notifyMessage = "Showing all records";
 				return myAddresses;
@@ -561,34 +615,18 @@ public class AddressBean extends SortableList{
 				/**
 				 * Return records matching search criteria.
 				 */
-				myAddresses =  
-					myAddressesDAO.findByLastname(mySearchAddress.getLastname());
-				/**
-				 * Below, if a field is being edited and a search is initiated
-				 * during the edit, make sure the field being edited is in the
-				 * new search results, otherwise cancel the edit.
-				 */
-				boolean tempEditCheckNotOnList = true;
-				if (tempEditAddressId != null){
-					for (Addresses tempAddress : myAddresses){
-						if (tempAddress.getAddressid() == tempEditAddressId){
-							/**
-							 * If record is found, set to false and break out
-							 * of loop since edited field is in search criteria
-							 * it can remain editable.
-							 */
-							tempEditCheckNotOnList = false;
-							break;
-						}
-					}					
-				}
-				if (tempEditCheckNotOnList){
+				if (! myTableAddress.isEditable()){
 					/**
-					 * Cancel edit if not within new search criteria
-					 */
-					cancelEdit();
+					 * If a record is being updated, make sure the myAddresses
+					 * list isn't affected.
+					 */					
+					myAddresses =  
+						myAddressesDAO.findByLastname(mySearchAddress.getLastname());
+					notifyMessage = "Showing records for specified last name";
+				}else{
+					notifyMessage = "Finish edit before performing search.";
 				}
-				notifyMessage = "Showing records for specified last name";
+				
 				return myAddresses;
 			}			
         }catch (Exception exception){
@@ -904,7 +942,7 @@ public class AddressBean extends SortableList{
             Pattern pattern = Pattern.compile(extRegex);
             Matcher matcher = pattern.matcher(email);
             if (!matcher.find()){
-    			FacesMessage msg = new FacesMessage("Invalid Email entered");
+    			FacesMessage msg = new FacesMessage(validate.getClientId(context) + " - Invalid Email entered");
     			context.addMessage(validate.getClientId(context), msg);
             }    		
     		/**
@@ -913,7 +951,7 @@ public class AddressBean extends SortableList{
     		 */
     		if(email.length() > 50){
     			((UIInput)validate).setValid(false);
-    			FacesMessage msg = new FacesMessage("Invalid Email entered");
+    			FacesMessage msg = new FacesMessage(validate.getClientId(context) + " - Email cannot exceed 50 characters");
     			context.addMessage(validate.getClientId(context), msg);
     		}
         
@@ -954,7 +992,8 @@ public class AddressBean extends SortableList{
             Pattern pattern = Pattern.compile(extRegex);
             Matcher matcher = pattern.matcher(phone);
             if (!matcher.find()){
-    			FacesMessage msg = new FacesMessage("Invalid Phone Number entered");
+    			FacesMessage msg = 
+    				new FacesMessage(validate.getClientId(context) + " - Only North America formatted phone #'s are allowed.");
     			context.addMessage(validate.getClientId(context), msg);
             }    		
     		/**
@@ -963,7 +1002,7 @@ public class AddressBean extends SortableList{
     		 */
     		if(phone.length() > 30){
     			((UIInput)validate).setValid(false);
-    			FacesMessage msg = new FacesMessage("Phone Number is incorrect");
+    			FacesMessage msg = new FacesMessage(validate.getClientId(context) + " - Phone Number cannot exceed 30 characters");
     			context.addMessage(validate.getClientId(context), msg);
     		}
         
@@ -1004,7 +1043,7 @@ public class AddressBean extends SortableList{
             Pattern pattern = Pattern.compile(extRegex);
             Matcher matcher = pattern.matcher(zip);
             if (!matcher.find()){
-    			FacesMessage msg = new FacesMessage("Invalid Zip Code entered");
+    			FacesMessage msg = new FacesMessage(validate.getClientId(context) + " - Zip code should only be 5 digits.");
     			context.addMessage(validate.getClientId(context), msg);
             }    		
         
@@ -1045,7 +1084,7 @@ public class AddressBean extends SortableList{
             Pattern pattern = Pattern.compile(extRegex);
             Matcher matcher = pattern.matcher(state);
             if (!matcher.find()){
-    			FacesMessage msg = new FacesMessage("Invalid State entered");
+    			FacesMessage msg = new FacesMessage(validate.getClientId(context) + " - State should only be 2 letters.");
     			context.addMessage(validate.getClientId(context), msg);
             }    		
         
@@ -1083,27 +1122,27 @@ public class AddressBean extends SortableList{
 
     		if(allOther.equals("")){
     			((UIInput)validate).setValid(false);
-    			FacesMessage msg = new FacesMessage("Everything with an asterisk* is required!");
+    			FacesMessage msg = new FacesMessage(validate.getClientId(context) + " - Everything with an asterisk* is required!");
     			context.addMessage(validate.getClientId(context), msg);
     		}else if(validate.getClientId(context).toLowerCase().contains("lastname") && 
 			allOther.length() > 30){
     			FacesMessage msg = 
-    				new FacesMessage("Last Name is incorrect");
+    				new FacesMessage(validate.getClientId(context) + " - Last Name cannot exceed 30 characters");
     			context.addMessage(validate.getClientId(context), msg);    			
     		}else if(validate.getClientId(context).toLowerCase().contains("firstname") &&
 				allOther.length() > 30){
     			FacesMessage msg = 
-    				new FacesMessage("First Name is incorrect");
+    				new FacesMessage(validate.getClientId(context) + " - First Name cannot exceed 30 characters");
     			context.addMessage(validate.getClientId(context), msg);    			
     		}else if(validate.getClientId(context).toLowerCase().contains("street") &&
 				allOther.length() > 150){
     			FacesMessage msg = 
-    				new FacesMessage("Street is incorrect");
+    				new FacesMessage(validate.getClientId(context) + " - Street cannot exceed 150 characters");
     			context.addMessage(validate.getClientId(context), msg);    			
     		}else if(validate.getClientId(context).toLowerCase().contains("city") &&
 				allOther.length() > 30){
     			FacesMessage msg = 
-    				new FacesMessage("City is incorrect");
+    				new FacesMessage(validate.getClientId(context) + " - City cannot exceed 30 characters");
     			context.addMessage(validate.getClientId(context), msg);    			
     		}
     	}catch (Exception exception){
@@ -1263,7 +1302,8 @@ public class AddressBean extends SortableList{
     	"2) Once found click the 'Edit' button next to the record and the fields will become editable. <br />" +
     	"3) Once you make your changes click the 'Save' button or the 'Delete button to delete the record. <br />" + 
     	"4) You can also click the 'Cancel' button to not update the record. <br />" +
-    	"*Note - Only one record can be edited at a time.";
+    	"*Note - Only one record can be edited at a time.<br />" +
+    	"*Note - You cannot perform a search while editing a field.";
     }
     
     

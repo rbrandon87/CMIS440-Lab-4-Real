@@ -122,15 +122,16 @@
 											valueChangeListener="#{AddressBean.getAddressesByLastName }" >
 							<f:selectItems value="#{AddressBean.lastNameMatches}"/>
 						</ice:selectInputText>
-						<!-- All input validation messages are displayed here in red. -->
-						<ice:messages  style="color: red"></ice:messages>
+						<ice:outputLabel value="*Press Enter to complete search" />
 						<!-- The panelGrid below is used to display notifications from the bean when
 							something like a record is added, updated, or deleted.
 						 -->
 						<ice:panelGrid border="1" columns="2">
 							<ice:outputLabel for="notifyMessage">Messages:</ice:outputLabel>
 							<ice:outputText id="notifyMessage" value="#{AddressBean.notifyMessage}"></ice:outputText>
-						</ice:panelGrid>			
+						</ice:panelGrid>
+						<!-- All input validation messages are displayed here in red. -->
+						<ice:messages  style="color: red"></ice:messages>									
 					</ice:panelGrid>
 					
 				</ice:form>
