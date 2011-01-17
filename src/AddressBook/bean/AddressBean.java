@@ -100,14 +100,13 @@ public class AddressBean extends SortableList{
 	private Addresses myTableAddress = new Addresses();
 	private Addresses myNewAddress = new Addresses();
 	private Addresses mySearchAddress = new Addresses();
-	private List<Addresses> myAddresses = new ArrayList<Addresses>();
+	private List<Addresses> myAddresses = new ArrayList<Addresses>(myAddressesDAO.findAll());
 	private List<SelectItem> lastNames;
 	private Logger myLog = new Logger();
 	private boolean instructionsVisible = false;
 	private String notifyMessage = "";
 	private Long tempEditAddressId;
-	private boolean clearSearch = true;
-	
+
     
 
 	
@@ -124,14 +123,12 @@ public class AddressBean extends SortableList{
 	public AddressBean() {
 		/**
 		 * First a call is made to the extended SortableList class to set the 
-		 * current sorted column to the 'ID' field. The clear method is called
-		 * to initialize three objects for adding, searching, and editing/deleting
-		 * Addresses entities and also to fill the myAddresses list for the 
-		 * front-end datatable.
+		 * current sorted column to the 'ID' field. MyAddressesDAO finalAll method
+		 * is called to fill the myAddresses list for the front-end datatable.
 		 */
 		super("ID");
 		try{
-			myAddresses = myAddressesDAO.findAll();
+			//myAddresses = myAddressesDAO.findAll();
 		}catch(Exception exception){
 			myLog.log(exception.getMessage());
 			notifyMessage = exception.getMessage();
@@ -139,7 +136,7 @@ public class AddressBean extends SortableList{
 		
 	}
 	
-
+	
     /** Retrieves the current address object used by the table.
      *@TheCs Cohesion - Retrieves the current address object used by the table.
 	 * Completeness - Completely retrieves the current address object used by 
@@ -420,7 +417,7 @@ public class AddressBean extends SortableList{
 				 context.addMessage("editForm:Save", msg);	
 				 
 				return "failure";
-			}				
+			}
 					
 			/**
 			 * First the EntityManagerHelper is called to initiate the transaction.
@@ -463,9 +460,8 @@ public class AddressBean extends SortableList{
 	 */		
 	public String deleteAddress(){
 		try{
-			
 			if (myTableAddress == null){
-				throw new Exception("MyTableAddress object is null on deleteAddress");
+				throw new Exception("myTableAddress object is null on deleteAddress");
 			}else if (myTableAddress.getAddressid().toString().length() == 0){
 				
 				/**
@@ -480,8 +476,7 @@ public class AddressBean extends SortableList{
 					 new FacesMessage("The record appears to not be selected for deletion.");
 				 context.addMessage("editForm:Delete", msg);				
 				return "failure";
-			}			
-			
+			}
 			/**
 			 * First the EntityManagerHelper is called to initiate the transaction.
 			 * Then, the AddressesDAO object delete method is called to remove the
@@ -496,11 +491,14 @@ public class AddressBean extends SortableList{
 			 * then the cancelEdit method is called to clear out all table
 			 * address objects and also sets the editable property to false to
 			 * indicate that the table should not have any editable fields.
-			 */				
+			 */
+			/**
+			if (myAddresses.contains(myTableAddress)){
+				myAddresses.remove(myTableAddress);
+			}*/
 			myLog.log("ID: " + myTableAddress.getAddressid() 
 					+ " Successfully deleted from database");
-			clearSearch = false;
-			clear();
+			cancelEdit();
 			notifyMessage = "Record Deleted!";
 			return "success";
 		}catch (Exception exception){
@@ -539,6 +537,8 @@ public class AddressBean extends SortableList{
 			 */
 			if ( mySearchAddress.getLastname() == null ||
 					mySearchAddress.getLastname().equals("")){
+				myAddresses = myAddressesDAO.findAll();
+				sort();
 				notifyMessage = "Showing all records";
 				
 			}else{
@@ -548,6 +548,18 @@ public class AddressBean extends SortableList{
 				 *Return here since you don't need to sort last names that are all the
 				 *same.
 				 */
+				boolean tempEditCheckNotOnList = true;
+				if (tempEditAddressId != null){
+					for (Addresses tempAddress : myAddresses){
+						if (tempAddress.getAddressid() == tempEditAddressId){
+							tempEditCheckNotOnList = false;
+							break;
+						}
+					}					
+				}
+				if (tempEditCheckNotOnList){
+					cancelEdit();
+				}
 				notifyMessage = "Showing records for specified last name";
 				return myAddresses;
 			}
@@ -556,12 +568,14 @@ public class AddressBean extends SortableList{
 			 * direction of the sorting then call the sort method to sort the addresses
 			 * before returning them.
 			 */
+			/**
 			if (!oldSort.equals(sortColumnName) ||
 					oldAscending != ascending){
 					sort();
 					oldSort = sortColumnName;
 					oldAscending = ascending;
 			}
+			*/
 			return myAddresses;
         }catch (Exception exception){
         	myLog.log(exception.getMessage());
@@ -598,14 +612,13 @@ public class AddressBean extends SortableList{
 			 * refresh the myAddresses list to ensure a complete list is being used.
 			 */
 			lastNames = new ArrayList<SelectItem>();
-			myAddresses = myAddressesDAO.findAll();
+			List<Addresses> myTempAddresses = new ArrayList<Addresses>();
 			/**
 			 * I use a HashSet here before reassigning to another ArrayList because the HashSet
 			 * will automatically remove any duplicate entries, in this case records with the
 			 * same last name.
 			 */
-			HashSet<Addresses> myTempHashSet = new HashSet<Addresses>(myAddresses);
-			List<Addresses> myTempAddresses = new ArrayList<Addresses>();
+			HashSet<Addresses> myTempHashSet = new HashSet<Addresses>(myAddressesDAO.findAll());
 			myTempAddresses.addAll(myTempHashSet);
 			Object searchWord = event.getNewValue();
 			for(int i = 0; i < myTempAddresses.size(); i++){
@@ -686,23 +699,10 @@ public class AddressBean extends SortableList{
 			if(myAddressesDAO == null){
 				throw new Exception("myAddressesDAO is null on clear");
 			}
-			myAddresses = myAddressesDAO.findAll();
 			myNewAddress = new Addresses();
-			if (clearSearch){
-				/**
-				 * Basically, there are certain times when you don't want to
-				 * clear the search result so that is why this is here. For example,
-				 * if you have three people w/ the last name pulled up and you want to
-				 * delete one and then edit the other two you would not want the search
-				 * results to be cleared after you deleted the first record.
-				 */
-				mySearchAddress.setLastname("");
-				
-			}else{
-				clearSearch = true;
-			}
-			
 			cancelEdit();
+			mySearchAddress = new Addresses();
+			myAddresses = myAddressesDAO.findAll();
 
 			/**
 			 * The code below gets the current FacesContext and forces 
@@ -737,13 +737,25 @@ public class AddressBean extends SortableList{
      * @return success       
 	 */		
 	public String cancelEdit(){
-		if(myTableAddress != null){
+		if(myTableAddress != null && tempEditAddressId != null){
 			/**
 			 * If not null then set the editable to false to clean up
 			 * the UI.
 			 */
+			if (myAddresses.contains(myTableAddress)){
+				myAddresses.get(myAddresses.indexOf(myTableAddress)).setEditable(false);
+			}else{
+				for (Addresses tempAddress : myAddresses){
+					if (tempAddress.getAddressid() == tempEditAddressId){
+						tempAddress.setEditable(false);
+						break;
+					}
+				}				
+			}
 			myTableAddress.setEditable(false);
+			
 		}
+		tempEditAddressId = null;
 		myTableAddress = new Addresses();
 		return "success";
 	}
@@ -772,17 +784,19 @@ public class AddressBean extends SortableList{
 				notifyMessage = "You can only edit one record at a time";
 				return "failure";
 			}		
-			/**
-			 * Set the myTableAddress object to the record that was clicked to be edited
-			 * by using the AddressDAO findbyID method to find the record. It will retrieve
-			 * the actually ID from the 'theAddressID' attribute set on the front-end.
-			 */			
-			myTableAddress = myAddressesDAO.findById(tempEditAddressId);
-			tempEditAddressId = null;
-			/**
-			 * Make the field editable.
-			 */
-			myTableAddress.setEditable(true);
+			if (tempEditAddressId != null){
+				/**
+				 * Set the myTableAddress object to the record that was clicked to be edited
+				 * by using the AddressDAO findbyID method to find the record. It will retrieve
+				 * the actually ID from the 'theAddressID' attribute set on the front-end.
+				 */
+				myTableAddress = myAddressesDAO.findById(tempEditAddressId);
+				/**
+				 * Make the field editable.
+				 */
+				myAddresses.get(myAddresses.indexOf(myTableAddress)).setEditable(true);
+				myTableAddress.setEditable(true);				
+			}
 			return "success";
 		
 		}catch (Exception exception){
@@ -807,7 +821,9 @@ public class AddressBean extends SortableList{
 		 * This is set by a Property Action Listener when the edit button
 		 * is clicked on the front-end.
 		 */
-		tempEditAddressId = aEditAddressId;
+		if (myTableAddress.getAddressid() == null){
+			tempEditAddressId = aEditAddressId;
+		}
 	}
 	
     /** Validates email address field.

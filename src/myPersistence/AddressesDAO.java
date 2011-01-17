@@ -242,6 +242,10 @@ public class AddressesDAO {
 		myLog.log("finding Addresses instance with property: "
 				+ propertyName + ", value: " + value + Level.INFO);
 		try {
+			/**
+			 * I added the 'lower()' tag to the SQL statement below to make this a case 
+			 * insensitive search.
+			 */
 			final String queryString = "select model from Addresses model where lower(model."
 					+ propertyName + ")= lower(:propertyValue)";
 			Query query = getEntityManager().createQuery(queryString);

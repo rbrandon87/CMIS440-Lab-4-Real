@@ -151,8 +151,8 @@
                         			<ice:outputText value="ID" />
                     			</ice:commandSortHeader>					
 							</f:facet>
-							<ice:outputText value="#{myAddresses.addressid}" rendered="#{myAddresses.editable}" />
-    						<ice:outputText value="#{myAddresses.addressid}" rendered="#{not myAddresses.editable}"  />					
+							<ice:outputText value="#{AddressBean.currentTableAddress.addressid}" rendered="#{myAddresses.editable}" />
+    						<ice:outputText value="#{myAddresses.addressid}"  rendered="#{not myAddresses.editable}" />					
 						</ice:column>
 						<ice:column>
 							<f:facet name="header">
@@ -182,7 +182,7 @@
 							</f:facet>
     						<ice:inputText id="editStreet" value="#{AddressBean.currentTableAddress.street}" validator="#{AddressBean.validateAllOthers}"   
     										maxlength="150" required="true" rendered="#{myAddresses.editable}" />
-    						<ice:outputText value="#{myAddresses.street}" rendered="#{not myAddresses.editable}" />					
+    						<ice:outputText value="#{myAddresses.street}"  rendered="#{not myAddresses.editable}" />					
 						</ice:column>
 						<ice:column>
 							<f:facet name="header">
@@ -192,7 +192,7 @@
 							</f:facet>
     						<ice:inputText id="editCity" value="#{AddressBean.currentTableAddress.city}"  validator="#{AddressBean.validateAllOthers}"  
     										maxlength="30" required="true" rendered="#{myAddresses.editable}" />
-    						<ice:outputText value="#{myAddresses.city}" rendered="#{not myAddresses.editable}" />							
+    						<ice:outputText value="#{myAddresses.city}"  rendered="#{not myAddresses.editable}" />							
 						</ice:column>
 						<ice:column>
 							<f:facet name="header">
@@ -202,7 +202,7 @@
 							</f:facet>
     						<ice:inputText id="editState" value="#{AddressBean.currentTableAddress.state}"  validator="#{AddressBean.validateState}"  
     										maxlength="2" required="true" rendered="#{myAddresses.editable}" />
-    						<ice:outputText value="#{myAddresses.state}" rendered="#{not myAddresses.editable}" />							
+    						<ice:outputText value="#{myAddresses.state}"  rendered="#{not myAddresses.editable}" />							
 						</ice:column>
 						<ice:column>
 							<f:facet name="header">
@@ -212,7 +212,7 @@
 							</f:facet>
     						<ice:inputText id="editZip" value="#{AddressBean.currentTableAddress.zip}"  validator="#{AddressBean.validateZip}"  
     										maxlength="5" required="true" rendered="#{myAddresses.editable}" />
-    						<ice:outputText value="#{myAddresses.zip}" rendered="#{not myAddresses.editable}" />	
+    						<ice:outputText value="#{myAddresses.zip}"  rendered="#{not myAddresses.editable}" />	
 						</ice:column>
 						<ice:column>
 							<f:facet name="header">
@@ -223,7 +223,7 @@
     						<ice:inputText id="editEmailAddress" value="#{AddressBean.currentTableAddress.emailaddress}"  validator="#{AddressBean.validateEmail}" 
     										maxlength="50" required="true" rendered="#{myAddresses.editable}" />
     						<ice:outputLink value="mailto:#{myAddresses.emailaddress}">				
-  								<ice:outputText value="#{myAddresses.emailaddress}"  rendered="#{not myAddresses.editable}" 
+  								<ice:outputText value="#{myAddresses.emailaddress}" rendered="#{not myAddresses.editable}"  
   												style="color: blue;text-decoration: underline;"/>
   							</ice:outputLink>	
 						</ice:column>
@@ -249,9 +249,9 @@
 								<ice:commandButton value="Delete"  partialSubmit="true" action="#{AddressBean.deleteAddress}" 
 													rendered="#{ myAddresses.editable}">
 								</ice:commandButton>
-								<ice:commandButton value="Cancel"  partialSubmit="true" action="#{AddressBean.cancelEdit}" 
+								<!--<ice:commandButton value="Cancel"  partialSubmit="true" action="#{AddressBean.cancelEdit}" 
 													rendered="#{ myAddresses.editable}">
-								</ice:commandButton>																	
+								</ice:commandButton>-->																	
 						</ice:column>
 				</ice:dataTable>		
 				<!-- The paginator below allows the user to decide which rows to look at through the use of arrow keys. -->
