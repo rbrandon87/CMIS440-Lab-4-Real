@@ -6,7 +6,8 @@
  @Course CMIS440
  Date: Jan 6, 2011
 
-
+This xml is mainly used to define the AddressBean as session scoped
+and also to define navigation rules.
  -->
 
 <faces-config version="1.2" xmlns="http://java.sun.com/xml/ns/javaee"

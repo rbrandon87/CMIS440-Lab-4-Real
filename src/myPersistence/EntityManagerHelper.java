@@ -74,6 +74,11 @@ public class EntityManagerHelper {
 	 * @return manager EntityManager from local thread                           
 	 */			
 	public static EntityManager getEntityManager() {
+		/**
+		 * Get the entity manager on the local thread and if it is null
+		 * or not open then create another one from the entity manager
+		 * factory and set it to the local thread and then return it.
+		 */
 		EntityManager manager = threadLocal.get();		
 		if (manager == null || !manager.isOpen()) {
 			manager = emf.createEntityManager();
@@ -92,9 +97,13 @@ public class EntityManagerHelper {
 	 *               continues to use proper casing and indentation.                           
 	 */				
 	 public static void closeEntityManager() {
-        EntityManager em = threadLocal.get();
-        threadLocal.set(null);
-        if (em != null) em.close();
+		 /**
+		  * Get the entity manager on the local thread, get rid of the 
+		  * local thread, and if not null close the entity manager. 
+		  */
+		 EntityManager em = threadLocal.get();
+         threadLocal.set(null);
+         if (em != null) em.close();
     }
     
 	/** Starts a transaction on the entity manager.

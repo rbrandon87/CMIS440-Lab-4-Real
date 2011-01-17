@@ -405,11 +405,11 @@ public class Addresses implements java.io.Serializable {
 	}
 	
     /**
-	  * This method takes the records last name and multiplies its hashCode by 17
+	  * This method takes the records address id and multiplies its hashCode by 17
 	  * , a prime number, to create a unique hashCode that will later be used 
 	  * to test for equality of Addresses objects in the AddressBean class.
 	  * @TheCs Cohesion - Sets the hashCode of the Addresses object to 17 times
-	  *                   the last name. 17 used since it's a prime
+	  *                   the address id. 17 used since it's a prime
 	  * Completeness - Completely sets the hashCode of the Addresses object.
 	  * Convenience -  Simply sets the hashCode of the Addresses object.
 	  * Clarity - It is simple to understand that this sets the hashCode of the
@@ -420,7 +420,7 @@ public class Addresses implements java.io.Serializable {
 	  */
 	@Override
 	public int hashCode(){
-		return 17 * getLastname().hashCode();
+		return 17 * getAddressid().hashCode();
 	}
 
 	/**

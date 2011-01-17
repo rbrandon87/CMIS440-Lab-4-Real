@@ -107,7 +107,7 @@ public class AddressesDAO {
 			getEntityManager().persist(entity);
 			myLog.log("save successful - " + Level.INFO);
 		} catch (RuntimeException re) {
-			myLog.log("save failed - " + re + Level.SEVERE);
+			myLog.log("save failed - " + re + " - " + Level.SEVERE);
 			throw re;
 		}
 	}
@@ -145,7 +145,7 @@ public class AddressesDAO {
 			getEntityManager().remove(entity);
 			myLog.log("delete successful - " + Level.INFO);
 		} catch (RuntimeException re) {
-			myLog.log("delete failed - " + re + Level.SEVERE);
+			myLog.log("delete failed - " + re + " - " + Level.SEVERE);
 			throw re;
 		}
 	}
@@ -186,7 +186,7 @@ public class AddressesDAO {
 			myLog.log("update successful - " + Level.INFO);
 			return result;
 		} catch (RuntimeException re) {
-			myLog.log("update failed - " + re + Level.SEVERE);
+			myLog.log("update failed - " + re + " - " + Level.SEVERE);
 			throw re;
 		}
 	}
@@ -210,7 +210,7 @@ public class AddressesDAO {
 			Addresses instance = getEntityManager().find(Addresses.class, id);
 			return instance;
 		} catch (RuntimeException re) {
-			myLog.log("find failed - " + re + Level.SEVERE);
+			myLog.log("find failed - " + re + " - " + Level.SEVERE);
 			throw re;
 		}
 	}
@@ -248,8 +248,15 @@ public class AddressesDAO {
 			 */
 			final String queryString = "select model from Addresses model where lower(model."
 					+ propertyName + ")= lower(:propertyValue)";
+			/**
+			 * Create the query on the entity manager and set the parameters.
+			 */
 			Query query = getEntityManager().createQuery(queryString);
 			query.setParameter("propertyValue", value);
+			/**
+			 * Everything below is using a optional parameter where you can
+			 * set the max results to return.
+			 */
 			if (rowStartIdxAndCount != null && rowStartIdxAndCount.length > 0) {
 				int rowStartIdx = Math.max(0, rowStartIdxAndCount[0]);
 				if (rowStartIdx > 0) {
@@ -265,7 +272,7 @@ public class AddressesDAO {
 			}
 			return query.getResultList();
 		} catch (RuntimeException re) {
-			myLog.log("find by property name failed" + re + Level.SEVERE);
+			myLog.log("find by property name failed" + re + " - " + Level.SEVERE);
 			throw re;
 		}
 	}
@@ -455,7 +462,14 @@ public class AddressesDAO {
 		myLog.log("finding all Addresses instances - " + Level.INFO);
 		try {
 			final String queryString = "select model from Addresses model";
+			/**
+			 * Create the query on the entity manager.
+			 */
 			Query query = getEntityManager().createQuery(queryString);
+			/**
+			 * Everything below is using a optional parameter where you can
+			 * set the max results to return.
+			 */			
 			if (rowStartIdxAndCount != null && rowStartIdxAndCount.length > 0) {
 				int rowStartIdx = Math.max(0, rowStartIdxAndCount[0]);
 				if (rowStartIdx > 0) {
@@ -471,7 +485,7 @@ public class AddressesDAO {
 			}
 			return query.getResultList();
 		} catch (RuntimeException re) {
-			myLog.log("find all failed - " + re + Level.SEVERE);
+			myLog.log("find all failed - " + re + " - " + Level.SEVERE);
 			throw re;
 		}
 	}

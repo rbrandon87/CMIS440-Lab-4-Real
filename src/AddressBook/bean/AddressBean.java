@@ -7,46 +7,54 @@ package AddressBook.bean;
 * Date: Jan 6, 2011
 * IDE: MyEclipse 9.0 M1
 * OS: Windows 7 64 bit
-* Java: JDK 1.6.0_13, Java EE 5, JSF 1.2, JPA 2.0, IceFaces 1.8.1, GlassFish 2.1.1 
-* 																& GlassFish v3 Prelude
+* Java: JDK 1.6.0_13, Java EE 5, JSF 1.2, JPA 1.0 w/ Derby and EclipseLink, 
+*		IceFaces 1.8.1, GlassFish 2.1.1 & GlassFish v3 Prelude
 * Tested on Firefox 3.6.13 w/ 22in, 17in, and 14in monitors w/ 1680x1050, 1440x900, 
 * 													and 1280x1024 resolution settings.
-* Files: AddressBean.java, Logger.java, SortableList.java, Addresses.java, AddressesDAO.java,
-* 		 EntityManagerHelper.java, persistence.xml, faces-config.xml, web.xml, AddressBook.jspx,
-* 		 AddressBookCSS.css, index.html, ErrorPage.jspx, ErrorPageCSS.css, ErrorRedirect.jsp
+* Files: AddressBean.java, Logger.java, SortableList.java, Addresses.java, 
+* 		 AddressesDAO.java, EntityManagerHelper.java, persistence.xml, faces-config.xml,
+*        web.xml, AddressBook.jspx, AddressBookCSS.css, index.html, ErrorPage.jspx,
+*        ErrorPageCSS.css, ErrorRedirect.jsp
 *
 * Program Requirements: 
 *Minimum Assignment Requirements. Extend the example web application in Chapter 30 as follows:
-*Add fields for Email Address and Phone Number to the Addresses Table in the AddressBook database.
+*Add fields for Email Address and Phone Number to the Addresses Table in the AddressBook 
+*	database.
 *Add labels and text fields, with appropriate validators, to all presentation forms for the 
-*Email Address and Phone Number fields.
-*Implement a delete record functionality. The basic approach is to have the user search for a record 
-*and then be given the option to delete this record.
-*Implement an update record functionality. The basic approach is to have the user search for a record and 
-*then be allowed to make changes and save these changes back to the database.
-*Assignment Optional Implementations: 
-*Incorporate trace logging into the Java code classes. These trace logs are invaluable in tracking down customer
-*reported issues. When writing to your log file, ask yourself: 'What will I need to know if a customer reports 
-*an issue and all I have is my trace log to analysis and resolve the issue'. To implement your trace logging, 
-*create a class called Logger that takes a file name and optional path in its constructor and provides one or more 
-*log methods. The default file name will be AddressBook.log and the default file path will be the current working
-*directory. Possible log methods might be: 
+*	Email Address and Phone Number fields.
+*Implement a delete record functionality. The basic approach is to have the user search
+* 	for a record and then be given the option to delete this record.
+*Implement an update record functionality. The basic approach is to have the user search
+* 	for a record and then be allowed to make changes and save these changes back to the 
+* 	database.
+* Assignment Optional Implementations: 
+*Incorporate trace logging into the Java code classes. These trace logs are invaluable in
+* 	tracking down customer reported issues. When writing to your log file, ask yourself:
+*   'What will I need to know if a customer reports an issue and all I have is my trace 
+*   log to analysis and resolve the issue'. To implement your trace logging, create a class
+*   called Logger that takes a file name and optional path in its constructor and provides
+*   one or more log methods. The default file name will be AddressBook.log and the default
+*   file path will be the current working directory. Possible log methods might be: 
 *log(String msg) - log the given message to the provided Path/File Name. 
-*log(String msg, int value) - log the given message and value to the provided Path/File Name in a format: message = value 
+*log(String msg, int value) - log the given message and value to the provided Path/File Name 
+*	in a format: message = value 
 *
-* Program Design: The basic program design is that once the program is loaded the user can enter into one form a new address
-* to be entered into the database. In the next form the user has the option to do a search by last name, which utilizes 
-* autocomplete, and displays the results in the datatable. Finally, the datatable/form allows the user to view and also
-* edit/delete records. I went with a MVC design: the AddressBook.bean package is my Controller, the myPersistence package
-* is my Model, and the WebRoot files are my View.
+* Program Design: The basic program design is that once the program is loaded the user 
+* can enter into one form a new address to be entered into the database. In the next 
+* form the user has the option to do a search by last name, which utilizes autocomplete,
+* and displays the results in the datatable. Finally, the datatable/form allows the 
+* user to view and also edit/delete records. I went with a MVC design: the 
+* AddressBook.bean package is my Controller, the myPersistence package is my Model,
+* and the WebRoot files are my View.
 *
-* Things you what me to know before I grade your work: Using MyEclipse, most of the persistence files in myPersistence package
-* were auto-generated by the IDE; however, even still I did go through each file making specific changes I needed plus adding
-* my own comments and styling throughout. Also, I've been banging my head against this one for the duration of this project,
-* for some reason you have to occasionally hit the 'Clear' button to make the 'Edit' and 'Add' buttons work.
-* It happens randomly and it never throws any exceptions and never puts anything into the log,
-* but every so often those buttons will stop working, and I mean even while debugging I saw that they weren't even making a 
-* call to the backing bean, and you have to hit the clear button to make everything work again.
+* Things you what me to know before I grade your work: Using MyEclipse, most of the 
+* persistence files in myPersistence package were auto-generated by the IDE; however,
+* even still I did go through each file making specific changes I needed plus adding
+* my own comments and styling throughout. The projects appears to work well on both
+* Glassfish 2.1.1 and v3 Prelude, but I think for some reason it works best on 
+* Glassfish 2.1.1. Also, I definitely went beyond the 80 character mark in a lot of
+* these files, but for some areas here and especially in the front-end code it was 
+* just more feasible to go beyond 80 characters.
 */
 
 /** This class manages interaction between front-end and back-end classes.
@@ -100,12 +108,12 @@ public class AddressBean extends SortableList{
 	private Addresses myTableAddress = new Addresses();
 	private Addresses myNewAddress = new Addresses();
 	private Addresses mySearchAddress = new Addresses();
-	private List<Addresses> myAddresses = new ArrayList<Addresses>(myAddressesDAO.findAll());
-	private List<SelectItem> lastNames;
+	private List<Addresses> myAddresses = new ArrayList<Addresses>();
+	private List<SelectItem> lastNames;//Used for auto-complete in search field
 	private Logger myLog = new Logger();
 	private boolean instructionsVisible = false;
-	private String notifyMessage = "";
-	private Long tempEditAddressId;
+	private String notifyMessage = ""; //Send messages to front-end
+	private Long tempEditAddressId; //Holds ID of Address object being edited.
 
     
 
@@ -117,8 +125,7 @@ public class AddressBean extends SortableList{
 	 * Clarity - It is simple to understand that this initializes an
      *           AddressBean object.
 	 * Consistency - It uses the same syntax rules as the rest of the class and
-	 *               continues to use proper casing and indentation.
-	 * @exception Exception general exception capture               
+	 *               continues to use proper casing and indentation.             
 	 */	
 	public AddressBean() {
 		/**
@@ -127,13 +134,6 @@ public class AddressBean extends SortableList{
 		 * is called to fill the myAddresses list for the front-end datatable.
 		 */
 		super("ID");
-		try{
-			//myAddresses = myAddressesDAO.findAll();
-		}catch(Exception exception){
-			myLog.log(exception.getMessage());
-			notifyMessage = exception.getMessage();
-		}
-		
 	}
 	
 	
@@ -302,18 +302,41 @@ public class AddressBean extends SortableList{
 		}					
 	}	
 
-    /** Sets the current list of addresses to another list of addresses.
-     *@TheCs Cohesion - Sets the current list of addresses to another list
-     *                  of addresses.
-	 * Completeness - Completely sets the current list of addresses to another 
-	 *                list of addresses.
-	 * Convenience - Simply sets the current list of addresses to another list
-	 *               of addresses.
-	 * Clarity - It is simple to understand that this sets the current list of
-	 *           addresses to another list of addresses.
+    /** Retrieves the address DAO object.
+     *@TheCs Cohesion - Retrieves the address DAO object.
+	 * Completeness - Completely retrieves the address DAO object.
+	 * Convenience - Simply retrieves the address DAO object.
+	 * Clarity - It is simple to understand that this retrieves the 
+	 *           address DAO object.
 	 * Consistency - It uses the same syntax rules as the rest of the class and
 	 *               continues to use proper casing and indentation.
-	 * @param addressesDAO set the addresses list to another addresses list   
+	 * @return myAddressesDAO object 
+	 * @throws Exception if myAddressesDAO is null
+	 * @exception Exception general exception capture               
+	 */		
+	public AddressesDAO getAddressDao(){
+		try{
+			if (myAddressesDAO == null){
+				throw new Exception(
+						"The Address DAO object is null on getAddressDao!");
+			}			
+			return myAddressesDAO;
+		}catch (Exception exception){
+			myLog.log(exception.getMessage());
+			notifyMessage = exception.getMessage();
+			return null;
+		}			
+	}	
+	
+    /** Sets the address DAO object.
+     *@TheCs Cohesion - Sets the address DAO object.
+	 * Completeness - Completely sets the address DAO object.
+	 * Convenience - Simply sets the address DAO object.
+	 * Clarity - It is simple to understand that this sets the address
+	 * 	 	     DAO object.
+	 * Consistency - It uses the same syntax rules as the rest of the class and
+	 *               continues to use proper casing and indentation.
+	 * @param addressesDAO set the address DAO object.   
 	 * @throws Exception if addressesDAO is null
 	 * @exception Exception general exception capture            
 	 */			
@@ -350,10 +373,8 @@ public class AddressBean extends SortableList{
 				throw new Exception("New Address object is null on addAddress");
 			}else if (context.getMessages().hasNext()){
 				/**
-				 * Here, if any of the fields are left blank then it creates a 
-				 * new message to be displayed on the web site and returns instead
-				 * of attempting to add a record since all of the fields are 
-				 * required.
+				 * Here, if there are any error messages, let the user know
+				 * they need to clear these messages before adding a new record.
 				 */
 				FacesMessage msg = 
 					new FacesMessage("Clear all errors before adding record!");
@@ -404,14 +425,10 @@ public class AddressBean extends SortableList{
 			if (myTableAddress == null){
 				throw new Exception("MyTableAddress object is null on updateAddress");
 			}else if (context.getMessages().hasNext()){
-				
 				/**
-				 * Here, if any of the fields are left blank then it creates a 
-				 * new message to be displayed on the web site and returns instead
-				 * of attempting to update a record since all of the fields are 
-				 * required.
-				 */				
-				
+				 * Here, if there are any error messages, let the user know
+				 * they need to clear these messages before updating a new record.
+				 */
 				 FacesMessage msg = 
 					 new FacesMessage("Clear all errors before saving record!");
 				 context.addMessage("editForm:Save", msg);	
@@ -466,7 +483,7 @@ public class AddressBean extends SortableList{
 				
 				/**
 				 * Here, if the addressid field is blank then it creates a 
-				 * new message to be displayed on the web site and returns instead
+				 * new message to be displayed on the front-end and returns instead
 				 * of attempting to delete a record since this is required to  
 				 * delete the record.
 				 */				
@@ -492,10 +509,6 @@ public class AddressBean extends SortableList{
 			 * address objects and also sets the editable property to false to
 			 * indicate that the table should not have any editable fields.
 			 */
-			/**
-			if (myAddresses.contains(myTableAddress)){
-				myAddresses.remove(myTableAddress);
-			}*/
 			myLog.log("ID: " + myTableAddress.getAddressid() 
 					+ " Successfully deleted from database");
 			cancelEdit();
@@ -522,65 +535,66 @@ public class AddressBean extends SortableList{
 	 * @exception Exception general exception capture              
 	 */		
 	public List<Addresses> getAllAddresses(){
-
 		try{
 			if(mySearchAddress == null || myAddressesDAO == null){
 				throw new Exception(
 						"One or more objects required by the getAllAddresses are set to null!");
 			}
 			/**
-			 * First, if mySearchAddress object doesn't have a first name set then do
-			 * nothing to myAddresses List since it will already have in it at this point
-			 * a current copy of all of the addresses objects. Else use the .findByLastname
+			 * First, if mySearchAddress object doesn't have a last name set then 
+			 * fill myAddresses List w/ all records and sort. Else use the .findByLastname
 			 * method of the AddressesDAO object to populate the list with all records that
 			 * match the last name entered.
 			 */
 			if ( mySearchAddress.getLastname() == null ||
 					mySearchAddress.getLastname().equals("")){
+				/**
+				 * If the search field is blank get all the address objects and
+				 * then sort before returning.
+				 */
 				myAddresses = myAddressesDAO.findAll();
-				sort();
+				sort(); //Sort myAddresses
 				notifyMessage = "Showing all records";
+				return myAddresses;
 				
 			}else{
+				/**
+				 * Return records matching search criteria.
+				 */
 				myAddresses =  
 					myAddressesDAO.findByLastname(mySearchAddress.getLastname());
 				/**
-				 *Return here since you don't need to sort last names that are all the
-				 *same.
+				 * Below, if a field is being edited and a search is initiated
+				 * during the edit, make sure the field being edited is in the
+				 * new search results, otherwise cancel the edit.
 				 */
 				boolean tempEditCheckNotOnList = true;
 				if (tempEditAddressId != null){
 					for (Addresses tempAddress : myAddresses){
 						if (tempAddress.getAddressid() == tempEditAddressId){
+							/**
+							 * If record is found, set to false and break out
+							 * of loop since edited field is in search criteria
+							 * it can remain editable.
+							 */
 							tempEditCheckNotOnList = false;
 							break;
 						}
 					}					
 				}
 				if (tempEditCheckNotOnList){
+					/**
+					 * Cancel edit if not within new search criteria
+					 */
 					cancelEdit();
 				}
 				notifyMessage = "Showing records for specified last name";
 				return myAddresses;
-			}
-			/**
-			 * If the user has changed the column to sort on or if they have changed the
-			 * direction of the sorting then call the sort method to sort the addresses
-			 * before returning them.
-			 */
-			/**
-			if (!oldSort.equals(sortColumnName) ||
-					oldAscending != ascending){
-					sort();
-					oldSort = sortColumnName;
-					oldAscending = ascending;
-			}
-			*/
-			return myAddresses;
+			}			
         }catch (Exception exception){
         	myLog.log(exception.getMessage());
         	notifyMessage = exception.getMessage();
-        	return myAddresses;
+        	return null;
         }
         
 	}
@@ -608,27 +622,44 @@ public class AddressBean extends SortableList{
 						"The myAddressesDAO object is null on getAddressesByLastName!");
 			}
 			/**
-			 * This will take what the user typed into the searchWord object and also
-			 * refresh the myAddresses list to ensure a complete list is being used.
+			 * This will take what the user typed into the searchWord object,
+			 * makes a temp list of all addresses, makes a temp string list, and
+			 * adds all last names to this list. 
 			 */
 			lastNames = new ArrayList<SelectItem>();
-			List<Addresses> myTempAddresses = new ArrayList<Addresses>();
+			List<Addresses> myTempAddresses = new ArrayList<Addresses>(myAddressesDAO.findAll());
+			List<String> myTempLastNames = new ArrayList<String>();
+			for (Addresses tempAddress : myTempAddresses){
+				/**
+				 * Add last names to list, make them all lower case so the hashset will remove
+				 * ALL duplicates.
+				 */
+				myTempLastNames.add(tempAddress.getLastname().toLowerCase());
+			}
 			/**
-			 * I use a HashSet here before reassigning to another ArrayList because the HashSet
-			 * will automatically remove any duplicate entries, in this case records with the
-			 * same last name.
+			 * I use a HashSet here before reassigning back to the ArrayList because the HashSet
+			 * will automatically remove any duplicate entries, in this case elements with the
+			 * same last name. 
 			 */
-			HashSet<Addresses> myTempHashSet = new HashSet<Addresses>(myAddressesDAO.findAll());
-			myTempAddresses.addAll(myTempHashSet);
+			HashSet<String> myTempHashSet = new HashSet<String>(myTempLastNames);
+			/**
+			 * Now that the HashSet has removed duplicate last names clear the temp
+			 * last names array list and reassign to the elements of the HashSet.
+			 */
+			myTempLastNames.clear();
+			myTempLastNames.addAll(myTempHashSet);
+			/**
+			 * Below, get the information inputed into the search field.
+			 */
 			Object searchWord = event.getNewValue();
-			for(int i = 0; i < myTempAddresses.size(); i++){
-				if (myTempAddresses.get(i).getLastname().length() == 0){
+			for(int i = 0; i < myTempLastNames.size(); i++){
+				if (myTempLastNames.get(i).length() == 0){
 					/**
 					 * If for some reason the last name on this record is nothing
 					 * then skip it.
 					 */
 					
-				}else if (myTempAddresses.get(i).getLastname().length() < 
+				}else if (myTempLastNames.get(i).length() < 
 						searchWord.toString().length()){
 					/**
 					 * If the length of the last name in this record is shorter 
@@ -636,7 +667,7 @@ public class AddressBean extends SortableList{
 					 * match so skip it.
 					 */
 				
-				}else if(myTempAddresses.get(i).getLastname()
+				}else if(myTempLastNames.get(i)
 						.substring(0,searchWord.toString().length())
 						.equalsIgnoreCase(searchWord.toString())){
 					/**
@@ -647,8 +678,8 @@ public class AddressBean extends SortableList{
 					 */
 					
 					lastNames.add(
-							new SelectItem(myTempAddresses.get(i).getLastname(),
-										   myTempAddresses.get(i).getLastname()));
+							new SelectItem(myTempLastNames.get(i),
+										   myTempLastNames.get(i)));
 				}
 			}		
         }catch (Exception exception){
@@ -696,14 +727,9 @@ public class AddressBean extends SortableList{
 	 */		
 	public String clear(){
 		try{
-			if(myAddressesDAO == null){
-				throw new Exception("myAddressesDAO is null on clear");
-			}
 			myNewAddress = new Addresses();
-			cancelEdit();
 			mySearchAddress = new Addresses();
-			myAddresses = myAddressesDAO.findAll();
-
+			cancelEdit();
 			/**
 			 * The code below gets the current FacesContext and forces 
 			 * the page to rerender, making sure a good 'Clear' is made.
@@ -743,10 +769,23 @@ public class AddressBean extends SortableList{
 			 * the UI.
 			 */
 			if (myAddresses.contains(myTableAddress)){
+				/**
+				 * First, check to see if the current myTableAddress object is in the myAddresses
+				 * list and if so set it's editable to false.
+				 */
 				myAddresses.get(myAddresses.indexOf(myTableAddress)).setEditable(false);
 			}else{
+				/**
+				 * Else, loop over all of the Address objects in the myAddresses
+				 * list to find the object with the matching Address ID and set it's
+				 * editable to false.
+				 */
 				for (Addresses tempAddress : myAddresses){
 					if (tempAddress.getAddressid() == tempEditAddressId){
+						/**
+						 * Once found, set editable to false and break out
+						 * of loop.
+						 */
 						tempAddress.setEditable(false);
 						break;
 					}
@@ -788,11 +827,14 @@ public class AddressBean extends SortableList{
 				/**
 				 * Set the myTableAddress object to the record that was clicked to be edited
 				 * by using the AddressDAO findbyID method to find the record. It will retrieve
-				 * the actually ID from the 'theAddressID' attribute set on the front-end.
+				 * the address record using the ID from the 'theAddressID' attribute 
+				 * set on the front-end.
 				 */
 				myTableAddress = myAddressesDAO.findById(tempEditAddressId);
 				/**
-				 * Make the field editable.
+				 * Make the field editable by setting the myTableAddress editable to true
+				 * and also finding this record in the current myAddresses list and setting
+				 * it's editable to true.
 				 */
 				myAddresses.get(myAddresses.indexOf(myTableAddress)).setEditable(true);
 				myTableAddress.setEditable(true);				
@@ -821,7 +863,12 @@ public class AddressBean extends SortableList{
 		 * This is set by a Property Action Listener when the edit button
 		 * is clicked on the front-end.
 		 */
-		if (myTableAddress.getAddressid() == null){
+		if (myTableAddress.getAddressid() == null && aEditAddressId != null){
+			/**
+			 * Make sure another record isn't being edited first and also that
+			 * the variable being set to isn't null then set the address id 
+			 * variable.
+			 */
 			tempEditAddressId = aEditAddressId;
 		}
 	}
@@ -842,11 +889,11 @@ public class AddressBean extends SortableList{
     public void validateEmail(FacesContext context, 
     		UIComponent validate, Object value){
     	try{
-    		if(context == null){
-    			throw new Exception("FacesContext null on validateEmail");
+    		if(context == null || validate == null || value == null){
+    			throw new Exception("One or more components are null on validateEmail");
     		}
     
-    		String email = (String)value;
+    		String email = (String)value; //Email address to be checked
 
     		/**
     		 * This regex ensures the email entered matches RFC 2822. I won't take credit for
@@ -892,11 +939,11 @@ public class AddressBean extends SortableList{
     public void validatePhone(FacesContext context, 
     		UIComponent validate, Object value){
     	try{
-    		if(context == null){
-    			throw new Exception("FacesContext null on validatePhone");
+    		if(context == null || validate == null || value == null){
+    			throw new Exception("One or more components are null on validatePhone");
     		}
     		
-    		String phone = (String)value;
+    		String phone = (String)value;//Phone number to be checked
     		
     		/**
     		 * This regex ensures the phone number entered is a valid North America
@@ -942,11 +989,11 @@ public class AddressBean extends SortableList{
     public void validateZip(FacesContext context, 
     		UIComponent validate, Object value){
     	try{
-    		if(context == null){
-    			throw new Exception("FacesContext null on validateZip");
+    		if(context == null || validate == null || value == null){
+    			throw new Exception("One or more components are null on validateZip");
     		}
     		
-    		String zip = (String)value;
+    		String zip = (String)value;//Zip code to be checked
     		
     		/**
     		 * This regex ensures the zip code entered is only digits
@@ -983,11 +1030,11 @@ public class AddressBean extends SortableList{
     public void validateState(FacesContext context, 
     		UIComponent validate, Object value){
     	try{
-    		if(context == null){
-    			throw new Exception("FacesContext null on validateState");
+    		if(context == null || validate == null || value == null){
+    			throw new Exception("One or more components are null on validateState");
     		}
     		
-    		String state = (String)value;
+    		String state = (String)value;//State to be checked
     		
     		/**
     		 * This regex ensures the state entered only contains letters
@@ -1023,16 +1070,16 @@ public class AddressBean extends SortableList{
 	 */	    
     public void validateAllOthers(FacesContext context, UIComponent validate, Object value){
     	try{
-    		if(context == null){
-    			throw new Exception("FacesContext null on validateEmail");
-    		}    		
+    		if(context == null || validate == null || value == null){
+    			throw new Exception("One or more components are null on validateAllOthers");
+    		}
     
     		/**
     		 * Each of the else if statements check the clientID of the component in 
     		 * question and will check the size to make sure none of the fields are
     		 * larger than what is allowed by the database.
     		 */    		
-    		String allOther = (String)value;
+    		String allOther = (String)value; //Value to be checked
 
     		if(allOther.equals("")){
     			((UIInput)validate).setValid(false);
@@ -1146,6 +1193,10 @@ public class AddressBean extends SortableList{
     				} else return 0;
     				}
     			};
+    			/**
+    			 * Finally, after comparator is created use below to
+    			 * sort myAddresses.
+    			 */
     			Collections.sort(myAddresses, comparator);
         
         }catch (Exception exception){
@@ -1155,14 +1206,14 @@ public class AddressBean extends SortableList{
         
     }
         
-    /** Opens/Closes the Instructions Popup by setting it's boolean to true.
-     *@TheCs Cohesion - Opens/Closes the Instructions Popup by setting it's boolean to true.
+    /** Opens/Closes the Instructions Popup by setting it's boolean to true/false.
+     *@TheCs Cohesion - Opens/Closes the Instructions Popup by setting it's boolean to true/false.
 	 * Completeness - Completely opens/closes the Instructions Popup by setting it's boolean
-	 *                to true.
+	 *                to true/false.
 	 * Convenience - Simply opens/closes the Instructions Popup by setting it's boolean
-	 *                to true.
+	 *                to true/false.
 	 * Clarity - It is simple to understand that this opens/closes the Instructions Popup by 
-	 *           setting it's boolean to true.
+	 *           setting it's boolean to true/false.
 	 * Consistency - It uses the same syntax rules as the rest of the class and
 	 *               continues to use proper casing and indentation.
      * @return success
@@ -1216,15 +1267,18 @@ public class AddressBean extends SortableList{
     }
     
     
-    /** Returns a notification when a record is added, updated, or deleted.
-     *@TheCs Cohesion - Returns a notification when a record is added, updated, or deleted.
-	 * Completeness - Completely a notification when a record is added, updated, or deleted.
-	 * Convenience - Simply a notification when a record is added, updated, or deleted.
+    /** Returns a notification when a record is added, updated, deleted, and when records are shown.
+     *@TheCs Cohesion - Returns a notification when a record is added, updated,
+     * 					deleted, and when records are shown
+	 * Completeness - Completely returns a notification when a record is added, updated,
+	 * 				  deleted, and when records are shown
+	 * Convenience - Simply returns a notification when a record is added, updated, 
+	 * 		 	 	 deleted, and when records are shown
 	 * Clarity - It is simple to understand that this returns a notification when a record 
-	 * 			 is added, updated, or deleted.
+	 * 			 is added, updated, deleted, and when records are shown
 	 * Consistency - It uses the same syntax rules as the rest of the class and
 	 *               continues to use proper casing and indentation.
-     * @return a notification when a record is added, updated, or deleted
+     * @return a notification when a record is added, updated, deleted, and when records are shown
      */      
     public String getNotifyMessage(){
     	return notifyMessage;

@@ -73,12 +73,20 @@
   <servlet-name>uploadServlet</servlet-name>
   <url-pattern>/uploadHtml</url-pattern>
  </servlet-mapping>
+ <!-- Everything above is auto-generated code, but below
+ 	I set the session timeout to 60 minutes so you won't have
+ 	to reload the page for up to one hour of inactivity 
+  -->
  <session-config>
   <session-timeout>60</session-timeout>
  </session-config>
+ <!-- I made index.html the welcome page which redirects
+ 	to the AddressBook.jspx page 
+  -->
  <welcome-file-list>
   <welcome-file>/index.html</welcome-file>
  </welcome-file-list>
+ <!-- Below tells where to redirect for the error page. -->
  <error-page>
   <exception-type>java.lang.Throwable</exception-type>
   <location>/ErrorRedirect.jsp</location>

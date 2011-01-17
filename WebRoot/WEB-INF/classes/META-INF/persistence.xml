@@ -6,7 +6,8 @@
  @Course CMIS440
  Date: Jan 6, 2011
 
-
+This is the persistence xml file which contains all of the
+connection information for the derby database.
  -->
 
 <persistence xmlns="http://java.sun.com/xml/ns/persistence"

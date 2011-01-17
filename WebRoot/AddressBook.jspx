@@ -5,6 +5,8 @@
  @author Brandon R Russell
  @Course CMIS440
  Date: Jan 6, 2011
+ 
+ This is the front-end, the main view for the user.
  -->
 
 <jsp:root version="1.2"
@@ -26,19 +28,23 @@
        </head>
        <body>
        <div id="top">
-       <!-- This div contains the header text and also the instructions button which can be used to view a popup 
-       		containing instructions. It also contains the connection status display.
+       <!-- This div contains the header text and also the instructions button which
+       	 	can be used to view a popup containing instructions. It also contains 
+       	 	the connection status display.
        -->
-		<ice:panelGrid id="topPanelGrid" width="100%" border="0" columns="4" columnClasses="topH1,topInstructions,topRefresh,topConnection">
+		<ice:panelGrid id="topPanelGrid" width="100%" border="0" columns="4" 
+					columnClasses="topH1,topInstructions,topRefresh,topConnection">
 			<h1> Lab 4 Address Book</h1>	
 			<ice:form  id="instructionForm" >
-        		<ice:commandButton value="Instructions" action="#{AddressBean.getPopup}" style="margin-left:175px;"/>
+        		<ice:commandButton value="Instructions" action="#{AddressBean.getPopup}" 
+        					style="margin-left:175px;"/>
             	<ice:panelPopup draggable="true" rendered="#{AddressBean.popupVisible}" 
             				style="z-index: 1000;top: 30%;left: 10%;position: absolute;width: 300px;">
                 	<f:facet name="header">
                     	<ice:panelGrid id="instructionPanelGrid" width="100%" cellpadding="0" cellspacing="0" columns="2">
                         	<ice:outputText value="Instructions"/>
-                        	<ice:commandButton image="images/close.gif" action="#{AddressBean.getPopup}" title="Close the instructions"/>
+                        	<ice:commandButton image="images/close.gif" action="#{AddressBean.getPopup}" 
+                        						title="Close the instructions"/>
                     	</ice:panelGrid>
                 	</f:facet>
                 	<f:facet name="body">
@@ -49,7 +55,7 @@
             	</ice:panelPopup>
         	</ice:form>			
         	<ice:form>
-        		<ice:commandButton  immediate="true" value="Refresh"  partialSubmit="true" action="#{AddressBean.clear }"></ice:commandButton>
+        		<ice:commandButton  immediate="true" value="Refresh"  partialSubmit="true" action="#{AddressBean.clear }" />
         	</ice:form>        	
         	<ice:panelGrid border="1" columns="2" >
         	<!-- This section of code provides a means to show the current status of the connection
@@ -68,10 +74,10 @@
 					has validator methods associated with them from the backing bean to also ensure data integrity.
 				 -->
 					<h3>Add new Address:</h3>
-					<ice:outputLabel value="* = required" style="width: 100%; text-align: right;"/>
+					<ice:outputLabel value="* = required" />
 					<ice:panelGrid border="1" columns="2" columnClasses="addLabels,addFields">
-						<ice:inputHidden id="addressID" value="#{AddressBean.currentNewAddress.addressid }"></ice:inputHidden>
-						<ice:inputHidden></ice:inputHidden>
+						<ice:inputHidden id="addressID" value="#{AddressBean.currentNewAddress.addressid }" />
+						<ice:inputHidden />
 						<ice:outputText value="First Name *"></ice:outputText>
 						<ice:inputText id="firstName" value="#{AddressBean.currentNewAddress.firstname }"  maxlength="30" 
 										validator="#{AddressBean.validateAllOthers}" required="true" ></ice:inputText>
@@ -100,18 +106,19 @@
 					<!-- The add button will attempt to persist the data entered above to the back-end database
 						The clear button will clear all fields on the web site and reload the datatable below.
 					 -->
-					<ice:commandButton  style="width:45%" value="Add"  partialSubmit="true" action="#{AddressBean.addAddress }"></ice:commandButton>
-					<ice:commandButton  style="width:45%" value="Clear" type="reset"></ice:commandButton>				
+					<ice:commandButton  style="width:45%" value="Add"  partialSubmit="true" action="#{AddressBean.addAddress}"/>
+					<ice:commandButton  style="width:45%" value="Clear" type="reset" />				
 				</ice:form>
 				<ice:form id="searchForm" partialSubmit="true" >
-				<!-- The search form allows the user to enter a last name to search for. Has they type an associated value change listener
-					on the backing bean will make a call to the back-end database to fill in the autocomplete for the input. Once the user
-					has made a selection or typed in the name to search for and presses the Enter key the datatable below is populated with
-					the results. 
+				<!-- The search form allows the user to enter a last name to search for. Has they type an associated
+				 	 value change listener on the backing bean will make a call to the back-end database to fill in 
+				 	 the autocomplete for the input. Once the user has made a selection or typed in the name to search
+				 	  for and presses the Enter key the datatable below is populated with the results. 
 				 -->
 					<h3>Search for Address by Last Name:</h3>
 					<ice:panelGrid border="1" columns="1">
-						<ice:selectInputText maxlength="30" rows="10" id="searchByLastName" width="300" value="#{AddressBean.currentSearchAddress.lastname }" 
+						<ice:selectInputText maxlength="30" rows="10" id="searchByLastName" width="300" 
+											value="#{AddressBean.currentSearchAddress.lastname }" 
 											valueChangeListener="#{AddressBean.getAddressesByLastName }" >
 							<f:selectItems value="#{AddressBean.lastNameMatches}"/>
 						</ice:selectInputText>
@@ -135,13 +142,14 @@
 			the paginator for the datatable.  
 		 -->
 			<ice:form id="dataTableForm" partialSubmit="true">	
-			<!-- The datatable is associated with the getAllAddresses method on the backing bean to provide the data to be presented.
-				It is also associated with methods on the backing bean to allow sorting. Everyone column has a inputtext and outputtext. One or
-				the other will be displayed depending on if the user clicks the 'Edit' button or not.
+			<!-- The datatable is associated with the getAllAddresses method on the backing bean to provide the data
+			 	 to be presented. It is also associated with methods on the backing bean to allow sorting. Everyone
+			 	 column has a inputtext and outputtext. One or the other will be displayed depending on if the user
+			 	 clicks the 'Edit' button or not.
 			 -->
 				<ice:dataTable id="myDataTable" rows="5" border="1" value="#{AddressBean.allAddresses }" var="myAddresses" 
-					styleClass="addressTable" headerClass="addressHeader" rowClasses="oddRow,evenRow" sortColumn="#{AddressBean.sortColumnName}"
-            		sortAscending="#{AddressBean.ascending}" 
+					styleClass="addressTable" headerClass="addressHeader" rowClasses="oddRow,evenRow" 
+					sortColumn="#{AddressBean.sortColumnName}" sortAscending="#{AddressBean.ascending}" 
             		columnClasses="columns,columns,columns,columns,columns,columns,columns,columns,columns" >
 			
 					<f:facet name="header"><ice:outputText value="List of Addresses"/></f:facet>
@@ -151,7 +159,8 @@
                         			<ice:outputText value="ID" />
                     			</ice:commandSortHeader>					
 							</f:facet>
-							<ice:outputText value="#{AddressBean.currentTableAddress.addressid}" rendered="#{myAddresses.editable}" />
+							<ice:outputText value="#{AddressBean.currentTableAddress.addressid}" 
+											rendered="#{myAddresses.editable}" />
     						<ice:outputText value="#{myAddresses.addressid}"  rendered="#{not myAddresses.editable}" />					
 						</ice:column>
 						<ice:column>
@@ -160,7 +169,8 @@
 									<ice:outputText value="First Name" />
 								</ice:commandSortHeader>
 							</f:facet>
-    						<ice:inputText id="editFirstName" value="#{AddressBean.currentTableAddress.firstname}" validator="#{AddressBean.validateAllOthers}"   
+    						<ice:inputText id="editFirstName" value="#{AddressBean.currentTableAddress.firstname}" 
+    										validator="#{AddressBean.validateAllOthers}"   
     										maxlength="30" required="true" rendered="#{myAddresses.editable}" />
     						<ice:outputText value="#{myAddresses.firstname}" rendered="#{not myAddresses.editable}" />					
 						</ice:column>
@@ -170,7 +180,8 @@
 									<ice:outputText value="Last Name" ></ice:outputText>
 								</ice:commandSortHeader>
 							</f:facet>
-    						<ice:inputText id="editLastName" value="#{AddressBean.currentTableAddress.lastname}"  validator="#{AddressBean.validateAllOthers}"  
+    						<ice:inputText id="editLastName" value="#{AddressBean.currentTableAddress.lastname}"  
+    										validator="#{AddressBean.validateAllOthers}"  
     										maxlength="30" required="true" rendered="#{myAddresses.editable}" />
     						<ice:outputText value="#{myAddresses.lastname}" rendered="#{not myAddresses.editable}" />					
 						</ice:column>
@@ -180,7 +191,8 @@
 									<ice:outputText value="Street" ></ice:outputText>
 								</ice:commandSortHeader>
 							</f:facet>
-    						<ice:inputText id="editStreet" value="#{AddressBean.currentTableAddress.street}" validator="#{AddressBean.validateAllOthers}"   
+    						<ice:inputText id="editStreet" value="#{AddressBean.currentTableAddress.street}" 
+    										validator="#{AddressBean.validateAllOthers}"   
     										maxlength="150" required="true" rendered="#{myAddresses.editable}" />
     						<ice:outputText value="#{myAddresses.street}"  rendered="#{not myAddresses.editable}" />					
 						</ice:column>
@@ -190,7 +202,8 @@
 									<ice:outputText value="City"></ice:outputText>
 								</ice:commandSortHeader>
 							</f:facet>
-    						<ice:inputText id="editCity" value="#{AddressBean.currentTableAddress.city}"  validator="#{AddressBean.validateAllOthers}"  
+    						<ice:inputText id="editCity" value="#{AddressBean.currentTableAddress.city}"  
+    										validator="#{AddressBean.validateAllOthers}"  
     										maxlength="30" required="true" rendered="#{myAddresses.editable}" />
     						<ice:outputText value="#{myAddresses.city}"  rendered="#{not myAddresses.editable}" />							
 						</ice:column>
@@ -200,7 +213,8 @@
 									<ice:outputText value="State"></ice:outputText>
 								</ice:commandSortHeader>
 							</f:facet>
-    						<ice:inputText id="editState" value="#{AddressBean.currentTableAddress.state}"  validator="#{AddressBean.validateState}"  
+    						<ice:inputText id="editState" value="#{AddressBean.currentTableAddress.state}"  
+    										validator="#{AddressBean.validateState}"  
     										maxlength="2" required="true" rendered="#{myAddresses.editable}" />
     						<ice:outputText value="#{myAddresses.state}"  rendered="#{not myAddresses.editable}" />							
 						</ice:column>
@@ -210,7 +224,8 @@
 									<ice:outputText value="Zip Code"></ice:outputText>
 								</ice:commandSortHeader>
 							</f:facet>
-    						<ice:inputText id="editZip" value="#{AddressBean.currentTableAddress.zip}"  validator="#{AddressBean.validateZip}"  
+    						<ice:inputText id="editZip" value="#{AddressBean.currentTableAddress.zip}"  
+    										validator="#{AddressBean.validateZip}"  
     										maxlength="5" required="true" rendered="#{myAddresses.editable}" />
     						<ice:outputText value="#{myAddresses.zip}"  rendered="#{not myAddresses.editable}" />	
 						</ice:column>
@@ -220,7 +235,8 @@
 									<ice:outputText value="Email Address"></ice:outputText>
 								</ice:commandSortHeader>
 							</f:facet>
-    						<ice:inputText id="editEmailAddress" value="#{AddressBean.currentTableAddress.emailaddress}"  validator="#{AddressBean.validateEmail}" 
+    						<ice:inputText id="editEmailAddress" value="#{AddressBean.currentTableAddress.emailaddress}"  
+    										validator="#{AddressBean.validateEmail}" 
     										maxlength="50" required="true" rendered="#{myAddresses.editable}" />
     						<ice:outputLink value="mailto:#{myAddresses.emailaddress}">				
   								<ice:outputText value="#{myAddresses.emailaddress}" rendered="#{not myAddresses.editable}"  
@@ -233,7 +249,8 @@
 									<ice:outputText value="Phone Number"></ice:outputText>
 								</ice:commandSortHeader>
 							</f:facet>
-    						<ice:inputText id="editPhoneNumber" value="#{AddressBean.currentTableAddress.phonenumber}"  validator="#{AddressBean.validatePhone}" 
+    						<ice:inputText id="editPhoneNumber" value="#{AddressBean.currentTableAddress.phonenumber}"  
+    										validator="#{AddressBean.validatePhone}" 
     										maxlength="30" required="true" rendered="#{myAddresses.editable}" />
     						<ice:outputText value="#{myAddresses.phonenumber}" rendered="#{not myAddresses.editable}" />							
 						</ice:column>
@@ -241,27 +258,22 @@
 							<f:facet name="header"><ice:outputText value="Action"></ice:outputText></f:facet>
 								<ice:commandButton value="Edit" partialSubmit="true" action="#{AddressBean.editAction}" 
 													rendered="#{not myAddresses.editable}" >
-									<f:setPropertyActionListener value="#{myAddresses.addressid }" target="#{AddressBean.editAddressId }" />
+									<f:setPropertyActionListener value="#{myAddresses.addressid }" 
+																 target="#{AddressBean.editAddressId }" />
 								</ice:commandButton>
-								<ice:commandButton value="Save" partialSubmit="true" action="#{AddressBean.updateAddress}" 
+								<ice:commandButton value="Update" partialSubmit="true" action="#{AddressBean.updateAddress}" 
 													rendered="#{ myAddresses.editable}">
 								</ice:commandButton>		
 								<ice:commandButton value="Delete"  partialSubmit="true" action="#{AddressBean.deleteAddress}" 
 													rendered="#{ myAddresses.editable}">
-								</ice:commandButton>
-								<!--<ice:commandButton value="Cancel"  partialSubmit="true" action="#{AddressBean.cancelEdit}" 
-													rendered="#{ myAddresses.editable}">
-								</ice:commandButton>-->																	
+								</ice:commandButton>																
 						</ice:column>
 				</ice:dataTable>		
 				<!-- The paginator below allows the user to decide which rows to look at through the use of arrow keys. -->
-				<ice:dataPaginator id="myTablePaginator" for="myDataTable" paginator="true" fastStep="3" paginatorMaxPages="4"
-				  rowsCountVar="rowsCount"
-            	  displayedRowsCountVar="displayedRowsCount"
-            	  firstRowIndexVar="firstRowIndex"
-            	  lastRowIndexVar="lastRowIndex"
-            	  pageCountVar="pageCount"
-            	  pageIndexVar="pageIndex">      	
+				<ice:dataPaginator id="myTablePaginator" for="myDataTable" paginator="true" fastStep="3" 
+					paginatorMaxPages="4" rowsCountVar="rowsCount" displayedRowsCountVar="displayedRowsCount"
+            	  	firstRowIndexVar="firstRowIndex" lastRowIndexVar="lastRowIndex" pageCountVar="pageCount"
+            	  	pageIndexVar="pageIndex">      	
 				
 					<f:facet name="first">
 						<ice:graphicImage style="border:none;"
@@ -298,10 +310,8 @@
             			<f:param value="#{pageIndex}"/>
             			<f:param value="#{pageCount}"/>
         			</ice:outputFormat> 	
-        			
 				</ice:dataPaginator>	
-			</ice:form>
-			
+			</ice:form>	
 		</div>
        </body>
     </html>

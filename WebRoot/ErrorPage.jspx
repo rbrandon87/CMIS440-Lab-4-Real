@@ -6,7 +6,7 @@
  @Course CMIS440
  Date: Jan 6, 2011
 
-
+This is the error page shown when exceptions are thrown.
  -->
 
 <jsp:root version="1.2"

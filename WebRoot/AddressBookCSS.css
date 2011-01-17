@@ -50,16 +50,15 @@ h1{
 	text-align: center;
 }
 
-/*This is for the Connection Status column*/
-.topConnection{
-	width:15%
-}
-
 /*This is for the Refresh button column*/
 .topRefresh{
 	width: 5%;
 }
 
+/*This is for the Connection Status column*/
+.topConnection{
+	width:15%
+}
 	
 /*This is the main, or middle, div containing the mainPanelGrid*/
 #main{
