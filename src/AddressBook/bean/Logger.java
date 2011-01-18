@@ -45,7 +45,7 @@ public class Logger {
 	/**
 	 * Setup a date/time format for when inputting into the log file.
 	 */
-	public final String DATE_FORMAT_NOW = "yyyy-MM-dd HH:mm:ss";
+	private final String DATE_FORMAT_NOW = "yyyy-MM-dd HH:mm:ss";
 
 	
 
@@ -96,7 +96,7 @@ public class Logger {
 	  * present, and will then capture into group 1 the full path to the
 	  * application directory. It will then find and remove the filename
 	  * at the end w/ extension and omit it. Also, makes a call to os.name
-	  * If OS is Linux is it appends a '/' to the beginning of the file path, if
+	  * If OS is Linux it appends a '/' to the beginning of the file path, if
 	  * not already there.
 	  * @TheCs Cohesion - Removes 'file:/' from the beginning, if filename is
 	  *                   present then remove it, and finally add filename

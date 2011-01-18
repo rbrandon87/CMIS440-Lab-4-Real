@@ -55,7 +55,5 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     request.getAttribute("javax.servlet.error.servlet_name"));
 response.sendRedirect("ErrorPage.iface");    
  %>
-
-   
   </body>
 </html>

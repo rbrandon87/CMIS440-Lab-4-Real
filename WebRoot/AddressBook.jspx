@@ -110,7 +110,7 @@
 					<ice:commandButton  style="width:45%" value="Clear" type="reset" />				
 				</ice:form>
 				<ice:form id="searchForm" partialSubmit="true" >
-				<!-- The search form allows the user to enter a last name to search for. Has they type an associated
+				<!-- The search form allows the user to enter a last name to search for. As they type an associated
 				 	 value change listener on the backing bean will make a call to the back-end database to fill in 
 				 	 the autocomplete for the input. Once the user has made a selection or typed in the name to search
 				 	  for and presses the Enter key the datatable below is populated with the results. 

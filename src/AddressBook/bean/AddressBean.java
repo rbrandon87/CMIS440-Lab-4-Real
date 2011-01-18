@@ -54,9 +54,13 @@ package AddressBook.bean;
 * Glassfish 2.1.1 and v3 Prelude, but I think for some reason it works best on 
 * Glassfish 2.1.1. Also, I definitely went beyond the 80 character mark in a lot of
 * these files, but for some areas here and especially in the front-end code it was 
-* just more feasible to go beyond 80 characters. If you change a field that is 
+* just more feasible to go beyond 80 characters. Also, if you change a field that is 
 * currently being used as the sorted field, you will have to hit update twice
-* since the field is going to move the first time to be properly sorted.
+* since the field is going to move the first time to be properly sorted. In addition,
+* if you start to edit a file and get a error message because of bad input and then hit
+* the refresh button before fixing the error and not hitting the 'update' button, sometimes
+* the new value that is causing the error will linger in memory, though not saved to the
+* database.
 */
 
 /** This class manages interaction between front-end and back-end classes.
@@ -135,8 +139,11 @@ public class AddressBean extends SortableList{
 	public AddressBean() {
 		/**
 		 * First a call is made to the extended SortableList class to set the 
-		 * current sorted column to the 'ID' field. MyAddressesDAO finalAll method
-		 * is called to fill the myAddresses list for the front-end datatable.
+		 * current sorted column to the 'ID' field. The Session Renderer below
+		 * is used here and in add/update/delete methods. This allows Ajax
+		 * push to work properly, meaning if you make a change to a record
+		 * it will be seen by others with the website open almost instantly,
+		 * Pretty cool stuff!
 		 */
 		super("ID");
 		SessionRenderer.addCurrentSession("all");//This is used for automatic ajax push.
@@ -375,6 +382,10 @@ public class AddressBean extends SortableList{
 	public String addAddress(){
 		try{
 			SessionRenderer.addCurrentSession("all");//This is used for automatic ajax push.
+			/**
+			 * FacesContext is used here to get the current instance so that it can be
+			 * used later to display messages to the user if needed.
+			 */
 			FacesContext context = FacesContext.getCurrentInstance();
 			if (myNewAddress == null){
 				throw new Exception("New Address object is null on addAddress");
@@ -428,6 +439,10 @@ public class AddressBean extends SortableList{
 	public String updateAddress(){
 		try{
 			SessionRenderer.addCurrentSession("all");//This is used for automatic ajax push.
+			/**
+			 * FacesContext is used here to get the current instance so that it can be
+			 * used later to display messages to the user if needed.
+			 */			
 			FacesContext context = FacesContext.getCurrentInstance();
 			if (myTableAddress == null){
 				throw new Exception("MyTableAddress object is null on updateAddress");
@@ -482,6 +497,10 @@ public class AddressBean extends SortableList{
 	public String deleteAddress(){
 		try{
 			SessionRenderer.addCurrentSession("all");//This is used for automatic ajax push.
+			/**
+			 * FacesContext is used here to get the current instance so that it can be
+			 * used later to display messages to the user if needed.
+			 */			
 			FacesContext context = FacesContext.getCurrentInstance();
 			if (myTableAddress == null){
 				throw new Exception("myTableAddress object is null on deleteAddress");
@@ -553,7 +572,7 @@ public class AddressBean extends SortableList{
 			while (context.getMessages().hasNext()){
 				if (context.getMessages().next().getDetail().contains(aForm)){
 					/**
-					 * Here, if there are any error messages, let the user know
+					 * Here, if there are any error messages for this form let the user know
 					 * they need to clear these messages before adding/updating/deleting records.
 					 */
 					FacesMessage msg = 
@@ -618,7 +637,9 @@ public class AddressBean extends SortableList{
 				if (! myTableAddress.isEditable()){
 					/**
 					 * If a record is being updated, make sure the myAddresses
-					 * list isn't affected.
+					 * list isn't affected. If user is attempting to perform a search
+					 * then the search will complete as soon as they finish updating the
+					 * record they are currently working on.
 					 */					
 					myAddresses =  
 						myAddressesDAO.findByLastname(mySearchAddress.getLastname());
@@ -669,7 +690,7 @@ public class AddressBean extends SortableList{
 			List<String> myTempLastNames = new ArrayList<String>();
 			for (Addresses tempAddress : myTempAddresses){
 				/**
-				 * Add last names to list, make them all lower case so the hashset will remove
+				 * Add last names to list, make them all lower case so the HashSet will remove
 				 * ALL duplicates.
 				 */
 				myTempLastNames.add(tempAddress.getLastname().toLowerCase());
@@ -942,7 +963,8 @@ public class AddressBean extends SortableList{
             Pattern pattern = Pattern.compile(extRegex);
             Matcher matcher = pattern.matcher(email);
             if (!matcher.find()){
-    			FacesMessage msg = new FacesMessage(validate.getClientId(context) + " - Invalid Email entered");
+    			FacesMessage msg = 
+    				new FacesMessage(validate.getClientId(context) + " - Invalid Email entered");
     			context.addMessage(validate.getClientId(context), msg);
             }    		
     		/**
@@ -951,7 +973,8 @@ public class AddressBean extends SortableList{
     		 */
     		if(email.length() > 50){
     			((UIInput)validate).setValid(false);
-    			FacesMessage msg = new FacesMessage(validate.getClientId(context) + " - Email cannot exceed 50 characters");
+    			FacesMessage msg = 
+    				new FacesMessage(validate.getClientId(context) + " - Email cannot exceed 50 characters");
     			context.addMessage(validate.getClientId(context), msg);
     		}
         
@@ -1002,7 +1025,8 @@ public class AddressBean extends SortableList{
     		 */
     		if(phone.length() > 30){
     			((UIInput)validate).setValid(false);
-    			FacesMessage msg = new FacesMessage(validate.getClientId(context) + " - Phone Number cannot exceed 30 characters");
+    			FacesMessage msg = 
+    				new FacesMessage(validate.getClientId(context) + " - Phone Number cannot exceed 30 characters");
     			context.addMessage(validate.getClientId(context), msg);
     		}
         
@@ -1300,8 +1324,7 @@ public class AddressBean extends SortableList{
     	"<b>Edit/Delete Addresses:</b> <br />" +
     	"1) Either find by searching or scrolling through the table to find the record you want to edit. <br />" +
     	"2) Once found click the 'Edit' button next to the record and the fields will become editable. <br />" +
-    	"3) Once you make your changes click the 'Save' button or the 'Delete button to delete the record. <br />" + 
-    	"4) You can also click the 'Cancel' button to not update the record. <br />" +
+    	"3) Once you make your changes click the 'Update' button or the 'Delete button to delete the record. <br />" + 
     	"*Note - Only one record can be edited at a time.<br />" +
     	"*Note - You cannot perform a search while editing a field.";
     }

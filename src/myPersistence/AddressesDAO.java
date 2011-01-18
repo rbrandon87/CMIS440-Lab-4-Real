@@ -205,7 +205,7 @@ public class AddressesDAO {
 	 */	
 	public Addresses findById(Long id) {
 		myLog.log("finding Addresses instance with id: " + id +
-				Level.INFO);
+				" - " +Level.INFO);
 		try {
 			Addresses instance = getEntityManager().find(Addresses.class, id);
 			return instance;
@@ -240,7 +240,7 @@ public class AddressesDAO {
 	public List<Addresses> findByProperty(String propertyName,
 			final Object value, final int... rowStartIdxAndCount) {
 		myLog.log("finding Addresses instance with property: "
-				+ propertyName + ", value: " + value + Level.INFO);
+				+ propertyName + ", value: " + value + " - " + Level.INFO);
 		try {
 			/**
 			 * I added the 'lower()' tag to the SQL statement below to make this a case 

@@ -5,11 +5,13 @@
  @Course CMIS440
  Date: Jan 6, 2011
 
-
+This xml, mostly auto-generated, is used to define mappings and such.
+I did make my own edits at the bottom.
  -->
 <web-app id="AddressBook" version="2.5"
  xmlns="http://java.sun.com/xml/ns/javaee"
- xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee   http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee   http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
  <context-param>
   <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
   <param-value>server</param-value>
@@ -29,12 +31,6 @@
  <listener>
   <listener-class>com.icesoft.faces.util.event.servlet.ContextEventRepeater</listener-class>
  </listener>
- <!-- The servlet below is used for automatic ajax push --> 
- <servlet>
-  <servlet-name>Grizzly Push Servlet</servlet-name>
-  <servlet-class>com.icesoft.faces.webapp.http.servlet.GrizzlyPushServlet</servlet-class>
-  <load-on-startup> 1 </load-on-startup>
- </servlet> 
  <servlet>
   <servlet-name>Faces Servlet</servlet-name>
   <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
@@ -54,12 +50,7 @@
   <servlet-name>uploadServlet</servlet-name>
   <servlet-class>com.icesoft.faces.component.inputfile.FileUploadServlet</servlet-class>
   <load-on-startup>0</load-on-startup>
- </servlet>
- <!-- The servlet-mapping below is used for automatic ajax push --> 
- <servlet-mapping>
-  <servlet-name>Grizzly Push Servlet</servlet-name>
-  <url-pattern>/block/receive-updated-views/*</url-pattern>
- </servlet-mapping> 
+ </servlet> 
  <servlet-mapping>
   <servlet-name>Persistent Faces Servlet</servlet-name>
   <url-pattern>*.faces</url-pattern>

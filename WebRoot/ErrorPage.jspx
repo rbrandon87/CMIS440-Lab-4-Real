@@ -51,5 +51,4 @@ This is the error page shown when exceptions are thrown.
     </body>
    </html>
  </f:view>
-
 </jsp:root>
