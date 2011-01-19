@@ -35,15 +35,15 @@ package AddressBook.bean;
 *   called Logger that takes a file name and optional path in its constructor and provides
 *   one or more log methods. The default file name will be AddressBook.log and the default
 *   file path will be the current working directory. Possible log methods might be: 
-*log(String msg) - log the given message to the provided Path/File Name. 
-*log(String msg, int value) - log the given message and value to the provided Path/File Name 
+*	log(String msg) - log the given message to the provided Path/File Name. 
+*	log(String msg, int value) - log the given message and value to the provided Path/File Name 
 *	in a format: message = value 
 *
-* Program Design: The basic program design is that once the program is loaded the user 
+*  Program Design: The basic program design is that once the program is loaded the user 
 * can enter into one form a new address to be entered into the database. In the next 
 * form the user has the option to do a search by last name, which utilizes autocomplete,
 * and displays the results in the datatable. Finally, the datatable/form allows the 
-* user to view and also edit/delete records. I went with a MVC design: the 
+* user to view and also update/delete records. I went with a MVC design: the 
 * AddressBook.bean package is my Controller, the myPersistence package is my Model,
 * and the WebRoot files are my View.
 *
@@ -54,13 +54,7 @@ package AddressBook.bean;
 * Glassfish 2.1.1 and v3 Prelude, but I think for some reason it works best on 
 * Glassfish 2.1.1. Also, I definitely went beyond the 80 character mark in a lot of
 * these files, but for some areas here and especially in the front-end code it was 
-* just more feasible to go beyond 80 characters. Also, if you change a field that is 
-* currently being used as the sorted field, you will have to hit update twice
-* since the field is going to move the first time to be properly sorted. In addition,
-* if you start to edit a file and get a error message because of bad input and then hit
-* the refresh button before fixing the error and not hitting the 'update' button, sometimes
-* the new value that is causing the error will linger in memory, though not saved to the
-* database.
+* just more feasible to go beyond 80 characters.
 */
 
 /** This class manages interaction between front-end and back-end classes.
@@ -100,9 +94,7 @@ import javax.faces.component.UIInput;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
-
 import com.icesoft.faces.async.render.SessionRenderer;
-
 import myPersistence.Addresses;
 import myPersistence.AddressesDAO;
 import myPersistence.EntityManagerHelper;
@@ -622,12 +614,19 @@ public class AddressBean extends SortableList{
 				if (! myTableAddress.isEditable()){
 					/**
 					 * If a record is being updated, make sure the myAddresses
-					 * list isn't affected.
+					 * list isn't affected. Below, the entity manager is first
+					 * cleared to make sure no old data is cached and then a
+					 * findall is used to refresh the list of myAddresses.
 					 */
+					EntityManagerHelper.getEntityManager().clear();
 					myAddresses = myAddressesDAO.findAll();
+					sort(); //Sort myAddresses
+					notifyMessage = "Showing all records";
+				}else{
+					notifyMessage =
+						"Finish edit before performing search or sorting.";
 				}
-				sort(); //Sort myAddresses
-				notifyMessage = "Showing all records";
+				
 				return myAddresses;
 				
 			}else{
@@ -639,8 +638,11 @@ public class AddressBean extends SortableList{
 					 * If a record is being updated, make sure the myAddresses
 					 * list isn't affected. If user is attempting to perform a search
 					 * then the search will complete as soon as they finish updating the
-					 * record they are currently working on.
-					 */					
+					 * record they are currently working on. Below, the entity manager
+					 * is first cleared to make sure no old data is cached and then a
+					 * findbylastname is used to refresh the list of myAddresses.
+					 */
+					EntityManagerHelper.getEntityManager().clear();
 					myAddresses =  
 						myAddressesDAO.findByLastname(mySearchAddress.getLastname());
 					notifyMessage = "Showing records for specified last name";
@@ -799,7 +801,7 @@ public class AddressBean extends SortableList{
 			UIViewRoot viewRoot = viewHandler.createView(context, context
 					.getViewRoot().getViewId());
 			context.setViewRoot(viewRoot);
-			context.renderResponse(); //Optional	
+			context.renderResponse(); //Optional
 			notifyMessage = "";
 			return "success";
         }catch (Exception exception){

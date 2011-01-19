@@ -64,3 +64,134 @@ database.
 Git Log:
 -----------------------------------------------------------------------------------
 
+commit 483dfc7227195d2a6a356563e6ae9bfce8b91ad7
+Author: Brandon Russell <rbrandon87@gmail.com>
+Date:   Tue Jan 18 20:57:46 2011 -0100
+
+    Minor work to comments. Finished up UML and JavaDoc
+
+commit b9add26d6f8fdd2adcb4175e58f8132c8805af62
+Author: Brandon Russell <rbrandon87@gmail.com>
+Date:   Mon Jan 17 22:23:51 2011 -0100
+
+    Worked on validators, UI, and AJAX Push
+
+commit da1207cfca631235a3a68a263e915caa7d33e2e7
+Author: Brandon Russell <rbrandon87@gmail.com>
+Date:   Mon Jan 17 15:14:47 2011 -0100
+
+    Think I am done, just need to finish javadoc and uml
+
+commit 821645e593831067b7885a5527cf5404d89bca0b
+Author: Brandon Russell <rbrandon87@gmail.com>
+Date:   Mon Jan 17 00:59:42 2011 -0100
+
+    Lots of work to fix edit button problem. Think I got it, but need to work on getAllAddresses
+
+commit 86c590a32d0e7c889df62928f74a9132288b1c18
+Author: Brandon Russell <rbrandon87@gmail.com>
+Date:   Sat Jan 15 21:27:59 2011 -0100
+
+    Made minor modification to clear method. I think this fixed part of the edit button in datatable not working sometimes. Also worked on UI a bit
+
+commit 85fd275bb50c20ef9ed09dfd7c0c26041fa4bb46
+Author: Brandon Russell <rbrandon87@gmail.com>
+Date:   Fri Jan 14 21:40:43 2011 -0100
+
+    Added Session timeout of 1 hour. modifed some comments and instructions
+
+commit c75ac574e50e9a7204eda9232c418803c8a74659
+Author: Brandon Russell <rbrandon87@gmail.com>
+Date:   Fri Jan 14 07:25:29 2011 -0100
+
+    Made separate refresh button for whole site and changed clear button to just be a reset for add form
+
+commit 4ca2846057d137e9a1d1fad64d68efbecfbd2f1c
+Author: Brandon Russell <rbrandon87@gmail.com>
+Date:   Thu Jan 13 21:37:12 2011 -0100
+
+    Made everything UTF-8. Did some styling and debugging. Added outputlink to email addresses on table. Added return to getAllAddresses when search is set. made boolean to only clear search when needed.
+
+commit e3932ba390583bdcf3ca9cb10a4fde6571822199
+Author: Brandon Russell <rbrandon87@gmail.com>
+Date:   Thu Jan 13 06:39:27 2011 -0100
+
+    Fixed lastNames duplicate issue. Just need to add comments to it now.
+
+commit 317783297bb716fd816c887fe520cb2fa6de9bc3
+Author: Brandon Russell <rbrandon87@gmail.com>
+Date:   Wed Jan 12 22:14:37 2011 -0100
+
+    Started using glassfish v3 prelude. Worked on comments. Fixed validator issues. Still have minor issue w/ edit freezing before clear. Need to work on last name autocomplete some more.
+
+commit 89bacdf69880820c9fb788e7135c6becf5381bac
+Author: Brandon Russell <rbrandon87@gmail.com>
+Date:   Wed Jan 12 06:37:03 2011 -0100
+
+    Working on Validators more. Need to do comments and also instructions button location is messed up
+
+commit 83cc3c205406941a42f8f348b2012d79ca1d50ad
+Author: Brandon Russell <rbrandon87@gmail.com>
+Date:   Tue Jan 11 22:55:10 2011 -0100
+
+    Worked on edit w/ search problem and exception handling. Need to work on comments
+
+commit f1235d05ab1a27bc33091a86a386e25712a4cff4
+Author: Brandon Russell <rbrandon87@gmail.com>
+Date:   Tue Jan 11 09:30:00 2011 -0100
+
+    Worked on Error Messages and Normal Messages. Problem w/ search and edit again
+
+commit fd1a8c85dd61940695668f08ede2a9927cc6c1d4
+Author: Brandon Russell <rbrandon87@gmail.com>
+Date:   Mon Jan 10 23:23:58 2011 -0100
+
+    Minor work on Error Page
+
+commit b53f1cca1615c0f03af50e52754a5bc37dbc6700
+Author: Brandon Russell <rbrandon87@gmail.com>
+Date:   Mon Jan 10 22:56:01 2011 -0100
+
+    CSS Styling and added error page redirect
+
+commit c8741f7c8eabb898fed29515942ee0b87357413d
+Author: Brandon Russell <rbrandon87@gmail.com>
+Date:   Mon Jan 10 07:33:38 2011 -0100
+
+    Lots of CSS Styling
+
+commit 90435bd26f63fbecec5d1384775e2f38e669d358
+Author: Brandon Russell <rbrandon87@gmail.com>
+Date:   Sun Jan 9 21:01:02 2011 -0100
+
+    Working on edit problem some more. Maybe fixed it, not sure yet?
+
+commit 2a5092774976423d385571cad5750c5f3fc7acf5
+Author: Brandon Russell <rbrandon87@gmail.com>
+Date:   Sun Jan 9 19:44:40 2011 -0100
+
+    Lots of Comments and CSS Styling. Still have minor issue with edit not working on initial load, sometimes....
+
+commit ce2b2a7f598fa67a454a5f557faab09f513adb88
+Author: Brandon Russell <rbrandon87@gmail.com>
+Date:   Sun Jan 9 01:05:20 2011 -0100
+
+    Fixed some serious bugs with validation. Worked on Exceptions and Comments
+
+commit febd9ffa522adf4638908671afab39c8cb70fef5
+Author: Brandon Russell <rbrandon87@gmail.com>
+Date:   Fri Jan 7 23:15:30 2011 -0100
+
+    Fixed Edit w/ Sorting problem. Lots of CSS Styling...
+
+commit 6169934fed1d412ececd92f1e986cd0f2923eb31
+Author: Brandon Russell <rbrandon87@gmail.com>
+Date:   Fri Jan 7 06:45:51 2011 -0100
+
+    Renamed WebContext, added index.html to redirect, started working on comments
+
+commit 2d81cf96cd01d58c1675c136b4f7a4952b51d8a6
+Author: Brandon Russell <rbrandon87@gmail.com>
+Date:   Thu Jan 6 21:44:17 2011 -0100
+
+    Took forever, but finally made a project worthy of a git repo. First Commit
