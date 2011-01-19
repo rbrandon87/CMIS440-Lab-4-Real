@@ -51,18 +51,18 @@ my own comments and styling throughout. The projects appears to work well on bot
 Glassfish 2.1.1 and v3 Prelude, but I think for some reason it works best on 
 Glassfish 2.1.1. Also, I definitely went beyond the 80 character mark in a lot of
 these files, but for some areas here and especially in the front-end code it was 
-just more feasible to go beyond 80 characters. Also, if you change a field that is 
-currently being used as the sorted field, you will have to hit update twice
-since the field is going to move the first time to be properly sorted. In addition,
-if you start to edit a file and get a error message because of bad input and then hit
-the refresh button before fixing the error and not hitting the 'update' button, sometimes
-the new value that is causing the error will linger in memory, though not saved to the
-database.
+just more feasible to go beyond 80 characters.
 
 
 
 Git Log:
 -----------------------------------------------------------------------------------
+
+commit f4b46d90b9b8a991d0e04b005eb4b44862922b7b
+Author: Brandon Russell <rbrandon87@gmail.com>
+Date:   Wed Jan 19 18:54:55 2011 -0100
+
+    Fixed issues w/ caching problem on myAddresses refresh and sorting w/ editing problem
 
 commit 483dfc7227195d2a6a356563e6ae9bfce8b91ad7
 Author: Brandon Russell <rbrandon87@gmail.com>
